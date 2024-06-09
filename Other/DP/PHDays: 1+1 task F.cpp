@@ -1,3 +1,5 @@
+//https://contest.yandex.ru/contest/62775/enter/
+
 #include <iostream>
 #include <algorithm>
 #include <cmath>
