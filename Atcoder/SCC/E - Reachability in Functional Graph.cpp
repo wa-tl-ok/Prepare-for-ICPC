@@ -58,13 +58,10 @@ int main() {
     int n;
     cin >> n;
 
-    set<pair<int, int>> edges;
+    vector<pair<int, int>> edges;
 
     g.resize(n);
     r_g.resize(n);
-
-    vector<int> in(n, 0);
-    vector<int> out(n, 0);
 
     for (int i = 1; i <= n; i++) {
         int u; u = i;
@@ -73,15 +70,10 @@ int main() {
         --u;
         --v;
 
-        if (u != v) {
-            edges.insert({ u, v });
+        edges.push_back({ u, v });
 
-            g[u].push_back(v);
-            r_g[v].push_back(u);
-
-            ++out[u];
-            ++in[v];
-        }
+        g[u].push_back(v);
+        r_g[v].push_back(u);
     }
 
     vis.resize(n);
