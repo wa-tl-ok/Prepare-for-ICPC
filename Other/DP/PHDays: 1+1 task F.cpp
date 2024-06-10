@@ -1,4 +1,4 @@
-https://contest.yandex.ru/contest/62775/problems/F/
+//https://contest.yandex.ru/contest/62775/problems/F/
 
 #include <iostream>
 #include <algorithm>
