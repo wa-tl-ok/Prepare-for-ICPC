@@ -32,7 +32,6 @@ struct Persistent_DSU {
     };
  
     int mx;
-    int pers_mx;
     vector<int> head;
     vector<int> rang;
     vector<Trio> condition;
@@ -49,7 +48,6 @@ struct Persistent_DSU {
         }
  
         mx = 1;
-        pers_mx = 1;
     }
  
     int Find(int x) {
@@ -75,7 +73,6 @@ struct Persistent_DSU {
         head[x] = y;
  
         mx = max(mx, rang[y]);
-        pers_mx = mx;
  
         return true;
     }
@@ -95,15 +92,13 @@ struct Persistent_DSU {
         rang[y] += rang[x];
         head[x] = y;
  
-        pers_mx = max(pers_mx, rang[y]);
-        condition.push_back({x, y, rang[x]});
+        mx = max(mx, rang[y]);
+        condition.push_back({ x, y, rang[x] });
  
         return true;
     }
  
     void Back() {
-        mx = pers_mx;
- 
         for (int i = (int)condition.size() - 1; i >= 0; i--) {
             auto T = condition[i];
  
@@ -244,7 +239,7 @@ void Solve() {
             Merge_(x, i);
         }
  
-        int ans = dsu.pers_mx;
+        int ans = dsu.mx;
         dsu.Back();
  
         for (int i = 0; i < m; i++) {
@@ -265,7 +260,7 @@ void Solve() {
             Merge_(i, y);
         }
  
-        int ans = dsu.pers_mx;
+        int ans = dsu.mx;
         dsu.Back();
  
         for (int i = 0; i < n; i++) {
