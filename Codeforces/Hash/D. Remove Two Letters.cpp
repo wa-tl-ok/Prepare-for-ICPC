@@ -1,4 +1,4 @@
-//https://codeforces.com/problemset/problem/1800/D?locale=ru
+//https://codeforces.com/problemset/problem/1800/D
 
 #include <iostream>
 #include <algorithm>
