@@ -116,4 +116,5 @@ int main() {
         }
         cout << l * 2 + 1 << ' ';
     }
+    return 0;
 }
