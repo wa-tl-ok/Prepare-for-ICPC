@@ -1,3 +1,5 @@
+//https://informatics.msk.ru/mod/statements/view.php?id=33342&chapterid=745#1
+
 #include <iostream>
 #include <algorithm>
 #include <cmath>
@@ -30,22 +32,28 @@ map<ll, bool> m;
 
 int main() {
     type = '!';
+
     step[0] = 1;
     for (int i = 1; i < 11; ++i) {
         step[i] = step[i - 1] * 31;
         step[i] %= mod;
     }
+
     while (true) {
         cin >> type;
+
         if (type == '#') {
             break;
         }
+
         cin >> s;
+
         ll Hash = 0;
         for (int i = 0; i < (int)s.size(); ++i) {
             Hash += step[i] * (s[i] - 'a' + 1);
             Hash %= mod;
         }
+
         if (type == '-') {
             m[Hash] = false;
         }
