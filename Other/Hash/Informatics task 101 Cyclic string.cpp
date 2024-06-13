@@ -47,12 +47,14 @@ int main() {
         Step[i] = (Step[i - 1] * 53) % mod;
     }
     Pref_Hash.resize((int)S.size());
+
     if (Pref_Hash[0] >= 'A' && Pref_Hash[0] <= 'Z') {
         Pref_Hash[0] = S[0] - 'A' + 27;
     }
     else {
         Pref_Hash[0] = S[0] - 'a' + 1;
     }
+
     for (int i = 1; i < (int)S.size(); ++i) {
         if (Pref_Hash[i] >= 'A' && Pref_Hash[i] <= 'Z') {
             Pref_Hash[i] = (Pref_Hash[i - 1] + ((S[i] - 'A' + 27) * Step[i]) % mod) % mod;
@@ -61,10 +63,12 @@ int main() {
             Pref_Hash[i] = (Pref_Hash[i - 1] + ((S[i] - 'a' + 1) * Step[i]) % mod) % mod;
         }
     }
+
     int l, r;
     for (int i = 1; i <= n; ++i) {
         int sz = i;
         bool flag = true;
+
         ll HASH = Take_Hash(0, sz - 1);
         for (l = 0; l < (int)S.size(); l += sz) {
             r = l + sz - 1;
