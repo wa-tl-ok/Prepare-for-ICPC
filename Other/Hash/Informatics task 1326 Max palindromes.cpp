@@ -23,7 +23,6 @@ using namespace std;
 using ll = long long;
 using str = string;
 
-
 vector<ll> PHash(1000005);
 vector<ll> OHash(1000005);
 vector<ll> Step(1000005);
@@ -87,7 +86,6 @@ void O() {
             OHash[i] = (OHash[i - 1] + ((S[i] - 'a' + 1) * Step[i]) % mod) % mod;
         }
     }
-    reverse(S.begin(), S.end());
 }
 
 void In() {
@@ -102,7 +100,6 @@ void In() {
 
 int main() {
     In(); P(); O();
-    ll ans = 0;
     for (int ind = 0; ind < (int)S.size(); ind++) {
         int l = 0;
         int r = min(ind, n - ind - 1) + 1;
@@ -115,24 +112,6 @@ int main() {
                 r = m;
             }
         }
-        ans += l + 1;
+        cout << l * 2 + 1 << ' ';
     }
-    for (int ind1 = 0; ind1 < (int)S.size() - 1; ind1++) {
-        int ind2 = ind1 + 1;
-        if (S[ind1] == S[ind2]) {
-            int l = 0;
-            int r = min(ind1, n - ind2 - 1) + 1;
-            while (l + 1 != r) {
-                int m = (l + r) / 2;
-                if (Check(ind1 - m, ind2 + m)) {
-                    l = m;
-                }
-                else {
-                    r = m;
-                }
-            }
-            ans += l + 1;
-        }
-    }
-    cout << ans;
 }
