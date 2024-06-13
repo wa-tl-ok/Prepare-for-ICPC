@@ -1,3 +1,5 @@
+//https://informatics.msk.ru/mod/statements/view.php?id=33342&chapterid=99#1
+
 #include <iostream>
 #include <algorithm>
 #include <cmath>
@@ -58,14 +60,18 @@ int main() {
 		int l, r, kl, kr;
 		kl = PS;
 		kr = (int)S.size() - 1;
+
 		for (l = 0; l < (int)S.size(); ++l) {
 			r = l + (int)T.size() - 1;
+
 			if (r == PS) {
 				break;
 			}
+
 			if (Take_Hash(l, r) == Take_Hash(kl, kr)) {
 				cout << l << ' ';
 			}
 		}
 	}
+	return 0;
 }
