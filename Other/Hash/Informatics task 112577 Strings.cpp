@@ -1,3 +1,5 @@
+//https://informatics.msk.ru/mod/statements/view.php?id=33342&chapterid=112577#1
+
 #include <iostream>
 #include <algorithm>
 #include <cmath>
@@ -52,6 +54,7 @@ int main() {
     else {
         Pref_Hash_S[0] = S[0] - 'a' + 1;
     }
+
     for (int i = 1; i < (int)S.size(); ++i) {
         if (Pref_Hash_S[i] >= 'A' && Pref_Hash_S[i] <= 'Z') {
             Pref_Hash_S[i] = (Pref_Hash_S[i - 1] + ((S[i] - 'A' + 27) * Step[i]) % mod) % mod;
@@ -64,6 +67,7 @@ int main() {
     int l, r;
     int tl = PS * 2;
     int tr = PS * 3 - 1;
+
     for (l = 0; l < (int)S.size(); l++) {
         r = l + PS - 1;
         if (r == 2 * PS) {
@@ -75,4 +79,5 @@ int main() {
         }
     }
     cout << -1;
+    return 0;
 }
