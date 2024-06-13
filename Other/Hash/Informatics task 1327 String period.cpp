@@ -1,3 +1,5 @@
+//https://informatics.msk.ru/mod/statements/view.php?id=33342&chapterid=1327#1
+
 #include <iostream>
 #include <algorithm>
 #include <cmath>
@@ -39,32 +41,41 @@ ll Take_Hash(int l, int r) {
 int main() {
     str S; cin >> S;
     n = (int)S.size();
+
     for (int i = 1; i <= n; ++i) {
         if (n % i == 0) {
             Nums.push_back(i);
         }
     }
+
     Step[0] = 1;
     for (int i = 1; i < 1000005; i++) {
         Step[i] = (Step[i - 1] * 31) % mod;
     }
+
     Pref_Hash[0] = S[0] - 'a' + 1;
     for (int i = 1; i < n; i++) {
         Pref_Hash[i] = ((Step[i] * (S[i] - 'a' + 1)) % mod + Pref_Hash[i - 1]) % mod;
     }
+
     for (int i = 0; i < (int)Nums.size(); i++) {
         ll HASH = Take_Hash(0, Nums[i] - 1);
+
         int ans = n / Nums[i]; int l, r;
         bool Flag = true;
+
         for (l = 0; l < n; l += Nums[i]) {
             r = l + Nums[i] - 1;
             if (Take_Hash(l, r) != HASH) {
                 Flag = false;
             }
         }
+
         if (Flag == true) {
             cout << ans;
             return 0;
         }
     }
+
+    return 0;
 }
