@@ -1,3 +1,5 @@
+//https://informatics.msk.ru/mod/statements/view.php?chapterid=201#1
+
 #include <iostream>
 #include <algorithm>
 #include <cmath>
