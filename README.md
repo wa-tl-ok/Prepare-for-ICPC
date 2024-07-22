@@ -1,2 +1,2 @@
-# Tasks
-Solving tasks
+# Prepare for ICPC
+Solving tasks and learning theory
