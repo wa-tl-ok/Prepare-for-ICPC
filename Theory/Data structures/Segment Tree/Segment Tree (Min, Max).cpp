@@ -130,14 +130,3 @@ private:
         maxVal[node] = max(maxVal[2 * node], maxVal[2 * node + 1]);
     }
 };
-
-void ToUseSegTree_min_max() {
-    SegmentTree_min_max segTree({ 0, 0, 0, 0, 0, 0 });
-
-    segTree.plus(0, 5, 1);
-    segTree.plus(0, 3, 2);
-    segTree.change(1, 4, 5);
-
-    int answer1 = segTree.queryMin(0, 5);
-    int answer2 = segTree.queryMax(0, 5);
-}
