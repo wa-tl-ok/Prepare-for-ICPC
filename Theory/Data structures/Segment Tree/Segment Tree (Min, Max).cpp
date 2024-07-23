@@ -8,7 +8,7 @@ public:
         maxVal.assign(4 * n, 0);
     }
 
-    SegmentTree_min_max(const std::vector<int>& a) {
+    SegmentTree_min_max(const vector<int>& a) {
         n = (int)a.size();
 
         tree.assign(4 * n, 0);
@@ -38,10 +38,10 @@ public:
     }
 
 private:
-    std::vector<int> tree;
-    std::vector<int> lazy;
-    std::vector<int> minVal;
-    std::vector<int> maxVal;
+    vector<int> tree;
+    vector<int> lazy;
+    vector<int> minVal;
+    vector<int> maxVal;
     int n;
 
     int queryMinRange(int node, int start, int end, int l, int r) {
@@ -59,7 +59,7 @@ private:
         int p1 = queryMinRange(2 * node, start, mid, l, r);
         int p2 = queryMinRange(2 * node + 1, mid + 1, end, l, r);
 
-        return std::min(p1, p2);
+        return min(p1, p2);
     }
 
     int queryMaxRange(int node, int start, int end, int l, int r) {
@@ -77,7 +77,7 @@ private:
         int p1 = queryMaxRange(2 * node, start, mid, l, r);
         int p2 = queryMaxRange(2 * node + 1, mid + 1, end, l, r);
 
-        return std::max(p1, p2);
+        return max(p1, p2);
     }
 
     void propagate(int node, int start, int end) {
@@ -126,8 +126,8 @@ private:
 
         tree[node] = tree[2 * node] + tree[2 * node + 1];
 
-        minVal[node] = std::min(minVal[2 * node], minVal[2 * node + 1]);
-        maxVal[node] = std::max(maxVal[2 * node], maxVal[2 * node + 1]);
+        minVal[node] = min(minVal[2 * node], minVal[2 * node + 1]);
+        maxVal[node] = max(maxVal[2 * node], maxVal[2 * node + 1]);
     }
 };
 
