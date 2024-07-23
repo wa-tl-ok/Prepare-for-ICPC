@@ -88,13 +88,3 @@ private:
         return p1 + p2;
     }
 };
-
-void ToUseSegTree() {
-    SegmentTree segTree({ 0, 0, 0, 0, 0, 0 });
-
-    segTree.plus(0, 5, 1);
-    segTree.plus(0, 3, 2);
-    segTree.change(1, 4, 5);
-
-    int answer = segTree.query(0, 5);
-}
