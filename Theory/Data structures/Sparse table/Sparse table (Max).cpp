@@ -4,14 +4,30 @@ private:
     vector<vector<int>> Stable;
 public:
     Sparse_table_max(const vector<int>& vec) {
-        this->N = (int)(vec.size());
-        this->K = log2(N) + 2;
+        vector<int> new_vec;
+        for (auto p : vec) {
+            new_vec.push_back(p);
+        }
 
-        Stable.resize(N + 1);
+        this->K = 0;
+        this->N = (int)vec.size();
+
+        int n = (int)vec.size();
+        int p = 1;
+        while (p < n) {
+            p *= 2;
+            ++(this->K);
+        }
+
+        for (int i = 0; i < p - n; i++) {
+            new_vec.push_back(INT_MIN);
+        }
+
+        Stable.resize(N);
 
         for (int i = 0; i < N; i++) {
-            Stable[i].resize(K + 1);
-            Stable[i][0] = vec[i];
+            Stable[i].resize(K);
+            Stable[i][0] = new_vec[i];
         }
 
         for (int j = 1; (1 << j) <= N; j++) {
@@ -22,15 +38,14 @@ public:
     }
 
     int query(int l, int r) {
-        int mx = -1e9;
+        int mx = INT_MIN;
         int sz = r - l + 1;
 
         for (int k = K; k >= 0; k--) {
             if (sz >= (1 << k)) {
                 mx = max(mx, Stable[l][k]);
-                sz -= 1 << k;
-
-                l += 1 << k;
+                sz -= (1 << k);
+                l += (1 << k);
             }
         }
 
