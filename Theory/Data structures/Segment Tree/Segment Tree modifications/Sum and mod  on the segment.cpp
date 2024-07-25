@@ -1,3 +1,28 @@
+//https://codeforces.com/group/1rv4rhCsHp/contest/327313/problem/A
+
+#include <iostream> 
+#include <iomanip> 
+#include <algorithm> 
+#include <cmath> 
+#include <vector> 
+#include <queue> 
+#include <deque> 
+#include <array> 
+#include <list> 
+#include <stack> 
+#include <set> 
+#include <unordered_set> 
+#include <map> 
+#include <unordered_map> 
+#include <string> 
+#include <cstring> 
+#include <random> 
+#include <bitset> 
+#include <functional> 
+#include <climits>
+
+using namespace std;
+
 class JiDriverSegmentTree {
 public:
     JiDriverSegmentTree(const vector<int>& a) {
@@ -107,3 +132,46 @@ private:
         updateFromChildren(v);
     }
 };
+
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(0);
+    cout.tie(0);
+
+    int n, q; cin >> n >> q;
+
+    vector<int> a(n);
+    for (int i = 0; i < n; i++) {
+        cin >> a[i];
+    }
+
+    JiDriverSegmentTree ST(a);
+    for (int i = 0; i < q; i++) {
+        int type; cin >> type;
+
+        if (type == 1) {
+            int ql, qr; cin >> ql >> qr;
+
+            --ql;
+            --qr;
+
+            cout << ST.query(ql, qr) << '\n';
+        }
+        else if (type == 2) {
+            int ql, qr, x; cin >> ql >> qr >> x;
+
+            --ql;
+            --qr;
+
+            ST.update_1(ql, qr, x);
+        }
+        else if (type == 3) {
+            int qi, y; cin >> qi >> y;
+            
+            qi--;
+            
+            ST.update_2(qi, y);
+        }
+    }
+    return 0;
+}
