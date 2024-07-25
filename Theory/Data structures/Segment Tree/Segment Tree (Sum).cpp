@@ -15,26 +15,26 @@ public:
         }
     }
 
-    void plus(int l, int r, int val) {
-        updateRange(1, 0, n - 1, l, r, val, true);
+    void plus(int const_l, int const_r, int val) {
+        updateRange(1, 0, n - 1, const_l, const_r, val, true);
     }
 
-    void change(int l, int r, int val) {
-        updateRange(1, 0, n - 1, l, r, val, false);
+    void change(int const_l, int const_r, int val) {
+        updateRange(1, 0, n - 1, const_l, const_r, val, false);
     }
 
-    int query(int l, int r) {
-        return queryRange(1, 0, n - 1, l, r);
+    int query(int const_l, int const_r) {
+        return queryRange(1, 0, n - 1, const_l, const_r);
     }
 private:
     vector<int> tree;
     vector<int> lazy;
     int n;
 
-    void propagate(int node, int start, int end) {
+    void propagate(int node, int l, int r) {
         if (lazy[node] != 0) {
-            tree[node] += lazy[node] * (end - start + 1);
-            if (start != end) {
+            tree[node] += lazy[node] * (r - l + 1);
+            if (l != r) {
                 lazy[2 * node] += lazy[node];
                 lazy[2 * node + 1] += lazy[node];
             }
@@ -42,48 +42,48 @@ private:
         }
     }
 
-    void updateRange(int node, int start, int end, int l, int r, int val, bool isAddition) {
-        propagate(node, start, end);
-        if (start > end || start > r || end < l) {
+    void updateRange(int node, int l, int r, int const_l, int const_r, int val, bool isAddition) {
+        propagate(node, l, r);
+        if (l > r || l > const_r || r < const_l) {
             return;
         }
-        if (start >= l && end <= r) {
+        if (l >= const_l && r <= const_r) {
             if (isAddition) {
-                tree[node] += val * (end - start + 1);
-                if (start != end) {
+                tree[node] += val * (r - l + 1);
+                if (l != r) {
                     lazy[2 * node] += val;
                     lazy[2 * node + 1] += val;
                 }
             }
             else {
-                tree[node] = val * (end - start + 1);
-                if (start != end) {
+                tree[node] = val * (r - l + 1);
+                if (l != r) {
                     lazy[2 * node] = val;
                     lazy[2 * node + 1] = val;
                 }
             }
             return;
         }
-        int mid = (start + end) / 2;
+        int mid = (l + r) / 2;
 
-        updateRange(2 * node, start, mid, l, r, val, isAddition);
-        updateRange(2 * node + 1, mid + 1, end, l, r, val, isAddition);
+        updateRange(2 * node, l, mid, const_l, const_r, val, isAddition);
+        updateRange(2 * node + 1, mid + 1, r, const_l, const_r, val, isAddition);
 
         tree[node] = tree[2 * node] + tree[2 * node + 1];
     }
 
-    int queryRange(int node, int start, int end, int l, int r) {
-        if (start > end || start > r || end < l) {
+    int queryRange(int node, int l, int r, int const_l, int const_r) {
+        if (l > r || l > const_r || r < const_l) {
             return 0;
         }
-        propagate(node, start, end);
-        if (start >= l && end <= r) {
+        propagate(node, l, r);
+        if (l >= const_l && r <= const_r) {
             return tree[node];
         }
-        int mid = (start + end) / 2;
+        int mid = (l + r) / 2;
 
-        int p1 = queryRange(2 * node, start, mid, l, r);
-        int p2 = queryRange(2 * node + 1, mid + 1, end, l, r);
+        int p1 = queryRange(2 * node, l, mid, const_l, const_r);
+        int p2 = queryRange(2 * node + 1, mid + 1, r, const_l, const_r);
 
         return p1 + p2;
     }
