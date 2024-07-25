@@ -23,9 +23,9 @@
 
 using namespace std;
 
-class BitwiseSegmentTree {
+class Bitwise_SegmentTree {
 public:
-    BitwiseSegmentTree(const vector<int>& a) {
+    Bitwise_SegmentTree(const vector<int>& a) {
         n = a.size();
         tree.resize(4 * n);
         build(1, 0, n - 1, a);
@@ -184,7 +184,7 @@ int main() {
         cin >> a[i];
     }
 
-    BitwiseSegmentTree BST(a);
+    Bitwise_SegmentTree BST(a);
 
     for (int i = 0; i < q; ++i) {
         int type; cin >> type;
