@@ -1,56 +1,91 @@
 class Implicit_SegmentTree {
 public:
-    Implicit_SegmentTree(int size) : n(size) {}
+    Implicit_SegmentTree(int size) : n(size), root(nullptr) {}
 
     void plus(int const_l, int const_r, int val) {
-        updateRange(1, 0, n - 1, const_l, const_r, val);
+        root = updateRange(root, 0, n - 1, const_l, const_r, val);
     }
 
     int query(int const_l, int const_r) {
-        return queryRange(1, 0, n - 1, const_l, const_r);
+        return queryRange(root, 0, n - 1, const_l, const_r);
     }
 
 private:
-    unordered_map<int, int> tree;
-    unordered_map<int, int> lazy;
+    struct Node {
+        int sum;
+        int lazy;
+
+        Node* left;
+        Node* right;
+
+        Node() : sum(0), lazy(0), left(nullptr), right(nullptr) {}
+    };
+
+    Node* root;
     int n;
 
-    void propagate(int node, int l, int r) {
-        if (lazy.find(node) != lazy.end()) {
-            tree[node] += lazy[node] * (r - l + 1);
+    void propagate(Node* node, int l, int r) {
+        if (!node || node->lazy == 0) {
+            return;
+        }
 
-            if (l != r) {
-                lazy[node * 2] += lazy[node];
-                lazy[node * 2 + 1] += lazy[node];
+        node->sum += node->lazy * (r - l + 1);
+
+        if (l != r) {
+            if (!node->left) {
+                node->left = new Node();
             }
 
-            lazy.erase(node);
+            if (!node->right) {
+                node->right = new Node();
+            }
+
+            node->left->lazy += node->lazy;
+            node->right->lazy += node->lazy;
         }
+
+        node->lazy = 0;
     }
 
-    void updateRange(int node, int l, int r, int const_l, int const_r, int val) {
+    Node* updateRange(Node* node, int l, int r, int const_l, int const_r, int val) {
+        if (!node) {
+            node = new Node();
+        }
+
         propagate(node, l, r);
 
         if (const_l > r || const_r < l) {
-            return;
+            return node;
         }
 
         if (const_l <= l && r <= const_r) {
-            lazy[node] += val;
+            node->lazy += val;
             propagate(node, l, r);
 
-            return;
+            return node;
         }
 
         int mid = l + (r - l) / 2;
 
-        updateRange(node * 2, l, mid, const_l, const_r, val);
-        updateRange(node * 2 + 1, mid + 1, r, const_l, const_r, val);
+        node->left = updateRange(node->left, l, mid, const_l, const_r, val);
+        node->right = updateRange(node->right, mid + 1, r, const_l, const_r, val);
 
-        tree[node] = tree[node * 2] + tree[node * 2 + 1];
+        node->sum = 0;
+        if (node->left) {
+            node->sum = node->left->sum;
+        }
+        if (node->right) {
+            node->sum += node->right->sum;
+        }
+
+        return node;
     }
 
-    int queryRange(int node, int l, int r, int const_l, int const_r) {
+    int queryRange(Node* node, int l, int r, int const_l, int const_r) {
+        if (!node) {
+            return 0;
+        }
+
         propagate(node, l, r);
 
         if (const_l > r || const_r < l) {
@@ -58,14 +93,14 @@ private:
         }
 
         if (const_l <= l && r <= const_r) {
-            return tree[node];
+            return node->sum;
         }
 
         int mid = l + (r - l) / 2;
 
-        int p1 = queryRange(node * 2, l, mid, const_l, const_r);
-        int p2 = queryRange(node * 2 + 1, mid + 1, r, const_l, const_r);
+        int leftSum = queryRange(node->left, l, mid, const_l, const_r);
+        int rightSum = queryRange(node->right, mid + 1, r, const_l, const_r);
 
-        return p1 + p2;
+        return leftSum + rightSum;
     }
 };
