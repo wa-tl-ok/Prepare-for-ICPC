@@ -1,8 +1,8 @@
 class Implicit_SegmentTree {
 public:
     Implicit_SegmentTree(int size) : n(size) {
-        tree.resize(4, 0);
-        lazy.resize(4, 0);
+        tree.resize(2, 0);
+        lazy.resize(2, 0);
     }
 
     void plus(int const_l, int const_r, int val) {
