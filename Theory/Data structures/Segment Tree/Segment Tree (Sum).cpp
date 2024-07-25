@@ -2,15 +2,30 @@ class SegmentTree {
 public:
     SegmentTree(int size) {
         n = size;
-        tree.assign(4 * n, 0);
-        lazy.assign(4 * n, 0);
+        int p = 1;
+        while (p < n) {
+            p *= 2;
+        }
+
+        tree.assign(p * 2, 0);
+        lazy.assign(p * 2, { 0, false });
+
+        n = p;
     }
 
     SegmentTree(const vector<int>& a) {
         n = (int)a.size();
-        tree.assign(4 * n, 0);
-        lazy.assign(4 * n, 0);
-        for (int i = 0; i < n; ++i) {
+        int p = 1;
+        while (p < n) {
+            p *= 2;
+        }
+
+        tree.assign(p * 2, 0);
+        lazy.assign(p * 2, { 0, false });
+
+        n = p;
+
+        for (int i = 0; i < (int)a.size(); ++i) {
             updateRange(1, 0, n - 1, i, i, a[i], false);
         }
     }
@@ -28,18 +43,31 @@ public:
     }
 private:
     vector<int> tree;
-    vector<int> lazy;
+    vector<pair<int, bool>> lazy;
     int n;
 
     void propagate(int node, int l, int r) {
-        if (lazy[node] != 0) {
-            tree[node] += lazy[node] * (r - l + 1);
-            if (l != r) {
-                lazy[2 * node] += lazy[node];
-                lazy[2 * node + 1] += lazy[node];
+        if (lazy[node].second) {
+            if (lazy[node].first != 0) {
+                tree[node] += lazy[node].first * (r - l + 1);
+                if (l != r) {
+                    lazy[2 * node].first += lazy[node].first;
+                    lazy[2 * node].second = true;
+                    lazy[2 * node + 1].first += lazy[node].first;
+                    lazy[2 * node + 1].second = true;
+                }
             }
-            lazy[node] = 0;
         }
+        else {
+            if (lazy[node].first != 0) {
+                tree[node] = lazy[node].first * (r - l + 1);
+                if (l != r) {
+                    lazy[2 * node] = lazy[node];
+                    lazy[2 * node + 1] = lazy[node];
+                }
+            }
+        }
+        lazy[node] = { 0, false };
     }
 
     void updateRange(int node, int l, int r, int const_l, int const_r, int val, bool isAddition) {
@@ -51,19 +79,22 @@ private:
             if (isAddition) {
                 tree[node] += val * (r - l + 1);
                 if (l != r) {
-                    lazy[2 * node] += val;
-                    lazy[2 * node + 1] += val;
+                    lazy[2 * node].first += val;
+                    lazy[2 * node].second = true;
+                    lazy[2 * node + 1].first += val;
+                    lazy[2 * node + 1].second = true;
                 }
             }
             else {
                 tree[node] = val * (r - l + 1);
                 if (l != r) {
-                    lazy[2 * node] = val;
-                    lazy[2 * node + 1] = val;
+                    lazy[2 * node] = { val, false };
+                    lazy[2 * node + 1] = { val, false };
                 }
             }
             return;
         }
+
         int mid = (l + r) / 2;
 
         updateRange(2 * node, l, mid, const_l, const_r, val, isAddition);
@@ -76,10 +107,13 @@ private:
         if (l > r || l > const_r || r < const_l) {
             return 0;
         }
+
         propagate(node, l, r);
+
         if (l >= const_l && r <= const_r) {
             return tree[node];
         }
+
         int mid = (l + r) / 2;
 
         int p1 = queryRange(2 * node, l, mid, const_l, const_r);
