@@ -39,14 +39,14 @@ public:
         update_2(1, 0, n - 1, qi, val);
     }
 
-    int query(int const_l, int const_r) {
+    long long query(int const_l, int const_r) {
         return findSum(1, 0, n - 1, const_l, const_r);
     }
 
 private:
     struct Node {
         int max;
-        int sum;
+        long long sum;
     };
 
     vector<Node> tree;
@@ -72,7 +72,7 @@ private:
         }
     }
 
-    int findSum(int v, int l, int r, int const_l, int const_r) {
+    long long findSum(int v, int l, int r, int const_l, int const_r) {
         if (l > r || l > const_r || r < const_l) {
             return 0;
         }
@@ -83,8 +83,8 @@ private:
 
         int mid = (l + r) / 2;
 
-        int leftSum = findSum(2 * v, l, mid, const_l, const_r);
-        int RightSum = findSum(2 * v + 1, mid + 1, r, const_l, const_r);
+        long long leftSum = findSum(2 * v, l, mid, const_l, const_r);
+        long long RightSum = findSum(2 * v + 1, mid + 1, r, const_l, const_r);
 
         return leftSum + RightSum;
     }
@@ -164,9 +164,9 @@ int main() {
         }
         else if (type == 3) {
             int qi, y; cin >> qi >> y;
-            
-            qi--;
-            
+
+            --qi;
+
             ST.update_2(qi, y);
         }
     }
