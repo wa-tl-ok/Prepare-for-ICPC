@@ -10,7 +10,6 @@ public:
         }
 
         this->K = 0;
-        this->N = (int)vec.size();
 
         int n = (int)vec.size();
         int p = 1;
@@ -22,6 +21,8 @@ public:
         for (int i = 0; i < p - n; i++) {
             new_vec.push_back(INT_MIN);
         }
+
+        this->N = (int)new_vec.size();
 
         Stable.resize(N);
 
