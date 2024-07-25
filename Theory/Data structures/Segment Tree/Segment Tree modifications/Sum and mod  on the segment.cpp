@@ -44,9 +44,6 @@ public:
     }
 
 private:
-    static const int T = (1 << 20);
-    static const int INF = 1e9 + 7;
-
     struct Node {
         int max;
         int sum;
