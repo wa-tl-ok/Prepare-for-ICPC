@@ -1,28 +1,3 @@
-//https://csacademy.com/contest/round-70/task/and-or-max/statement/
-
-#include <iostream> 
-#include <iomanip> 
-#include <algorithm> 
-#include <cmath> 
-#include <vector> 
-#include <queue> 
-#include <deque> 
-#include <array> 
-#include <list> 
-#include <stack> 
-#include <set> 
-#include <unordered_set> 
-#include <map> 
-#include <unordered_map> 
-#include <string> 
-#include <cstring> 
-#include <random> 
-#include <bitset> 
-#include <functional> 
-#include <climits>
-
-using namespace std;
-
 class Bitwise_SegmentTree {
 public:
     Bitwise_SegmentTree(const vector<int>& a) {
@@ -170,50 +145,3 @@ private:
         return max(Left, Right);
     }
 };
-
-int main() {
-    ios_base::sync_with_stdio(false);
-    cin.tie(0);
-    cout.tie(0);
-
-    int n, q;
-    cin >> n >> q;
-
-    vector<int> a(n);
-    for (int i = 0; i < n; ++i) {
-        cin >> a[i];
-    }
-
-    Bitwise_SegmentTree BST(a);
-
-    for (int i = 0; i < q; ++i) {
-        int type; cin >> type;
-
-        if (type == 1) {
-            int ql, qr, x; cin >> ql >> qr >> x;
-
-            --ql;
-            --qr;
-
-            BST.update_and(ql, qr, x);
-        }
-        else if (type == 2) {
-            int ql, qr, x; cin >> ql >> qr >> x;
-
-            --ql;
-            --qr;
-
-            BST.update_or(ql, qr, x);
-        }
-        else if (type == 3) {
-            int ql, qr; cin >> ql >> qr;
-
-            --ql;
-            --qr;
-
-            cout << BST.query(ql, qr) << '\n';
-        }
-    }
-
-    return 0;
-}
