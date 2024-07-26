@@ -146,7 +146,7 @@ int main() {
 
     PersistentSegmentTree pst(a);
 
-    int q;  cin >> q;
+    int q; cin >> q;
     for (int i = 0; i < q; ++i) {
         int l, r; cin >> l >> r;
         cout << pst.query(l - 1, r - 1) << "\n";
