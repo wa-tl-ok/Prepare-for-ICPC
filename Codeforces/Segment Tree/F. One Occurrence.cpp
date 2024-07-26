@@ -115,18 +115,19 @@ private:
         }
     }
 
-    pair<int, int> query(Node* v, int l, int r, int L, int R) {
-        if (L > R) {
+    pair<int, int> query(Node* v, int l, int r, int const_l, int const_r) {
+        if (l > const_r || r < const_l) {
             return pair<int, int>(1000000000, 0);
         }
-        if (l == L && r == R) {
+
+        if (l >= const_l && r <= const_r) {
             return v->val;
         }
 
         int mid = (l + r) / 2;
 
-        pair<int, int> q1 = query(v->l, l, mid, L, min(mid, R));
-        pair<int, int> q2 = query(v->r, mid + 1, r, max(mid + 1, L), R);
+        pair<int, int> q1 = query(v->l, l, mid, const_l, const_r);
+        pair<int, int> q2 = query(v->r, mid + 1, r, const_l, const_r);
 
         return min(q1, q2);
     }
