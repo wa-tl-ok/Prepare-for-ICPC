@@ -1,6 +1,6 @@
-class Implicit_SegmentTree {
+class ImplicitSegmentTree {
 public:
-    Implicit_SegmentTree(int size) : n(size), root(nullptr) {}
+    ImplicitSegmentTree(int size) : n(size), root(nullptr) {}
 
     void plus(int const_l, int const_r, int val) {
         root = updateRange(root, 0, n - 1, const_l, const_r, val);
