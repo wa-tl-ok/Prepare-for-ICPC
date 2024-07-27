@@ -1,6 +1,6 @@
-class Bitwise_SegmentTree {
+class BitwiseSegmentTree {
 public:
-    Bitwise_SegmentTree(const vector<int>& a) {
+    BitwiseSegmentTree(const vector<int>& a) {
         n = a.size();
         tree.resize(4 * n);
         build(1, 0, n - 1, a);
