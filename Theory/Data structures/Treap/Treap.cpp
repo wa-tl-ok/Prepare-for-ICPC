@@ -162,20 +162,6 @@ private:
         }
     }
 
-    Node* rotateRight(Node* a) {
-        Node* b = a->left;
-        a->left = b->right;
-        b->right = a;
-        return b;
-    }
-
-    Node* rotateLeft(Node* a) {
-        Node* b = a->right;
-        a->right = b->left;
-        b->left = a;
-        return b;
-    }
-
     void find_ll(Node* a, int x) {
         if (!a) {
             return;
