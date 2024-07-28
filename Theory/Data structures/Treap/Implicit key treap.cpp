@@ -23,13 +23,27 @@ public:
             l(nullptr), r(nullptr) {}
     };
 
-    Treap() : root(nullptr), len(0) {
+    Treap() : root(nullptr), size(0) {
         srand(static_cast<unsigned>(time(0)));
     }
 
-    void Add(int v) {
-        Node* newNode = new Node(v);
-        root = merge(root, newNode);
+    ~Treap() {
+        Clear();
+    }
+
+    void Add(int p, int x) {
+        if (p == -1) {
+            p = size;
+        }
+
+        Node* newNode = new Node(x);
+
+        Node* A, * B;
+        split(root, A, B, p + 1);
+
+        root = merge(merge(A, newNode), B);
+
+        ++size;
     }
 
     void Rev(int l, int r) {
@@ -152,9 +166,38 @@ public:
         root = merge(merge(A, M), B);
     }
 
+    void Del(int pos) {
+        ++pos;
+
+        Node* A, * B, * M;
+
+        split(root, A, B, pos);
+        split(A, A, M, pos - 1);
+
+        delete M;
+
+        root = merge(A, B);
+        --size;
+    }
+
+    void Clear() {
+        clearTree(root);
+        root = nullptr;
+        size = 0;
+    }
+
+    void Print() {
+        printTree(root);
+        cout << endl;
+    }
+
+    int Size() {
+        return size;
+    }
+
 private:
     Node* root;
-    int len;
+    int size;
 
     int min(int a, int b) {
         if (a < b) {
@@ -251,5 +294,26 @@ private:
 
             return B;
         }
+    }
+
+    void clearTree(Node* A) {
+        if (!A) {
+            return;
+        }
+
+        clearTree(A->l);
+        clearTree(A->r);
+
+        delete A;
+    }
+
+    void printTree(Node* v) {
+        if (!v) {
+            return;
+        }
+        push(v);
+        printTree(v->l);
+        cout << v->X << " ";
+        printTree(v->r);
     }
 };
