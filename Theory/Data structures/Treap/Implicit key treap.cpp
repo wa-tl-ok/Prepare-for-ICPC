@@ -1,163 +1,255 @@
 class Treap {
 public:
     struct Node {
-        int x, y;
+        int X;
+        int Y;
+
         int cnt;
 
-        int min;
-        int max;
         int sum;
+        int minVal;
+        int maxVal;
 
-        Node* left;
-        Node* right;
+        bool rev;
 
-        Node(int x) : x(x), y(rand()), cnt(1), min(x), max(x), sum(x),
-            left(nullptr), right(nullptr) {}
+        Node* l;
+        Node* r;
+
+        Node(int v) :
+            X(v), Y(rand()),
+            cnt(1),
+            sum(v), minVal(v), maxVal(v),
+            rev(false),
+            l(nullptr), r(nullptr) {}
     };
 
-    Treap() : root(nullptr) {
+    Treap() : root(nullptr), len(0) {
         srand(static_cast<unsigned>(time(0)));
     }
 
-    void insert(int pos, int x) {
-        Node* new_node = new Node(x);
-        Node* a;
-        Node* b;
-
-        split(root, a, b, pos);
-
-        merge(a, new_node, root);
-        merge(root, b, root);
+    void Add(int v) {
+        Node* newNode = new Node(v);
+        root = merge(root, newNode);
     }
 
-    int queryMin(int i, int j) {
-        Node* a;
-        Node* b;
-        Node* c;
+    void Rev(int l, int r) {
+        ++l;
+        ++r;
 
-        split(root, a, b, i - 1);
-        split(b, b, c, j - i + 1);
+        Node* A, * B, * M;
 
-        int result = getMin(b);
+        split(root, A, B, r);
+        split(A, A, M, l - 1);
 
-        merge(a, b, root);
-        merge(root, c, root);
+        if (M) {
+            M->rev ^= 1;
+        }
+
+        root = merge(merge(A, M), B);
+    }
+
+    int Sum(int l, int r) {
+        ++l;
+        ++r;
+
+        Node* A, * B, * M;
+
+        split(root, A, B, r);
+        split(A, A, M, l - 1);
+
+        int result;
+        if (M) {
+            result = M->sum;
+        }
+        else {
+            result = 0;
+        }
+
+        root = merge(merge(A, M), B);
 
         return result;
     }
 
-    int queryMax(int i, int j) {
-        Node* a;
-        Node* b;
-        Node* c;
+    int Min(int l, int r) {
+        ++l;
+        ++r;
 
-        split(root, a, b, i - 1);
-        split(b, b, c, j - i + 1);
+        Node* A, * B, * M;
 
-        int result = getMax(b);
+        split(root, A, B, r);
+        split(A, A, M, l - 1);
 
-        merge(a, b, root);
-        merge(root, c, root);
+        int result;
+        if (M) {
+            result = M->minVal;
+        }
+        else {
+            result = 2e9;
+        }
+
+        root = merge(merge(A, M), B);
 
         return result;
     }
 
-    int querySum(int i, int j) {
-        Node* a;
-        Node* b;
-        Node* c;
+    int Max(int l, int r) {
+        ++l;
+        ++r;
 
-        split(root, a, b, i - 1);
-        split(b, b, c, j - i + 1);
+        Node* A, * B, * M;
 
-        int result = getSum(b);
+        split(root, A, B, r);
+        split(A, A, M, l - 1);
 
-        merge(a, b, root);
-        merge(root, c, root);
+        int result;
+        if (M) {
+            result = M->maxVal;
+        }
+        else {
+            result = -2e9;
+        }
+
+        root = merge(merge(A, M), B);
 
         return result;
+    }
+
+    void Upd(int p, int new_val) {
+        ++p;
+
+        Node* A, * B, * M;
+
+        split(root, A, B, p);
+        split(A, A, M, p - 1);
+
+        if (M) {
+            M->X = new_val;
+            M->sum = new_val;
+            M->minVal = new_val;
+            M->maxVal = new_val;
+        }
+
+        root = merge(merge(A, M), B);
+    }
+
+    void Plus(int p, int x) {
+        ++p;
+
+        Node* A, * B, * M;
+
+        split(root, A, B, p);
+        split(A, A, M, p - 1);
+
+        if (M) {
+            M->X += x;
+            M->sum += x;
+            M->minVal += x;
+            M->maxVal += x;
+            
+            updateNode(M);
+        }
+
+        root = merge(merge(A, M), B);
     }
 
 private:
     Node* root;
+    int len;
 
-    int cnt(Node* a) {
-        if (a) {
-            return a->cnt;
+    int min(int a, int b) {
+        if (a < b) {
+            return a;
         }
-        else {
-            return 0;
+        return b;
+    }
+
+    int max(int a, int b) {
+        if (a > b) {
+            return a;
+        }
+        return b;
+    }
+
+    void push(Node* v) {
+        if (v && v->rev) {
+            v->rev = false;
+
+            swap(v->l, v->r);
+
+            if (v->l) {
+                v->l->rev ^= true;
+            }
+
+            if (v->r) {
+                v->r->rev ^= true;
+            }
         }
     }
 
-    int getMin(Node* a) {
-        if (a) {
-            return a->min;
-        }
-        else {
-            return INT_MAX;
-        }
-    }
-
-    int getMax(Node* a) {
-        if (a) {
-            return a->max;
-        }
-        else {
-            return INT_MIN;
+    void updateNode(Node* v) {
+        if (v) {
+            v->cnt = (v->l ? v->l->cnt : 0) + (v->r ? v->r->cnt : 0) + 1;
+            v->sum = (v->l ? v->l->sum : 0) + (v->r ? v->r->sum : 0) + v->X;
+            v->minVal = min(v->X, min(v->l ? v->l->minVal : 2e9, v->r ? v->r->minVal : 2e9));
+            v->maxVal = max(v->X, max(v->l ? v->l->maxVal : -2e9, v->r ? v->r->maxVal : -2e9));
         }
     }
 
-    int getSum(Node* a) {
-        if (a) {
-            return a->sum;
-        }
-        else {
-            return 0;
-        }
-    }
-
-    void upd(Node* a) {
-        if (a) {
-            a->cnt = 1 + cnt(a->left) + cnt(a->right);
-            a->min = min(a->x, min(getMin(a->left), getMin(a->right)));
-            a->max = max(a->x, max(getMax(a->left), getMax(a->right)));
-            a->sum = a->x + getSum(a->left) + getSum(a->right);
-        }
-    }
-
-    void merge(Node* l, Node* r, Node*& a) {
-        if (!l) {
-            a = r;
-        }
-        else if (!r) {
-            a = l;
-        }
-        else if (l->y > r->y) {
-            merge(l->right, r, l->right);
-            a = l;
-        }
-        else {
-            merge(l, r->left, r->left);
-            a = r;
-        }
-        upd(a);
-    }
-
-    void split(Node* a, Node*& l, Node*& r, int pos) {
-        if (!a) {
-            l = nullptr;
-            r = nullptr;
+    void split(Node* v, Node*& A, Node*& B, int x, int now = 0) {
+        if (!v) {
+            A = nullptr;
+            B = nullptr;
             return;
         }
-        if (pos <= cnt(a->left)) {
-            split(a->left, l, a->left, pos);
-            r = a;
+
+        push(v);
+
+        int cur = now + 1;
+        if (v->l) {
+            cur += v->l->cnt;
+        }
+
+        if (x < cur) {
+            split(v->l, A, v->l, x, now);
+            B = v;
         }
         else {
-            split(a->right, a->right, r, pos - cnt(a->left) - 1);
-            l = a;
+            int offset = now + 1;
+            if (v->l) {
+                offset += v->l->cnt;
+            }
+
+            split(v->r, v->r, B, x, offset);
+            A = v;
         }
-        upd(a);
+
+        updateNode(v);
+    }
+
+    Node* merge(Node* A, Node* B) {
+        if (!A) {
+            return B;
+        }
+        if (!B) {
+            return A;
+        }
+
+        push(A);
+        push(B);
+
+        if (A->Y > B->Y) {
+            A->r = merge(A->r, B);
+
+            updateNode(A);
+
+            return A;
+        }
+        else {
+            B->l = merge(A, B->l);
+
+            updateNode(B);
+
+            return B;
+        }
     }
 };
