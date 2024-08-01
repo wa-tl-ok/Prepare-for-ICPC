@@ -14,6 +14,7 @@ Plus(int p, int x) - Добавить x к элементу на позиции 
 
 RangeSet(int l, int r, int x) - Обновить значение всех элементов на отрезке [l, r]
 RangePlus(int l, int r, int x) - Добавить x ко всем элементам на отрезке [l, r]
+RangeDel(int l, int r) - Удалить все элементы с l по r
 
 Clear() - Очистить трипу
 Print() - Вывеести трипу
@@ -199,6 +200,10 @@ public:
         return result;
     }
 
+    int Get(int pos) {
+        return Sum(pos, pos);
+    }
+
     void Set(int p, int new_val) {
         ++p;
 
@@ -267,6 +272,20 @@ public:
         }
 
         root = merge(merge(A, M), B);
+    }
+
+    void RangeDel(int l, int r) {
+        ++l;
+        ++r;
+
+        Node* A, * B, * M;
+
+        split(root, A, B, r);
+        split(A, A, M, l - 1);
+
+        root = merge(A, B);
+
+        size -= (r - l + 1);
     }
 
     void Clear() {
