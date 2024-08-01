@@ -3,7 +3,7 @@ Add(int pos, int x) - Добавить элемент x на позицию pos 
 Del(int pos) - Удалить элемент на поиции pos
 
 Rev(int l, int r) - Перевернуть отрезок [l r]
-void Swap(int l1, int r1, int l2, int r2) - Поменять местами отрезки [l1 r1] и [l2 r2] 
+Swap(int l1, int r1, int l2, int r2) - Поменять местами отрезки [l1 r1] и [l2 r2] 
 
 Shift_To_Right(int l, int r) - Сдвинуть отрезок [l r] в начало
 Shift_To_Left(int l, int r) - Сдвинуть отрезок [l r] в конец
