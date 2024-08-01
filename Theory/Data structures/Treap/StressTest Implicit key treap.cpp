@@ -89,9 +89,51 @@ void Go() {
 void Test_query() {
     Go();
 
-    assert(Sum(l, r) == t.Sum(l, r));
-    assert(Min(l, r) == t.Min(l, r));
-    assert(Max(l, r) == t.Max(l, r));
+    int sum_a = Sum(l, r);
+    int sum_t = t.Sum(l, r);
+    int min_a = Min(l, r);
+    int min_t = t.Min(l, r);
+    int max_a = Max(l, r);
+    int max_t = t.Max(l, r);
+
+    if (sum_a != sum_t) {
+        cout << "Error: Sum mismatch!\n";
+        cout << "Expected Sum: " << sum_t << ", Actual Sum: " << sum_a << "\n";
+        cout << "Range: [" << l << ", " << r << "]\n";
+        
+        t.Print();
+        for (auto w : a) {
+            cout << w << ' ';
+        } cout << endl;
+
+        assert(false);
+    }
+
+    if (min_a != min_t) {
+        cout << "Error: Min mismatch!\n";
+        cout << "Expected Min: " << min_t << ", Actual Min: " << min_a << "\n";
+        cout << "Range: [" << l << ", " << r << "]\n";
+        
+        t.Print();
+        for (auto w : a) {
+            cout << w << ' ';
+        } cout << endl;
+
+        assert(false);
+    }
+
+    if (max_a != max_t) {
+        cout << "Error: Max mismatch!\n";
+        cout << "Expected Max: " << max_t << ", Actual Max: " << max_a << "\n";
+        cout << "Range: [" << l << ", " << r << "]\n";
+        
+        t.Print();
+        for (auto w : a) {
+            cout << w << ' ';
+        } cout << endl;
+
+        assert(false);
+    }
 }
 
 void Basic_test() {
@@ -180,7 +222,55 @@ void Del_test() {
     t.Del(0);
 }
 
-int main() {
+void StressTest() {
+    const int numOperations = 1000;
+    vector<pair<int, int>> operations(numOperations);
+
+    for (int i = 0; i < numOperations; ++i) {
+        int opType = R(0, 5);
+        int x = R(0, 100);
+        int pos = R(0, t.Size() - 1);
+        int pos2 = R(pos, t.Size() - 1);
+
+        operations[i] = { opType, x };
+
+        switch (opType) {
+        case 0:  // Upd
+            Upd(pos, x);
+            t.Upd(pos, x);
+            break;
+        case 1:  // Plus
+            Plus(pos, x);
+            t.Plus(pos, x);
+            break;
+        case 2:  // RangeAdd
+            RangeAdd(pos, pos2, x);
+            t.RangeAdd(pos, pos2, x);
+            break;
+        case 3:  // RangeSet
+            RangeSet(pos, pos2, x);
+            t.RangeSet(pos, pos2, x);
+            break;
+        case 4:  // Rev
+            Rev(pos, pos2);
+            t.Rev(pos, pos2);
+            break;
+        case 5:  // Del
+            Del(pos);
+            t.Del(pos);
+            break;
+        }
+
+        if (i % 1000 == 0) {
+            for (int j = 0; j < 10; ++j) {
+                Go();
+                Test_query();
+            }
+        }
+    }
+}
+
+signed main() {
     for (int q = 0; q < 10; q++) {
         int pos1 = R(0, 100);
         int pos2 = R(pos1, 1000);
@@ -203,6 +293,20 @@ int main() {
         RangeSet_test();
 
         Del_test();
+    }
+
+    for (int q = 0; q < 1000; q++) {
+        for (int i = 1; i <= 1000; i++) {
+            a.push_back(i);
+            t.Add(-1, i);
+        }
+
+        StressTest();
+
+        while (a.size() > 0) {
+            Del(0);
+            t.Del(0);
+        }
     }
 
     cout << "OK" << endl;
