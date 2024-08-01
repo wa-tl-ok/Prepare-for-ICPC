@@ -1,3 +1,25 @@
+/*
+Add(int pos, int x) - Добавить элемент x на позицию pos (если pos = 0, то добавить элемент в начало)
+Del(int pos) - Удалить элемент на поиции pos
+
+Rev(int l, int r) - Перевернуть отрезок [l r]
+Shift(int l, int r) - Сдвинуть отрезок [l r] в начало
+
+Sum(int l, int r) - Найти сумму на отрезке [l r]
+Min(int l, int r) - Найти минимум на отрезке [l r]
+Max(int l, int r) - Найти максимум на отрезке [l r]
+
+Set(int p, int new_val) - Обновить значение на позиции p
+Plus(int p, int x) - Добавить x к элементу на позиции p
+
+RangeSet(int l, int r, int x) - Обновить значение всех элементов на отрезке [l, r]
+RangePlus(int l, int r, int x) - Добавить x ко всем элементам на отрезке [l, r]
+
+Clear() - Очистить трипу
+Print() - Вывеести трипу
+Size() - Найти размер трипы
+*/
+
 class Treap {
 public:
     struct Node {
@@ -16,6 +38,9 @@ public:
         int set_lazy;
         bool has_set_lazy;
 
+        bool shift;
+        int shift_amount;
+
         Node* l;
         Node* r;
 
@@ -25,6 +50,7 @@ public:
             sum(v), minVal(v), maxVal(v),
             rev(false),
             add_lazy(0), set_lazy(0), has_set_lazy(0),
+            shift(false), shift_amount(0),
             l(nullptr), r(nullptr) {}
     };
 
@@ -60,6 +86,20 @@ public:
         size++;
     }
 
+    void Del(int pos) {
+        ++pos;
+
+        Node* A, * B, * M;
+
+        split(root, A, B, pos);
+        split(A, A, M, pos - 1);
+
+        delete M;
+
+        root = merge(A, B);
+        --size;
+    }
+
     void Rev(int l, int r) {
         ++l;
         ++r;
@@ -74,6 +114,23 @@ public:
         }
 
         root = merge(merge(A, M), B);
+    }
+
+    void Shift(int l, int r) {
+        ++l;
+        ++r;
+
+        Node* A, * B, * C, * D;
+
+        split(root, A, B, r);
+        split(A, A, C, l - 1);
+
+        if (C) {
+            root = merge(merge(C, A), B);
+        }
+        else {
+            root = merge(A, B);
+        }
     }
 
     int Sum(int l, int r) {
@@ -180,33 +237,20 @@ public:
         root = merge(merge(A, M), B);
     }
 
-    void Del(int pos) {
-        ++pos;
+    void RangeSet(int l, int r, int x) {
+        ++l;
+        ++r;
 
         Node* A, * B, * M;
 
-        split(root, A, B, pos);
-        split(A, A, M, pos - 1);
+        split(root, A, B, r);
+        split(A, A, M, l - 1);
 
-        delete M;
+        if (M) {
+            applySetLazy(M, x);
+        }
 
-        root = merge(A, B);
-        --size;
-    }
-
-    void Clear() {
-        clearTree(root);
-        root = nullptr;
-        size = 0;
-    }
-
-    void Print() {
-        printTree(root);
-        cout << endl;
-    }
-
-    int Size() {
-        return size;
+        root = merge(merge(A, M), B);
     }
 
     void RangePlus(int l, int r, int x) {
@@ -225,20 +269,19 @@ public:
         root = merge(merge(A, M), B);
     }
 
-    void RangeSet(int l, int r, int x) {
-        ++l;
-        ++r;
+    void Clear() {
+        clearTree(root);
+        root = nullptr;
+        size = 0;
+    }
 
-        Node* A, * B, * M;
+    void Print() {
+        printTree(root);
+        cout << endl;
+    }
 
-        split(root, A, B, r);
-        split(A, A, M, l - 1);
-
-        if (M) {
-            applySetLazy(M, x);
-        }
-
-        root = merge(merge(A, M), B);
+    int Size() {
+        return size;
     }
 
 private:
@@ -295,6 +338,19 @@ private:
 
             v->add_lazy = 0;
         }
+
+        if (v->shift) {
+            if (v->l) {
+                applyShift(v->l, v->shift_amount);
+            }
+
+            if (v->r) {
+                applyShift(v->r, v->shift_amount);
+            }
+
+            v->shift = false;
+            v->shift_amount = 0;
+        }
     }
 
     void applyAddLazy(Node* v, int add) {
@@ -331,6 +387,15 @@ private:
         v->add_lazy = 0;
 
         v->has_set_lazy = true;
+    }
+
+    void applyShift(Node* v, int shift_amount) {
+        if (!v) {
+            return;
+        }
+
+        v->shift_amount = shift_amount;
+        v->shift = true;
     }
 
     void updateNode(Node* v) {
