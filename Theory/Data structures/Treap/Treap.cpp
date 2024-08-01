@@ -9,7 +9,7 @@ public:
 
     Treap() : root(nullptr) { std::srand(std::time(0)); }
 
-    void upd(int x) {
+    void add(int x) {
         root = insert(root, x, rand());
     }
 
