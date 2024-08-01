@@ -142,7 +142,7 @@ public:
         return result;
     }
 
-    void Upd(int p, int new_val) {
+    void Set(int p, int new_val) {
         ++p;
 
         Node* A, * B, * M;
@@ -209,7 +209,7 @@ public:
         return size;
     }
 
-    void RangeAdd(int l, int r, int x) {
+    void RangePlus(int l, int r, int x) {
         ++l;
         ++r;
 
