@@ -12,6 +12,10 @@ public:
 
         bool rev;
 
+        int add_lazy;
+        int set_lazy;
+        bool has_set_lazy;
+
         Node* l;
         Node* r;
 
@@ -20,6 +24,7 @@ public:
             cnt(1),
             sum(v), minVal(v), maxVal(v),
             rev(false),
+            add_lazy(0), set_lazy(0), has_set_lazy(0),
             l(nullptr), r(nullptr) {}
     };
 
@@ -27,23 +32,32 @@ public:
         srand(static_cast<unsigned>(time(0)));
     }
 
+    Treap(const vector<int>& values) : root(nullptr), size(0) {
+        srand(static_cast<unsigned>(time(0)));
+        for (const int& val : values) {
+            Add(-1, val);
+        }
+    }
+
     ~Treap() {
         Clear();
     }
 
-    void Add(int p, int x) {
-        if (p == -1) {
-            p = size;
+    void Add(int pos, int x) {
+        if (pos == -1) {
+            pos = size;
         }
 
-        Node* newNode = new Node(x);
+        Node* new_node = new Node(x);
 
-        Node* A, * B;
-        split(root, A, B, p + 1);
+        Node* A;
+        Node* B;
 
-        root = merge(merge(A, newNode), B);
+        split(root, A, B, pos);
 
-        ++size;
+        root = merge(merge(A, new_node), B);
+
+        size++;
     }
 
     void Rev(int l, int r) {
@@ -159,7 +173,7 @@ public:
             M->sum += x;
             M->minVal += x;
             M->maxVal += x;
-            
+
             updateNode(M);
         }
 
@@ -195,6 +209,38 @@ public:
         return size;
     }
 
+    void RangeAdd(int l, int r, int x) {
+        ++l;
+        ++r;
+
+        Node* A, * B, * M;
+
+        split(root, A, B, r);
+        split(A, A, M, l - 1);
+
+        if (M) {
+            applyAddLazy(M, x);
+        }
+
+        root = merge(merge(A, M), B);
+    }
+
+    void RangeSet(int l, int r, int x) {
+        ++l;
+        ++r;
+
+        Node* A, * B, * M;
+
+        split(root, A, B, r);
+        split(A, A, M, l - 1);
+
+        if (M) {
+            applySetLazy(M, x);
+        }
+
+        root = merge(merge(A, M), B);
+    }
+
 private:
     Node* root;
     int size;
@@ -214,19 +260,77 @@ private:
     }
 
     void push(Node* v) {
-        if (v && v->rev) {
+        if (!v) {
+            return;
+        }
+
+        if (v->rev) {
             v->rev = false;
 
             swap(v->l, v->r);
 
+            if (v->l) v->l->rev ^= true;
+            if (v->r) v->r->rev ^= true;
+        }
+
+        if (v->has_set_lazy) {
             if (v->l) {
-                v->l->rev ^= true;
+                applySetLazy(v->l, v->set_lazy);
             }
 
             if (v->r) {
-                v->r->rev ^= true;
+                applySetLazy(v->r, v->set_lazy);
             }
+
+            v->has_set_lazy = false;
         }
+        else if (v->add_lazy) {
+            if (v->l) {
+                applyAddLazy(v->l, v->add_lazy);
+            }
+
+            if (v->r) {
+                applyAddLazy(v->r, v->add_lazy);
+            }
+
+            v->add_lazy = 0;
+        }
+    }
+
+    void applyAddLazy(Node* v, int add) {
+        if (!v) {
+            return;
+        }
+
+        if (v->has_set_lazy) {
+            v->set_lazy += add;
+        }
+        else {
+            v->X += add;
+
+            v->sum += add * v->cnt;
+            v->minVal += add;
+            v->maxVal += add;
+
+            v->add_lazy += add;
+        }
+    }
+
+    void applySetLazy(Node* v, int set_val) {
+        if (!v) {
+            return;
+        }
+
+        v->X = set_val;
+
+        v->sum = set_val * v->cnt;
+        v->minVal = set_val;
+        v->maxVal = set_val;
+
+        v->set_lazy = set_val;
+        v->add_lazy = 0;
+
+        v->has_set_lazy = true;
     }
 
     void updateNode(Node* v) {
@@ -311,7 +415,9 @@ private:
         if (!v) {
             return;
         }
+
         push(v);
+
         printTree(v->l);
         cout << v->X << " ";
         printTree(v->r);
