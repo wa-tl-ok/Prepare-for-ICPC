@@ -3,11 +3,19 @@ Add(int pos, int x) - Добавить элемент x на позицию pos 
 Del(int pos) - Удалить элемент на поиции pos
 
 Rev(int l, int r) - Перевернуть отрезок [l r]
-Shift(int l, int r) - Сдвинуть отрезок [l r] в начало
+void Swap(int l1, int r1, int l2, int r2) - Поменять местами отрезки [l1 r1] и [l2 r2] 
+
+Shift_To_Right(int l, int r) - Сдвинуть отрезок [l r] в начало
+Shift_To_Left(int l, int r) - Сдвинуть отрезок [l r] в конец
+Shift_Right(int l, int r) - Циклически сдвинуть отрезок [l r] вправо на 1
+Shift_Left(int l, int r) - Циклически сдвинуть отрезок [l r] влево на 1
+K_Shift_Right(int l, int r, int k) - Циклически сдвинуть отрезок [l r] вправо на k
+K_Shift_Left(int l, int r, int k) - Циклически сдвинуть отрезок [l r] влево на k
 
 Sum(int l, int r) - Найти сумму на отрезке [l r]
 Min(int l, int r) - Найти минимум на отрезке [l r]
 Max(int l, int r) - Найти максимум на отрезке [l r]
+Get(int pos) - Найти элемент на позиции pos
 
 Set(int p, int new_val) - Обновить значение на позиции p
 Plus(int p, int x) - Добавить x к элементу на позиции p
@@ -117,20 +125,85 @@ public:
         root = merge(merge(A, M), B);
     }
 
-    void Shift(int l, int r) {
+    void Swap(int l1, int r1, int l2, int r2) {
+        ++l1;
+        ++r1;
+        ++l2;
+        ++r2;
+
+        Node* A, * B, * C, * D, * E;
+
+        split(root, A, E, r2);
+        split(A, A, D, l2 - 1);
+        split(A, A, C, r1);
+        split(A, A, B, l1 - 1);
+
+        root = merge(merge(merge(merge(A, D), C), B), E);
+    }
+
+    void Shift_To_Left(int l, int r) {
         ++l;
         ++r;
 
-        Node* A, * B, * C, * D;
+        Node* A, * B, * M;
 
         split(root, A, B, r);
-        split(A, A, C, l - 1);
+        split(A, A, M, l - 1);
 
-        if (C) {
-            root = merge(merge(C, A), B);
+        root = merge(merge(M, A), B);
+    }
+
+    void Shift_To_Right(int l, int r) {
+        ++l;
+        ++r;
+
+        Node* A, * B, * M;
+
+        split(root, A, B, r);
+        split(A, A, M, l - 1);
+
+        root = merge(merge(A, B), M);
+    }
+
+    void Shift_Right(int l, int r) {
+        int x = Get(r);
+        Del(r);
+        Add(l, x);
+    }
+
+    void Shift_Left(int l, int r) {
+        int x = Get(l);
+        Del(l);
+        Add(r, x);
+    }
+
+    void K_Shift_Right(int l, int r, int k) {
+        k %= (r - l + 1);
+
+        if (k != 0) {
+            --k;
+
+            int l1 = l;
+            int r1 = r - k - 1;
+            int l2 = r - k;
+            int r2 = r;
+
+            Swap(l1, r1, l2, r2);
         }
-        else {
-            root = merge(A, B);
+    }
+
+    void K_Shift_Left(int l, int r, int k) {
+        k %= (r - l + 1);
+
+        if (k != 0) {
+            --k;
+
+            int l1 = l;
+            int r1 = l + k;
+            int l2 = l + k + 1;
+            int r2 = r;
+
+            Swap(l1, r1, l2, r2);
         }
     }
 
