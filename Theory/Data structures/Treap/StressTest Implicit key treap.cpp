@@ -65,6 +65,19 @@ void RangeSet(int l, int r, int x) {
     }
 }
 
+void Del(int pos) {
+    vector<int> b;
+    for (int i = 0; i < (int)a.size(); i++) {
+        if (i != pos) {
+            b.push_back(a[i]);
+        }
+    }
+    a.clear();
+    for (auto t : b) {
+        a.push_back(t);
+    }
+}
+
 void Go() {
     l = R(0, a.size() - 1);
     r = R(0, a.size() - 1);
@@ -151,23 +164,46 @@ void RangeSet_test() {
     }
 }
 
-int main() {
-    for (int i = 1; i <= 1000; i++) {
-        t.Add(-1, i);
-        a.push_back(i);
+void Del_test() {
+    int e = t.Size();
+
+    for (int i = 0; i < e - 1; i++) {
+        int pos = R(0, t.Size() - 1);
+
+        Del(pos);
+        t.Del(pos);
+
+        Test_query();
     }
 
-    Basic_test();
+    Del(0);
+    t.Del(0);
+}
 
-    Rev_test();
+int main() {
+    for (int q = 0; q < 10; q++) {
+        int pos1 = R(0, 100);
+        int pos2 = R(pos1, 1000);
 
-    Upd_test();
+        for (int i = pos1; i <= pos2; i++) {
+            t.Add(-1, i);
+            a.push_back(i);
+        }
 
-    Plus_test();
+        Basic_test();
 
-    RangeAdd_test();
+        Rev_test();
 
-    RangeSet_test();
+        Upd_test();
+
+        Plus_test();
+
+        RangeAdd_test();
+
+        RangeSet_test();
+
+        Del_test();
+    }
 
     cout << "OK" << endl;
 
