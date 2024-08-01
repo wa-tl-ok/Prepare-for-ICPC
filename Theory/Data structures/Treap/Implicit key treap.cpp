@@ -5,8 +5,8 @@ Del(int pos) - Удалить элемент на поиции pos
 Rev(int l, int r) - Перевернуть отрезок [l r]
 Swap(int l1, int r1, int l2, int r2) - Поменять местами отрезки [l1 r1] и [l2 r2] 
 
-Shift_To_Right(int l, int r) - Сдвинуть отрезок [l r] в начало
-Shift_To_Left(int l, int r) - Сдвинуть отрезок [l r] в конец
+Shift_To_Right(int l, int r) - Сдвинуть отрезок [l r] в конец
+Shift_To_Left(int l, int r) - Сдвинуть отрезок [l r] в начало
 Shift_Right(int l, int r) - Циклически сдвинуть отрезок [l r] вправо на 1
 Shift_Left(int l, int r) - Циклически сдвинуть отрезок [l r] влево на 1
 K_Shift_Right(int l, int r, int k) - Циклически сдвинуть отрезок [l r] вправо на k
@@ -141,18 +141,6 @@ public:
         root = merge(merge(merge(merge(A, D), C), B), E);
     }
 
-    void Shift_To_Left(int l, int r) {
-        ++l;
-        ++r;
-
-        Node* A, * B, * M;
-
-        split(root, A, B, r);
-        split(A, A, M, l - 1);
-
-        root = merge(merge(M, A), B);
-    }
-
     void Shift_To_Right(int l, int r) {
         ++l;
         ++r;
@@ -163,6 +151,18 @@ public:
         split(A, A, M, l - 1);
 
         root = merge(merge(A, B), M);
+    }
+
+    void Shift_To_Left(int l, int r) {
+        ++l;
+        ++r;
+
+        Node* A, * B, * M;
+
+        split(root, A, B, r);
+        split(A, A, M, l - 1);
+
+        root = merge(merge(M, A), B);
     }
 
     void Shift_Right(int l, int r) {
