@@ -17,7 +17,6 @@
 #include <random> 
 #include <bitset> 
 #include <functional> 
-#include <random> 
 #include <cstdlib>
 #include <ctime>
 #include <climits>
@@ -25,12 +24,11 @@
 
 using namespace std;
 
-const int MAXN = 2e6 + 5;
 const int LOGN = 23;
 
-vector<int> graph[MAXN];
-int parent[MAXN][LOGN];
-int depth[MAXN];
+vector<vector<int>> graph;
+vector<vector<int>> parent;
+vector<int> depth;
 
 void dfs(int v, int p, int d) {
     depth[v] = d;
@@ -80,11 +78,18 @@ int main() {
     freopen("lca.in", "r", stdin);
     freopen("lca.out", "w", stdout);
 
-    int n; cin >> n;
-    vector<pair<int, int>> vec;
+    int n;
+    cin >> n;
 
-    for (int i = 1; i <= n; ++i) {
-        string op; int u, v;
+    graph.resize(n);
+    parent.resize(n, vector<int>(LOGN));
+    depth.resize(n);
+
+    vector<pair<int, int>> queries;
+
+    for (int i = 0; i < n; ++i) {
+        string op;
+        int u, v;
         cin >> op >> u >> v;
 
         --u;
@@ -95,14 +100,14 @@ int main() {
             graph[v].push_back(u);
         }
         else if (op == "GET") {
-            vec.push_back(make_pair(u, v));
+            queries.push_back(make_pair(u, v));
         }
     }
 
     dfs(0, 0, 0);
 
-    for (int i = 0; i < (int)vec.size(); ++i) {
-        cout << lca(vec[i].first, vec[i].second) + 1 << "\n";
+    for (const auto& query : queries) {
+        cout << lca(query.first, query.second) + 1 << "\n";
     }
 
     return 0;
