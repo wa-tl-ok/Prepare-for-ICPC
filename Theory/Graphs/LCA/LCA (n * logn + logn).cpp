@@ -30,9 +30,7 @@ const int LOGN = 23;
 
 vector<int> graph[MAXN];
 int parent[MAXN][LOGN];
-
 int depth[MAXN];
-int n;
 
 void dfs(int v, int p, int d) {
     depth[v] = d;
@@ -82,7 +80,7 @@ int main() {
     freopen("lca.in", "r", stdin);
     freopen("lca.out", "w", stdout);
 
-    cin >> n;
+    int n; cin >> n;
     vector<pair<int, int>> vec;
 
     for (int i = 1; i <= n; ++i) {
