@@ -6,22 +6,22 @@ public:
         Node* leftChild;
         Node* rightChild;
 
-        Node(int data) : 
-            data(data), 
+        Node(int data) :
+            data(data),
             leftChild(nullptr), rightChild(nullptr) {}
     };
 
     SplayTree() : root(nullptr) {}
 
-    void add(int data) {
+    void Add(int data) {
         root = Insert(root, data);
     }
 
-    void del(int data) {
+    void Del(int data) {
         root = Delete(root, data);
     }
 
-    bool find(int data) {
+    bool Find(int data) {
         if (root == nullptr) {
             return false;
         }
@@ -30,6 +30,12 @@ public:
             root = preroot;
         }
         return root->data == data;
+    }
+
+    void Print() const {
+        std::cout << "Splay Tree: ";
+        printInOrder(root);
+        std::cout << std::endl;
     }
 
 private:
@@ -159,5 +165,13 @@ private:
         delete temp;
 
         return root;
+    }
+
+    void printInOrder(Node* node) const {
+        if (node != nullptr) {
+            printInOrder(node->leftChild);
+            std::cout << node->data << " ";
+            printInOrder(node->rightChild);
+        }
     }
 };
