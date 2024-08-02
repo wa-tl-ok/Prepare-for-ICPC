@@ -78,8 +78,7 @@ int main() {
     freopen("lca.in", "r", stdin);
     freopen("lca.out", "w", stdout);
 
-    int n;
-    cin >> n;
+    int n; cin >> n;
 
     graph.resize(n);
     parent.resize(n, vector<int>(LOGN));
@@ -88,8 +87,7 @@ int main() {
     vector<pair<int, int>> queries;
 
     for (int i = 0; i < n; ++i) {
-        string op;
-        int u, v;
+        string op; int u, v;
         cin >> op >> u >> v;
 
         --u;
