@@ -2,26 +2,30 @@ class Treap {
 public:
     struct Node {
         int x, y;
+
         Node* left;
         Node* right;
-        Node(int x, int y) : x(x), y(y), left(nullptr), right(nullptr) {}
+
+        Node(int x, int y) : 
+            x(x), y(y), 
+            left(nullptr), right(nullptr) {}
     };
 
     Treap() : root(nullptr) { std::srand(std::time(0)); }
 
-    void add(int x) {
+    void Add(int x) {
         root = insert(root, x, rand());
     }
 
-    void del(int x) {
+    void Del(int x) {
         root = delete_key(root, x);
     }
 
-    bool find(int x) {
+    bool Find(int x) {
         return exists(root, x);
     }
 
-    int find_ll(int x) {
+    int Find_ll(int x) {
         ans_ll = -1;
         find_ll(root, x);
 
@@ -32,7 +36,7 @@ public:
         return ans_ll;
     }
 
-    int find_lr(int x) {
+    int Find_lr(int x) {
         ans_lr = -1;
         find_lr(root, x);
 
@@ -43,7 +47,7 @@ public:
         return ans_lr;
     }
 
-    int find_rl(int x) {
+    int Find_rl(int x) {
         ans_rl = -1;
         find_rl(root, x);
 
@@ -54,7 +58,7 @@ public:
         return ans_rl;
     }
 
-    int find_rr(int x) {
+    int Find_rr(int x) {
         ans_rr = -1;
         find_rr(root, x);
 
@@ -63,6 +67,11 @@ public:
         }
 
         return ans_rr;
+    }
+
+    void Print() const {
+        printInOrder(root);
+        cout << endl;
     }
 
 private:
@@ -211,6 +220,14 @@ private:
         }
         else {
             find_rr(a->right, x);
+        }
+    }
+
+    void printInOrder(Node* node) const {
+        if (node != nullptr) {
+            printInOrder(node->left);
+            cout << node->x << " ";
+            printInOrder(node->right);
         }
     }
 };
