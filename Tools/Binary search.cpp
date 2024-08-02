@@ -1,25 +1,3 @@
-#include <iostream>
-#include <algorithm>
-#include <cmath>
-#include <vector>
-#include <queue>
-#include <deque>
-#include <array>
-#include <list>
-#include <stack>
-#include <set>
-#include <unordered_set>
-#include <map>
-#include <unordered_map>
-#include <string>
-#include <cstring>
-#include <random>
-#include <bitset>
-#include <functional>
-#include <random>
-
-using namespace std;
-
 int bs_ll(vector<int>& arr, int target) {
     if (arr[0] >= target) {
         return -1;
@@ -93,12 +71,4 @@ int bs_rr(vector<int>& arr, int target) {
         }
     }
     return left;
-}
-
-int main() {
-    ios_base::sync_with_stdio(false);
-    cin.tie(0);
-    cout.tie(0);
-
-    return 0;
 }
