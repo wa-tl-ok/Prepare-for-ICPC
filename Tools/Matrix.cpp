@@ -1,25 +1,3 @@
-#include <iostream>
-#include <algorithm>
-#include <cmath>
-#include <vector>
-#include <queue>
-#include <deque>
-#include <array>
-#include <list>
-#include <stack>
-#include <set>
-#include <unordered_set>
-#include <map>
-#include <unordered_map>
-#include <string>
-#include <cstring>
-#include <random>
-#include <bitset>
-#include <functional>
-#include <random>
-
-using namespace std;
-
 vector<vector<int>> transp(vector<vector<int>>& Matrix) {
     vector<vector<int>> transposed_matrix(Matrix[0].size(), vector<int>(Matrix.size(), 0));
     for (size_t i = 0; i < Matrix.size(); ++i) {
@@ -67,12 +45,4 @@ vector<vector<int>> multiply_matrix(vector<vector<int>>& Matrix1, vector<vector<
         }
     }
     return result_matrix;
-}
-
-int main() {
-    ios_base::sync_with_stdio(false);
-    cin.tie(0);
-    cout.tie(0);
-
-    return 0;
 }
