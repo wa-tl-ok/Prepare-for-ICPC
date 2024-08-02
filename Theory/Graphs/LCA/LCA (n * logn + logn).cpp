@@ -49,29 +49,29 @@ void dfs(int v, int p, int d) {
     }
 }
 
-int lca(int a, int b) {
-    if (depth[a] < depth[b]) {
-        swap(a, b);
+int lca(int u, int v) {
+    if (depth[u] < depth[v]) {
+        swap(u, v);
     }
 
     for (int i = LOGN - 1; i >= 0; --i) {
-        if (depth[a] - (1 << i) >= depth[b]) {
-            a = parent[a][i];
+        if (depth[u] - (1 << i) >= depth[v]) {
+            u = parent[u][i];
         }
     }
 
-    if (a == b) {
-        return a;
+    if (u == v) {
+        return u;
     }
 
     for (int i = LOGN - 1; i >= 0; --i) {
-        if (parent[a][i] != parent[b][i]) {
-            a = parent[a][i];
-            b = parent[b][i];
+        if (parent[u][i] != parent[v][i]) {
+            u = parent[u][i];
+            v = parent[v][i];
         }
     }
 
-    return parent[a][0];
+    return parent[u][0];
 }
 
 int main() {
@@ -86,22 +86,25 @@ int main() {
     vector<pair<int, int>> vec;
 
     for (int i = 1; i <= n; ++i) {
-        string op; int a, b;
-        cin >> op >> a >> b;
+        string op; int u, v;
+        cin >> op >> u >> v;
+
+        --u;
+        --v;
 
         if (op == "ADD") {
-            graph[a].push_back(b);
-            graph[b].push_back(a);
+            graph[u].push_back(v);
+            graph[v].push_back(u);
         }
         else if (op == "GET") {
-            vec.push_back(make_pair(a, b));
+            vec.push_back(make_pair(u, v));
         }
     }
 
-    dfs(1, 1, 0);
+    dfs(0, 0, 0);
 
     for (int i = 0; i < (int)vec.size(); ++i) {
-        cout << lca(vec[i].first, vec[i].second) << "\n";
+        cout << lca(vec[i].first, vec[i].second) + 1 << "\n";
     }
 
     return 0;
