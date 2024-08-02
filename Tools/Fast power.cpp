@@ -1,25 +1,3 @@
-#include <iostream>
-#include <algorithm>
-#include <cmath>
-#include <vector>
-#include <queue>
-#include <deque>
-#include <array>
-#include <list>
-#include <stack>
-#include <set>
-#include <unordered_set>
-#include <map>
-#include <unordered_map>
-#include <string>
-#include <cstring>
-#include <random>
-#include <bitset>
-#include <functional>
-#include <random>
-
-using namespace std;
-
 int Fast_power_mod(int a, int n, int mod) {
     if (n == 0) { 
         return 1; 
@@ -58,12 +36,4 @@ int Fast_power(int a, int n) {
     }
 
     return result;
-}
-
-int main() {
-    ios_base::sync_with_stdio(false);
-    cin.tie(0);
-    cout.tie(0);
-
-    return 0;
 }
