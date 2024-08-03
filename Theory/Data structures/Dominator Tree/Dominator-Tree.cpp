@@ -381,12 +381,10 @@ vector<vector<int>> DFS_tree;
 void Build_DFS_tree(int v) {
     vis[v] = true;
     for (auto u : G[v]) {
-        if (vis[u] == true) {
-            continue;
+        if (vis[u] == false) {
+            DFS_tree[v].push_back(u);
+            Build_DFS_tree(u);
         }
-        DFS_tree[v].push_back(u);
-        DFS_tree[u].push_back(v);
-        dfs(u);
     }
 }
 
@@ -484,29 +482,40 @@ int main() {
     HLD hld(n);
 
     for (int u = 0; u < n; u++) {
-        for (int v : G[u]) {
+        for (int v : DFS_tree[u]) {
             hld.Add_edge(u, v);
         }
     }
 
     hld.Decompose(s);
 
-    for (int i = 0; i < n; i++) {
-        int u = Sdom[i];
-        int v = i;
+    for (int v = 0; v < n; v++) {
+        hld.Update(v, Sdom[v]);
+    }
 
-        if (v == u) {
-            Dom[v] = u;
+    for (int v = 0; v < n; v++) {
+        int vsdom = Sdom[v];
+
+        if (v == vsdom) {
+            Dom[v] = vsdom;
         }
         else if (v == s) {
             Dom[v] = s;
         }
         else {
-            int was = hld.Get_min(u, u);
-            hld.Update(u, 2e9);
-            int mn = hld.Get_min(u, v);
-            hld.Update(u, was);
-            Dom[v] = mn;
+            int was = hld.Get_min(vsdom, vsdom);
+            hld.Update(vsdom, 1e9);
+            int u = hld.Get_min(v, vsdom);
+            hld.Update(vsdom, was);
+            
+            if (u < n) {
+                if (Sdom[u] >= Sdom[v]) {
+                    Dom[v] = Sdom[v];
+                }
+                else {
+                    Dom[v] = Dom[u];
+                }
+            }
         }
     }
 
