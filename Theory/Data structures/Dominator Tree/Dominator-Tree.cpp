@@ -396,7 +396,7 @@ int main() {
     int n, m, s;
     cin >> n >> m >> s;
 
-    --s;
+    //--s;
 
     G.resize(n);
     R_G.resize(n);
@@ -404,8 +404,8 @@ int main() {
         int u, v;
         cin >> u >> v;
 
-        --u;
-        --v;
+        //--u;
+        //--v;
 
         if (v != s) {
             G[u].push_back(v);
@@ -477,8 +477,6 @@ int main() {
     }
     Dom[s] = s;
 
-    print(Sdom);
-
     HLD hld(n);
 
     for (int u = 0; u < n; u++) {
@@ -490,30 +488,32 @@ int main() {
     hld.Decompose(s);
 
     for (int v = 0; v < n; v++) {
-        hld.Update(v, Sdom[v]);
+        hld.Update(v, v);
     }
 
     for (int v = 0; v < n; v++) {
         int vsdom = Sdom[v];
 
-        if (v == vsdom) {
-            Dom[v] = vsdom;
-        }
-        else if (v == s) {
-            Dom[v] = s;
-        }
-        else {
-            int was = hld.Get_min(vsdom, vsdom);
-            hld.Update(vsdom, 1e9);
-            int u = hld.Get_min(v, vsdom);
-            hld.Update(vsdom, was);
-            
-            if (u < n) {
-                if (Sdom[u] >= Sdom[v]) {
-                    Dom[v] = Sdom[v];
-                }
-                else {
-                    Dom[v] = Dom[u];
+        if (vsdom != 1e9) {
+            if (v == vsdom) {
+                Dom[v] = vsdom;
+            }
+            else if (v == s) {
+                Dom[v] = s;
+            }
+            else {
+                int was = hld.Get_min(vsdom, vsdom);
+                hld.Update(vsdom, 1e9);
+                int u = hld.Get_min(v, vsdom);
+                hld.Update(vsdom, was);
+
+                if (u < n) {
+                    if (Sdom[u] >= Sdom[v]) {
+                        Dom[v] = Sdom[v];
+                    }
+                    else {
+                        Dom[v] = Dom[u];
+                    }
                 }
             }
         }
@@ -523,25 +523,3 @@ int main() {
 
     return 0;
 }
-
-/*
-9 13 1
-1 2
-1 7
-7 8
-8 9
-9 7
-9 6
-2 3
-2 4
-5 3
-4 5
-4 6
-6 5
-2 5
-
-4 3 1
-2 3
-3 4
-4 2
-*/
