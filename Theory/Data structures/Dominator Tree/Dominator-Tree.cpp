@@ -393,6 +393,8 @@ int main() {
     cin.tie(0);
     cout.tie(0);
 
+    set<pair<int, int>> E;
+
     int n, m, s;
     cin >> n >> m >> s;
 
@@ -400,6 +402,7 @@ int main() {
 
     G.resize(n);
     R_G.resize(n);
+
     for (int i = 0; i < m; i++) {
         int u, v;
         cin >> u >> v;
@@ -411,6 +414,8 @@ int main() {
             G[u].push_back(v);
             R_G[v].push_back(u);
         }
+
+        E.insert({ u, v });
     }
 
     vis.resize(n);
@@ -488,7 +493,7 @@ int main() {
     hld.Decompose(s);
 
     for (int v = 0; v < n; v++) {
-        hld.Update(v, v);
+        hld.Update(v, Sdom[v]);
     }
 
     for (int v = 0; v < n; v++) {
@@ -507,18 +512,17 @@ int main() {
                 int u = hld.Get_min(v, vsdom);
                 hld.Update(vsdom, was);
 
-                if (u < n) {
-                    if (Sdom[u] >= Sdom[v]) {
-                        Dom[v] = Sdom[v];
-                    }
-                    else {
-                        Dom[v] = Dom[u];
-                    }
+                if (Sdom[u] >= Sdom[v]) {
+                    Dom[v] = Sdom[v];
+                }
+                else {
+                    Dom[v] = Dom[u];
                 }
             }
         }
     }
 
+    print(Sdom);
     print(Dom);
 
     return 0;
