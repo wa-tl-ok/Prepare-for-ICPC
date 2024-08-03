@@ -33,9 +33,8 @@ public:
     }
 
     void Print() const {
-        std::cout << "Splay Tree: ";
         printInOrder(root);
-        std::cout << std::endl;
+        cout << endl;
     }
 
 private:
@@ -170,7 +169,7 @@ private:
     void printInOrder(Node* node) const {
         if (node != nullptr) {
             printInOrder(node->leftChild);
-            std::cout << node->data << " ";
+            cout << node->data << " ";
             printInOrder(node->rightChild);
         }
     }
