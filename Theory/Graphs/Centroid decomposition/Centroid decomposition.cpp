@@ -92,29 +92,9 @@ int main() {
     }
     decompose(0);
 
-    while (q > 0) {
-        int type, v; cin >> type >> v;
-        --v;
-
-        if (type == 1) {
-            int u = v;
-
-            while (u != -1) {
-                u = parent[u];
-            }
-        }
-        else {
-            int u = v;
-            int answer = 1e9;
-
-            while (u != -1) {
-                u = parent[u];
-            }
-
-            cout << answer << endl;
-        }
-
-        --q;
+    int u; cin >> u;
+    while (u != -1) {
+        u = parent[u];
     }
 
     return 0;
