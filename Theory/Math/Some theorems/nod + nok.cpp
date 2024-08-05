@@ -77,9 +77,9 @@ int main() {
     cin.tie(0);
     cout.tie(0);
 
-    vector<long long> test3 = { 12, 15, 20, 25, 30 };
-    assert(gcd_array(test3) == 1);
-    assert(lcm_array(test3) == 300);
+    vector<long long> test = { 12, 15, 20, 25, 30 };
+    assert(gcd_array(test) == 1);
+    assert(lcm_array(test) == 300);
 
     return 0;
 }
