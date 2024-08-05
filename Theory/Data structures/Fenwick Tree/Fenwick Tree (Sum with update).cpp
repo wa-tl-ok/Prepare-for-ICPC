@@ -4,8 +4,17 @@ public:
         tree.resize(n + 1, 0);
     }
 
-    void update(int ind, long long x) {
+    void plus(int ind, long long x) {
         ++ind;
+        while (ind <= size) {
+            tree[ind] += x;
+            ind += ind & -ind;
+        }
+    }
+
+    void change(int ind, long long x) {
+        ++ind;
+        x = x - tree[ind];
         while (ind <= size) {
             tree[ind] += x;
             ind += ind & -ind;
