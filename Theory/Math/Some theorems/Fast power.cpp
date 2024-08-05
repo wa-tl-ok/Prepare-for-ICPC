@@ -57,6 +57,23 @@ int Fast_power(int a, int n) {
     return result;
 }
 
+long long safe_pow(long long a, long long b) {
+    long long p = 1;
+
+    for (long long i = 0; i < b; i++) {
+        double q = p;
+        q *= a;
+
+        if (q > 2e18) {
+            return 2e18;
+        }
+
+        p *= a;
+    }
+
+    return p;
+}
+
 int main() {
     ios_base::sync_with_stdio(0);
     cin.tie(0);
