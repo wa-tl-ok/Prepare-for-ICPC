@@ -152,7 +152,7 @@ public:
         Segment_Tree.plus(tin[v], tin[v], value);
     }
 
-    int Get_max(int u, int v) {
+    int Get_sum(int u, int v) {
         int ans = 0;
         while (Check(head[u], v) == false) {
             ans += Segment_Tree.query(tin[head[u]], tin[u]);
