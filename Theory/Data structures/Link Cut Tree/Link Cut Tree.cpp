@@ -31,14 +31,17 @@ public:
         bool rev;
         int sz;
 
+        int min_val;
+        int max_val;
+
         Node* l;
         Node* r;
         Node* p;
 
         Node(int value) :
             val(value), low_sum(value), add(0),
-            rev(false),
-            sz(1),
+            rev(false), sz(1),
+            min_val(value), max_val(value),
             l(nullptr), r(nullptr), p(nullptr) {}
 
         bool isroot() {
@@ -55,6 +58,9 @@ public:
             val += v;
             low_sum += v * sz;
             add += v;
+
+            min_val += v;
+            max_val += v;
         }
 
         void push() {
@@ -84,6 +90,8 @@ public:
         void pull() {
             low_sum = val + get_low_sum(l) + get_low_sum(r);
             sz = 1 + get_size(l) + get_size(r);
+            min_val = std::min({ val, get_min_val(l), get_min_val(r) });
+            max_val = std::max({ val, get_max_val(l), get_max_val(r) });
         }
 
         static int get_low_sum(Node* root) {
@@ -101,6 +109,24 @@ public:
             }
             else {
                 return root->sz;
+            }
+        }
+
+        static int get_min_val(Node* root) {
+            if (root == nullptr) {
+                return INT_MAX;
+            }
+            else {
+                return root->min_val;
+            }
+        }
+
+        static int get_max_val(Node* root) {
+            if (root == nullptr) {
+                return INT_MIN;
+            }
+            else {
+                return root->max_val;
             }
         }
     };
@@ -183,7 +209,7 @@ public:
         }
     }
 
-    int Query(int from_ind, int to_ind) {
+    int QuerySum(int from_ind, int to_ind) {
         Node* from = Get(from_ind);
         Node* to = Get(to_ind);
 
@@ -195,6 +221,34 @@ public:
         expose(to);
 
         return Node::get_low_sum(to);
+    }
+
+    int QueryMin(int from_ind, int to_ind) {
+        Node* from = Get(from_ind);
+        Node* to = Get(to_ind);
+
+        if (!from || !to) {
+            return INT_MAX;
+        }
+
+        make_root(from);
+        expose(to);
+
+        return Node::get_min_val(to);
+    }
+
+    int QueryMax(int from_ind, int to_ind) {
+        Node* from = Get(from_ind);
+        Node* to = Get(to_ind);
+
+        if (!from || !to) {
+            return INT_MIN;
+        }
+
+        make_root(from);
+        expose(to);
+
+        return Node::get_max_val(to);
     }
 
     void Modify(int from_ind, int to_ind, int Q) {
@@ -210,7 +264,6 @@ public:
 
         to->apply(Q);
     }
-
 private:
     struct custom_hash {
         static uint64_t splitmix64(uint64_t x) {
@@ -329,127 +382,52 @@ private:
 };
 
 int main() {
-    LinkCutTree T(5);
+    int N; cin >> N;
+    LinkCutTree lct(N);
 
-    T.Link(1, 2);
-    T.Link(1, 3);
-    T.Link(3, 4);
-    T.Link(3, 5);
+    vector<vector<int>> graph(N + 1);
+    for (int i = 0; i < N - 1; ++i) {
+        int a, b; cin >> a >> b;
+        graph[a].push_back(b);
+        graph[b].push_back(a);
+    }
 
-    T.Modify(1, 1, 1);
-    T.Modify(2, 2, 2);
-    T.Modify(3, 3, 3);
-    T.Modify(4, 4, 4);
-    T.Modify(5, 5, 5);
+    vector<bool> visited(N + 1, false);
+    vector<int> parent(N + 1, 0);
 
-    /*
-                       /-\
-                      | 1 | 1
-                       \-/
-                      /  \
-                     /    \
-                    /     /-\
-                  /-\    | 2 | 2
-                 | 3 | 3  \-/
-                  \-/
-                  / \
-                 /   \
-                /     \
-               /      /-\
-              /      | 4 | 4
-             /        \-/
-           /-\
-          | 5 | 5
-           \-/
-    */
+    function<void(int, int)> dfs = [&](int u, int p) {
+        visited[u] = true;
+        parent[u] = p;
+        for (int v : graph[u]) {
+            if (!visited[v]) {
+                lct.Link(u, v);
+                dfs(v, u);
+            }
+        }
+    };
 
-    assert(T.Query(1, 1) == 1);
-    assert(T.Query(1, 2) == 3);
-    assert(T.Query(1, 3) == 4);
-    assert(T.Query(1, 4) == 8);
-    assert(T.Query(1, 5) == 9);
-    assert(T.Query(2, 2) == 2);
-    assert(T.Query(2, 3) == 6);
-    assert(T.Query(2, 4) == 10);
-    assert(T.Query(2, 5) == 11);
-    assert(T.Query(3, 3) == 3);
-    assert(T.Query(3, 4) == 7);
-    assert(T.Query(3, 5) == 8);
-    assert(T.Query(4, 4) == 4);
-    assert(T.Query(4, 5) == 12);
-    assert(T.Query(5, 5) == 5);
+    dfs(1, 0);
 
-    T.Cut(1, 3);
-
-    assert(T.Query(1, 1) == 1);
-    assert(T.Query(1, 2) == 3);
-    assert(T.Query(2, 2) == 2);
-    assert(T.Query(3, 3) == 3);
-    assert(T.Query(3, 4) == 7);
-    assert(T.Query(3, 5) == 8);
-    assert(T.Query(4, 4) == 4);
-    assert(T.Query(4, 5) == 12);
-    assert(T.Query(5, 5) == 5);
-
-    T.Link(1, 3);
-
-    assert(T.Query(1, 1) == 1);
-    assert(T.Query(1, 2) == 3);
-    assert(T.Query(1, 3) == 4);
-    assert(T.Query(1, 4) == 8);
-    assert(T.Query(1, 5) == 9);
-    assert(T.Query(2, 2) == 2);
-    assert(T.Query(2, 3) == 6);
-    assert(T.Query(2, 4) == 10);
-    assert(T.Query(2, 5) == 11);
-    assert(T.Query(3, 3) == 3);
-    assert(T.Query(3, 4) == 7);
-    assert(T.Query(3, 5) == 8);
-    assert(T.Query(4, 4) == 4);
-    assert(T.Query(4, 5) == 12);
-    assert(T.Query(5, 5) == 5);
-
-    T.Modify(4, 1, 1);
-    T.Modify(5, 1, 2);
-
-    /*
-                       /-\
-                      | 1 | 4
-                       \-/
-                      /  \
-                     /    \
-                    /     /-\
-                  /-\    | 2 | 2
-                 | 3 | 6  \-/
-                  \-/
-                  / \
-                 /   \
-                /     \
-               /      /-\
-              /      | 4 | 5
-             /        \-/
-           /-\
-          | 5 | 7
-           \-/
-    */
-
-    assert(T.Query(1, 1) == 4);
-    assert(T.Query(1, 2) == 6);
-    assert(T.Query(1, 3) == 10);
-    assert(T.Query(1, 4) == 15);
-    assert(T.Query(1, 5) == 17);
-    assert(T.Query(2, 2) == 2);
-    assert(T.Query(2, 3) == 12);
-    assert(T.Query(2, 4) == 17);
-    assert(T.Query(2, 5) == 19);
-    assert(T.Query(3, 3) == 6);
-    assert(T.Query(3, 4) == 11);
-    assert(T.Query(3, 5) == 13);
-    assert(T.Query(4, 4) == 5);
-    assert(T.Query(4, 5) == 18);
-    assert(T.Query(5, 5) == 7);
-
-    cout << "OK!";
+    int Q; cin >> Q;
+    while (Q--) {
+        char type; cin >> type;
+        if (type == 'I') {
+            int u, v, x; cin >> u >> v >> x;
+            lct.Modify(u, v, x);
+        }
+        else if (type == 'G') {
+            int u, v; cin >> u >> v;
+            cout << lct.QueryMax(u, v) << '\n';
+        }
+        else if (type == 'M') {
+            int u, v; cin >> u >> v;
+            cout << lct.QueryMin(u, v) << '\n';
+        }
+        else if (type == 'S') {
+            int u, v; cin >> u >> v;
+            cout << lct.QuerySum(u, v) << '\n';
+        }
+    }
 
     return 0;
 }
