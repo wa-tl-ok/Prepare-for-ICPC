@@ -77,7 +77,7 @@ public:
     }
 
     void PlusPath(int u, int v, int x) {
-        
+        // realization
     }
 private:
     vector<Node> T;
@@ -246,8 +246,6 @@ int main() {
            \-/
     */
 
-    T.Print(); // 1 2 3 4 5
-
     assert(T.Sum_query(1, 1) == 1);
     assert(T.Sum_query(1, 2) == 3);
     assert(T.Sum_query(1, 3) == 4);
@@ -297,9 +295,9 @@ int main() {
     assert(T.Sum_query(4, 5) == 12);
     assert(T.Sum_query(5, 5) == 5);
 
-    T.PlusPath(4, 1, 1);
-    T.PlusPath(5, 1, 2);
-
+    T.PlusPath(4, 1, 1); T.Print(); // 0 2 2 4 5 5
+    T.PlusPath(5, 1, 2); T.Print(); // 0 4 2 6 5 7
+    
     /*
                        /-\
                       | 1 | 4
@@ -320,8 +318,6 @@ int main() {
           | 5 | 7
            \-/
     */
-
-    T.Print(); // 4 2 6 5 7
 
     assert(T.Sum_query(1, 1) == 4);
     assert(T.Sum_query(1, 2) == 6);
