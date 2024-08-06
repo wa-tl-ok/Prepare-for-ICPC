@@ -1,3 +1,9 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
 class LinkCutTree {
 public:
     struct Node {
@@ -14,8 +20,20 @@ public:
 
     LinkCutTree(int n) : T(n + 1) {}
 
+    void Print() {
+        for (int i = 0; i < (int)T.size(); i++) {
+            cout << T[i].self << ' ';
+        } cout << endl;
+    }
+
+    void Reroot(int x) {
+        access(x);
+        T[x].flip ^= 1;
+        push(x);
+    }
+
     void Link(int u, int v) {
-        reroot(u);
+        Reroot(u);
         access(v);
 
         T[u].p = v;
@@ -25,7 +43,7 @@ public:
     }
 
     void Cut(int u, int v) {
-        reroot(u);
+        Reroot(u);
         access(v);
 
         T[u].p = 0;
@@ -34,42 +52,20 @@ public:
         pull(v);
     }
 
-    int LCA(int u, int v) {
-        if (u == v) {
-            return u;
-        }
-
-        access(u);
-        int ret = access(v);
-
-        if (T[u].p) {
-            return ret;
-        }
-        else {
-            return 0;
-        }
-    }
-
-    int Subtree(int u, int v) {
-        reroot(v);
-        access(u);
-        return T[u].vir + T[u].self;
-    }
-
     int Max_query(int u, int v) {
-        reroot(u);
+        Reroot(u);
         access(v);
         return T[v].path_max;
     }
 
     int Min_query(int u, int v) {
-        reroot(u);
+        Reroot(u);
         access(v);
         return T[v].path_min;
     }
 
     int Sum_query(int u, int v) {
-        reroot(u);
+        Reroot(u);
         access(v);
         return T[v].path_sum;
     }
@@ -78,6 +74,10 @@ public:
         access(u);
         T[u].self += x;
         pull(u);
+    }
+
+    void PlusPath(int u, int v, int x) {
+        
     }
 private:
     vector<Node> T;
@@ -205,10 +205,141 @@ private:
 
         return splay(x), v;
     }
-
-    void reroot(int x) {
-        access(x);
-        T[x].flip ^= 1;
-        push(x);
-    }
 };
+
+#include <cassert>
+
+int main() {
+    LinkCutTree T(5);
+
+    T.Link(1, 2);
+    T.Link(1, 3);
+    T.Link(3, 4);
+    T.Link(3, 5);
+
+    T.Plus(1, 1);
+    T.Plus(2, 2);
+    T.Plus(3, 3);
+    T.Plus(4, 4);
+    T.Plus(5, 5);
+
+    T.Reroot(1);
+
+    /*
+                       /-\
+                      | 1 | 1
+                       \-/
+                      /  \
+                     /    \
+                    /     /-\
+                  /-\    | 2 | 2
+                 | 3 | 3  \-/
+                  \-/
+                  / \
+                 /   \
+                /     \
+               /      /-\
+              /      | 4 | 4
+             /        \-/
+           /-\
+          | 5 | 5
+           \-/
+    */
+
+    T.Print(); // 1 2 3 4 5
+
+    assert(T.Sum_query(1, 1) == 1);
+    assert(T.Sum_query(1, 2) == 3);
+    assert(T.Sum_query(1, 3) == 4);
+    assert(T.Sum_query(1, 4) == 8);
+    assert(T.Sum_query(1, 5) == 9);
+    assert(T.Sum_query(2, 2) == 2);
+    assert(T.Sum_query(2, 3) == 6);
+    assert(T.Sum_query(2, 4) == 10);
+    assert(T.Sum_query(2, 5) == 11);
+    assert(T.Sum_query(3, 3) == 3);
+    assert(T.Sum_query(3, 4) == 7);
+    assert(T.Sum_query(3, 5) == 8);
+    assert(T.Sum_query(4, 4) == 4);
+    assert(T.Sum_query(4, 5) == 12);
+    assert(T.Sum_query(5, 5) == 5);
+
+    T.Cut(1, 3);
+    T.Reroot(1);
+    T.Reroot(3);
+
+    assert(T.Sum_query(1, 1) == 1);
+    assert(T.Sum_query(1, 2) == 3);
+    assert(T.Sum_query(2, 2) == 2);
+    assert(T.Sum_query(3, 3) == 3);
+    assert(T.Sum_query(3, 4) == 7);
+    assert(T.Sum_query(3, 5) == 8);
+    assert(T.Sum_query(4, 4) == 4);
+    assert(T.Sum_query(4, 5) == 12);
+    assert(T.Sum_query(5, 5) == 5);
+
+    T.Link(1, 3);
+    T.Reroot(1);
+
+    assert(T.Sum_query(1, 1) == 1);
+    assert(T.Sum_query(1, 2) == 3);
+    assert(T.Sum_query(1, 3) == 4);
+    assert(T.Sum_query(1, 4) == 8);
+    assert(T.Sum_query(1, 5) == 9);
+    assert(T.Sum_query(2, 2) == 2);
+    assert(T.Sum_query(2, 3) == 6);
+    assert(T.Sum_query(2, 4) == 10);
+    assert(T.Sum_query(2, 5) == 11);
+    assert(T.Sum_query(3, 3) == 3);
+    assert(T.Sum_query(3, 4) == 7);
+    assert(T.Sum_query(3, 5) == 8);
+    assert(T.Sum_query(4, 4) == 4);
+    assert(T.Sum_query(4, 5) == 12);
+    assert(T.Sum_query(5, 5) == 5);
+
+    T.PlusPath(4, 1, 1);
+    T.PlusPath(5, 1, 2);
+
+    /*
+                       /-\
+                      | 1 | 4
+                       \-/
+                      /  \
+                     /    \
+                    /     /-\
+                  /-\    | 2 | 2
+                 | 3 | 6  \-/
+                  \-/
+                  / \
+                 /   \
+                /     \
+               /      /-\
+              /      | 4 | 5
+             /        \-/
+           /-\
+          | 5 | 7
+           \-/
+    */
+
+    T.Print(); // 4 2 6 5 7
+
+    assert(T.Sum_query(1, 1) == 4);
+    assert(T.Sum_query(1, 2) == 6);
+    assert(T.Sum_query(1, 3) == 10);
+    assert(T.Sum_query(1, 4) == 15);
+    assert(T.Sum_query(1, 5) == 17);
+    assert(T.Sum_query(2, 2) == 2);
+    assert(T.Sum_query(2, 3) == 12);
+    assert(T.Sum_query(2, 4) == 17);
+    assert(T.Sum_query(2, 5) == 19);
+    assert(T.Sum_query(3, 3) == 6);
+    assert(T.Sum_query(3, 4) == 11);
+    assert(T.Sum_query(3, 5) == 13);
+    assert(T.Sum_query(4, 4) == 5);
+    assert(T.Sum_query(4, 5) == 18);
+    assert(T.Sum_query(5, 5) == 7);
+
+    cout << "OK!";
+
+    return 0;
+}
