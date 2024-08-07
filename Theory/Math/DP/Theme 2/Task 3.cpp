@@ -26,8 +26,7 @@ int main() {
     cin.tie(0);
     cout.tie(0);
 
-    int n;
-    cin >> n;
+    int n; cin >> n;
 
     a[1][0] = 1;
     a[1][1] = 1;
