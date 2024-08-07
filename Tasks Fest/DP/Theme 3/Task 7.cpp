@@ -63,7 +63,12 @@ int main() {
         }
     }
 
-    cout << dp[n][m];
+    if (dp[n][m] == 0) {
+        cout << "Impossible";
+    }
+    else {
+        cout << dp[n][m];
+    }
 
     return 0;
 }
