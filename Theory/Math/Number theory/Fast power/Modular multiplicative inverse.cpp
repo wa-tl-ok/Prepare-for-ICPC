@@ -17,15 +17,29 @@
 
 using namespace std;
 
-long long md = 1e9 + 7;
-long long bnup(long long a, long long b) {
-    if (b == 0) {
-        return 1;
+int modInverse(int a, int m) {
+    int m0 = m, y = 0, x = 1;
+
+    if (m == 1) {
+        return 0;
     }
-    if (b % 2 == 0) {
-        return bnup(a * a % md, b / 2);
+
+    while (a > 1) {
+        int q = a / m;
+        int t = m;
+
+        m = a % m, a = t;
+        t = y;
+
+        y = x - q * y;
+        x = t;
     }
-    return bnup(a, b - 1) * a % md;
+
+    if (x < 0) {
+        x += m0;
+    }
+
+    return x;
 }
 
 int main() {
@@ -34,7 +48,8 @@ int main() {
     cout.tie(0);
 
     int n; cin >> n;
-    long long t = bnup(n, md - 2);
+    int m; cin >> m;
+    long long t = modInverse(n, m);
 
     return 0;
 }
