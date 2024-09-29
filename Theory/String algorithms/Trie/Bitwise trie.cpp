@@ -16,6 +16,20 @@ public:
     }
 
     void add(int num) {
+        private_add(num);
+    }
+
+    void remove(int num) {
+        private_remove(num);
+    }
+
+    int query(int num) {
+        return private_query(num);
+    }
+private:
+    TrieNode* root;
+
+    void private_add(int num) {
         TrieNode* current = root;
         current->count++;
 
@@ -32,7 +46,7 @@ public:
         }
     }
 
-    void remove(int num) {
+    void private_remove(int num) {
         TrieNode* current = root;
         current->count--;
 
@@ -51,7 +65,7 @@ public:
         }
     }
 
-    int query(int num) {
+    int private_query(int num) {
         TrieNode* current = root;
         int maxXOR = 0;
 
@@ -70,7 +84,4 @@ public:
 
         return maxXOR;
     }
-
-private:
-    TrieNode* root;
 };
