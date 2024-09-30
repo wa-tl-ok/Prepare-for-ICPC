@@ -58,7 +58,7 @@ int main() {
                     DP[i][j] = true;
                 }
 
-                if (i - s[j] >= 0 && DP[i - s[j]][j - 1] == true) {
+                if (i - s[j - 1] >= 0 && DP[i - s[j - 1]][j - 1] == true) {
                     DP[i][j] = true;
                 }
             }
