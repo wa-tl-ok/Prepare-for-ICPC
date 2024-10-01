@@ -17,18 +17,18 @@
 
 using namespace std;
 
-int modInverse(int a, int m) {
-    int m0 = m, y = 0, x = 1;
+long long modInverse(long long a, long long mod) {
+    long long m0 = mod, y = 0, x = 1;
 
-    if (m == 1) {
+    if (mod == 1) {
         return 0;
     }
 
     while (a > 1) {
-        int q = a / m;
-        int t = m;
+        long long q = a / mod;
+        long long t = mod;
 
-        m = a % m, a = t;
+        mod = a % mod, a = t;
         t = y;
 
         y = x - q * y;
@@ -47,9 +47,11 @@ int main() {
     cin.tie(0);
     cout.tie(0);
 
-    int n; cin >> n;
-    int m; cin >> m;
+    long long n; cin >> n;
+    long long m; cin >> m;
+
     long long t = modInverse(n, m);
+    cout << t;
 
     return 0;
 }
