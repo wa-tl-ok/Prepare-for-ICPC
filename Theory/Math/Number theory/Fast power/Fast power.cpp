@@ -17,13 +17,13 @@
 
 using namespace std;
 
-int Fast_power_mod(int a, int n, int mod) {
+long long Fast_power_mod(long long a, long long n, long long mod) {
     if (n == 0) {
         return 1;
     }
 
-    int result = 1;
-    int base = a;
+    long long result = 1;
+    long long base = a;
 
     while (n > 0) {
         if (n % 2 == 1) {
@@ -37,13 +37,13 @@ int Fast_power_mod(int a, int n, int mod) {
     return result % mod;
 }
 
-int Fast_power(int a, int n) {
+long long Fast_power(long long a, long long n) {
     if (n == 0) {
         return 1;
     }
 
-    int result = 1;
-    int base = a;
+    long long result = 1;
+    long long base = a;
 
     while (n > 0) {
         if (n % 2 == 1) {
@@ -79,14 +79,14 @@ int main() {
     cin.tie(0);
     cout.tie(0);
 
-    int base = 2;
-    int exponent = 10;
-    int mod = 1000;
+    long long base = 2;
+    long long exponent = 10;
+    long long mod = 1000;
 
-    int result_mod = Fast_power_mod(base, exponent, mod);
+    long long result_mod = Fast_power_mod(base, exponent, mod);
     cout << "Fast_power_mod(" << base << ", " << exponent << ", " << mod << ") = " << result_mod << "\n";
 
-    int result = Fast_power(base, exponent);
+    long long result = Fast_power(base, exponent);
     cout << "Fast_power(" << base << ", " << exponent << ") = " << result << "\n";
 
     return 0;
