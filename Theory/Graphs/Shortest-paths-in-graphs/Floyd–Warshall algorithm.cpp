@@ -58,8 +58,8 @@ int main() {
     --s;
     --f;
 
-    for (int u = 0; u < n; u++) {
-        for (int v = 0; v < n; v++) {
+    for (int v = 0; v < n; v++) {
+        for (int u = 0; u < n; u++) {
             for (int k = 0; k < n; k++) {
                 if (M[u][v] + M[v][k] < M[u][k]) {
                     M[u][k] = M[u][v] + M[v][k];
