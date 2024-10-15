@@ -16,78 +16,49 @@
 #include <random>
 #include <bitset>
 #include <functional>
+#include <climits>
 
 using namespace std;
 
-#define int long long
-
-vector<vector<int>> G;
-vector<int> vis;
-map<vector<int>, int> M;
-
-bool dfs(int u) {
-    vis[u] = true;
-    bool cur = false;
-    for (auto v : G[u]) {
-        if (vis[v] == false) {
-            if (!M[vis]) {
-                int ans = dfs(v);
-                if (ans == false) {
-                    M[vis] = 1;
-                    cur = true;
-                }
-            }
-            else {
-                int ans = M[vis];
-                if (ans == 1) {
-                    cur = true;
-                }
-            }
-        }
-    }
-    if (cur == false) {
-        M[vis] = 2;
-    }
-    else {
-        M[vis] = 1;
-    }
-    vis[u] = false;
-    return cur;
-}
-
 void Solve() {
     int n; cin >> n;
-    vector<string> a(n + 1);
-    for (int i = 1; i <= n; i++) {
+    vector<string > v;
+    for (int i = 0; i < n; i++) {
         string s; cin >> s;
-        a[i] = s;
+        v.push_back(s);
     }
-    G.resize(n + 1);
-    for (int i = 1; i <= n; i++) {
-        for (int j = 1; j <= n; j++) {
-            if (i != j) {
-                if (a[i][a[i].size() - 1] == a[j][0]) {
-                    G[i].push_back(j);
-                }
+
+    map<pair<int, int>, bool> cache;
+
+    function<bool(int, int)> dfs = [&](int i, int mask) {
+        auto key = make_pair(i, mask);
+        if (cache[key]) {
+            return cache[key];
+        }
+        bool ans = false;
+        for (int j = 0; j < v.size(); j++) {
+            if (mask & (1 << j)) {
+                continue;
+            }
+            if (v[i][v[i].size() - 1] == v[j][0] && dfs(j, mask ^ (1 << j)) == false) {
+                ans = true;
+                break;
             }
         }
+        cache[key] = ans;
+        return ans;
+    };
+
+    for (int i = 0; i < n; i++) {
+        if (dfs(i, 1 << i) == false) {
+            cout << "First";
+            return;
+        }
     }
-    for (int i = 1; i <= n; i++) {
-        G[0].push_back(i);
-    }
-    vis.resize(n + 1);
-    for (int i = 0; i < n + 1; i++) {
-        vis[i] = false;
-    }
-    if (dfs(0) == true) {
-        cout << "First";
-    }
-    else {
-        cout << "Second";
-    }
+    cout << "Second";
 }
 
-signed main() {
+int main() {
     ios_base::sync_with_stdio(false);
     cin.tie(0);
     cout.tie(0);
