@@ -72,7 +72,7 @@ private:
 
         node->sum = 0;
         if (node->left) {
-            node->sum = node->left->sum;
+            node->sum += node->left->sum;
         }
         if (node->right) {
             node->sum += node->right->sum;
