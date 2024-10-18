@@ -1,0 +1,6 @@
+Math (A-B)
+https://codeforces.com/contest/2018/problem/C
+https://codeforces.com/contest/1986/problem/E
+DP (C-D)
+https://codeforces.com/contest/1969/problem/C
+https://codeforces.com/contest/1879/problem/D
