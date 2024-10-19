@@ -1,18 +1,19 @@
 class DST {
 private:
-    int N, K; const int mod = 764854400;
+    int N, K;
+    int neutral = 1;
 
     vector<vector<int>> Stable;
     vector<int> highestBit;
     vector<int> a;
 
     int Function(int left, int right) {
-        return (left * right) % mod;
+        return (left * right);
     }
 public:
     DST(const vector<int>& vec) {
         for (auto p : vec) {
-            a.push_back(p % mod);
+            a.push_back(p);
         }
 
         this->K = 0;
@@ -25,7 +26,7 @@ public:
         }
 
         for (int i = 0; i < p - n; i++) {
-            a.push_back(1);
+            a.push_back(neutral);
         }
 
         this->N = (int)a.size();
