@@ -49,7 +49,7 @@ public:
             for (int c = sz; c < N; c += sz << 1) {
                 Stable[c][lvl] = a[c];
                 for (int i = c + 1; i < c + sz; i++) {
-                    Stable[i][lvl] = Function(a[i], Stable[i - 1][lvl]);
+                    Stable[i][lvl] = Function(Stable[i - 1][lvl], a[i]);
                 }
 
                 Stable[c - 1][lvl] = a[c - 1];
