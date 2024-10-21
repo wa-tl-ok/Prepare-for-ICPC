@@ -36,7 +36,6 @@ void Play(vector<int>& a, int h) {
     for (int i = 0; i < a.size(); i++) {
         c.push_back(i);
     }
-    sort(a.begin(), a.end());
     int S = 0;
     for (int i = 0; i < a.size(); i++) {
         S += a[i] - c[i];
@@ -65,6 +64,7 @@ void Solve() {
     for (int i = 0; i < n; i++) {
         cin >> a[i];
     }
+    sort(a.begin(), a.end());
     int mx = 1;
     map<int, int> m;
     for (int i = 0; i < n; i++) {
