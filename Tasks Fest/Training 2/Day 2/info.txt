@@ -1,3 +1,5 @@
 DP (A-B)
 https://codeforces.com/contest/924/problem/C
 https://codeforces.com/contest/1583/problem/C
+Math (C-D)
+https://codeforces.com/contest/1699/problem/C
