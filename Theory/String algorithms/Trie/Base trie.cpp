@@ -15,8 +15,8 @@ public:
         private_add(word);
     }
 
-    int query(const string& prefix) {
-        return private_query(prefix);
+    int cnt(const string& prefix) {
+        return private_cnt(prefix);
     }
 
     bool find(const string& word) {
@@ -39,7 +39,7 @@ private:
         }
     }
 
-    int private_query(const string& prefix) {
+    int private_cnt(const string& prefix) {
         TrieNode* current = root;
 
         for (char c : prefix) {
