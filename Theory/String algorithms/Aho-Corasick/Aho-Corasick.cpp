@@ -1,4 +1,4 @@
-class TRA {
+class Aho_Corasick {
 public:
     struct TrieNode {
         map<char, TrieNode*> children;
@@ -18,7 +18,7 @@ public:
 
     int NUM = 0;
 
-    TRA() {
+    Aho_Corasick() {
         root = new TrieNode();
         for (char c = 'a'; c <= 'b'; ++c) {
             alh.push_back(c);
