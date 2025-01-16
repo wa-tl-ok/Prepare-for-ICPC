@@ -106,12 +106,12 @@ private:
 
 public:
     /*
-       Solving problem:
-           Given a string T and a set of strings S [alh = {'a', 'b'}].
-           For each string s from the set, determine:
-           how many times it can be found as a substring in T?
+        Solving problem:
+            Given a string T and a set of strings S [alh = {'a', 'b'}].
+            For each string s from the set, determine:
+            how many times it can be found as a substring in T?
 
-           --- O(T.size() + TRA.size()) ---
+            --- O(T.size() + TRA.size()) ---
     */
 
     TrieNode* now = nullptr;
