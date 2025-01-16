@@ -80,6 +80,10 @@ public:
     }
 
     int lcp_query(int left, int right) {
+        if (left == right) {
+            return (int)LCP.size() - left + 1;
+        }
+
         left = C[left];
         right = C[right];
 
