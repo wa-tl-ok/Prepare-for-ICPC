@@ -96,9 +96,6 @@ private:
                         sigma[{current, c}] = sigma[{suf_link[current], c}];
                     }
                 }
-                else {
-                    
-                }
             }
 
             for (auto c_v : current->children) {
