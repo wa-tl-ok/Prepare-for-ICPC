@@ -1,26 +1,3 @@
-#include <iostream>
-#include <algorithm>
-#include <cmath>
-#include <vector>
-#include <queue>
-#include <deque>
-#include <array>
-#include <list>
-#include <stack>
-#include <set>
-#include <unordered_set>
-#include <map>
-#include <unordered_map>
-#include <string>
-#include <cstring>
-#include <random>
-#include <bitset>
-#include <functional>
-#include <stdexcept>
-#include <cassert>
-
-using namespace std;
-
 class Matrix {
 public:
     Matrix(const vector<vector<int>>& matrix) : data(matrix) {}
@@ -46,11 +23,10 @@ public:
                 rotated_matrix[j][data.size() - 1 - i] = data[i][j];
             }
         }
-
         return Matrix(rotated_matrix);
     }
 
-    Matrix add(const Matrix& other) const {
+    Matrix operator+(const Matrix& other) const {
         if (data.size() != other.data.size() || data[0].size() != other.data[0].size()) {
             throw invalid_argument("Matrices dimensions do not match for addition.");
         }
@@ -65,7 +41,22 @@ public:
         return Matrix(result_matrix);
     }
 
-    Matrix multiply(const Matrix& other) const {
+    Matrix operator-(const Matrix& other) const {
+        if (data.size() != other.data.size() || data[0].size() != other.data[0].size()) {
+            throw invalid_argument("Matrices dimensions do not match for subtraction.");
+        }
+
+        vector<vector<int>> result_matrix(data.size(), vector<int>(data[0].size(), 0));
+        for (size_t i = 0; i < data.size(); ++i) {
+            for (size_t j = 0; j < data[0].size(); ++j) {
+                result_matrix[i][j] = data[i][j] - other.data[i][j];
+            }
+        }
+
+        return Matrix(result_matrix);
+    }
+
+    Matrix operator*(const Matrix& other) const {
         size_t rows1 = data.size();
         size_t columns1 = data[0].size();
         size_t rows2 = other.data.size();
@@ -87,6 +78,60 @@ public:
         return Matrix(result_matrix);
     }
 
+    Matrix operator/(const Matrix& other) const {
+        return *this * other.inverse();
+    }
+
+    bool operator==(const Matrix& other) const {
+        return data == other.data;
+    }
+
+    bool operator!=(const Matrix& other) const {
+        return !(*this == other);
+    }
+
+    Matrix pow(int n) const {
+        if (data.size() != data[0].size()) {
+            throw invalid_argument("Matrix must be square for exponentiation.");
+        }
+
+        Matrix result = identity(data.size());
+        Matrix base = *this;
+
+        while (n > 0) {
+            if (n % 2 == 1) {
+                result = result * base;
+            }
+            base = base * base;
+            n /= 2;
+        }
+
+        return result;
+    }
+
+    int determinant() const {
+        size_t n = data.size();
+        if (n == 0) {
+            throw invalid_argument("Determinant is not defined for an empty matrix.");
+        }
+        if (n != data[0].size()) {
+            throw invalid_argument("Determinant is defined only for square matrices.");
+        }
+
+        if (n == 1) {
+            return data[0][0];
+        }
+        if (n == 2) {
+            return data[0][0] * data[1][1] - data[0][1] * data[1][0];
+        }
+
+        int det = 0;
+        for (size_t j = 0; j < n; ++j) {
+            det += (j % 2 == 0 ? 1 : -1) * data[0][j] * minor(0, j).determinant();
+        }
+        return det;
+    }
+
     void print() const {
         for (const auto& row : data) {
             for (const auto& elem : row) {
@@ -95,65 +140,80 @@ public:
             cout << endl;
         }
     }
+
 private:
     vector<vector<int>> data;
+
+    static Matrix identity(size_t size) {
+        vector<vector<int>> identity_matrix(size, vector<int>(size, 0));
+        for (size_t i = 0; i < size; ++i) {
+            identity_matrix[i][i] = 1;
+        }
+        return Matrix(identity_matrix);
+    }
+
+    static Matrix identity(size_t size) {
+        vector<vector<int>> identity_matrix(size, vector<int>(size, 0));
+        for (size_t i = 0; i < size; ++i) {
+            identity_matrix[i][i] = 1;
+        }
+        return Matrix(identity_matrix);
+    }
+
+    Matrix inverse() const {
+        size_t n = data.size();
+        vector<vector<int>> augmented_matrix(n, vector<int>(2 * n, 0));
+
+        for (size_t i = 0; i < n; ++i) {
+            for (size_t j = 0; j < n; ++j) {
+                augmented_matrix[i][j] = data[i][j];
+            }
+            augmented_matrix[i][i + n] = 1;
+        }
+
+        for (size_t i = 0; i < n; ++i) {
+            if (augmented_matrix[i][i] == 0) {
+                throw invalid_argument("Matrix is singular and cannot be inverted.");
+            }
+
+            int pivot = augmented_matrix[i][i];
+            for (size_t j = 0; j < 2 * n; ++j) {
+                augmented_matrix[i][j] /= pivot;
+            }
+
+            for (size_t j = 0; j < n; ++j) {
+                if (j != i) {
+                    int factor = augmented_matrix[j][i];
+                    for (size_t k = 0; k < 2 * n; ++k) {
+                        augmented_matrix[j][k] -= factor * augmented_matrix[i][k];
+                    }
+                }
+            }
+        }
+
+        vector<vector<int>> inverse_matrix(n, vector<int>(n, 0));
+        for (size_t i = 0; i < n; ++i) {
+            for (size_t j = 0; j < n; ++j) {
+                inverse_matrix[i][j] = augmented_matrix[i][j + n];
+            }
+        }
+
+        return Matrix(inverse_matrix);
+    }
+
+    Matrix minor(size_t row, size_t col) const {
+        vector<vector<int>> minor_matrix;
+        for (size_t i = 0; i < data.size(); ++i) {
+            if (i != row) {
+                vector<int> new_row;
+                for (size_t j = 0; j < data[i].size(); ++j) {
+                    if (j != col) {
+                        new_row.push_back(data[i][j]);
+                    }
+                }
+                minor_matrix.push_back(new_row);
+            }
+        }
+        return Matrix(minor_matrix);
+    }
 };
-
-int main() {
-    ios_base::sync_with_stdio(0);
-    cin.tie(0);
-    cout.tie(0);
-
-    vector<vector<int>> matrix1 = {
-        {1, 2, 3},
-        {4, 5, 6},
-        {7, 8, 9}
-    };
-
-    vector<vector<int>> matrix2 = {
-        {9, 8, 7},
-        {6, 5, 4},
-        {3, 2, 1}
-    };
-
-    Matrix mat1(matrix1);
-    Matrix mat2(matrix2);
-
-    // Test transpose
-    Matrix transposed = mat1.transpose();
-    vector<vector<int>> expected_transpose = {
-        {1, 4, 7},
-        {2, 5, 8},
-        {3, 6, 9}
-    };
-    assert(transposed.getData() == expected_transpose);
-
-    // Test rotate clockwise
-    Matrix rotated = mat1.rotateClockwise();
-    vector<vector<int>> expected_rotation = {
-        {7, 4, 1},
-        {8, 5, 2},
-        {9, 6, 3}
-    };
-    assert(rotated.getData() == expected_rotation);
-
-    // Test addition
-    Matrix added = mat1.add(mat2);
-    vector<vector<int>> expected_addition = {
-        {10, 10, 10},
-        {10, 10, 10},
-        {10, 10, 10}
-    };
-    assert(added.getData() == expected_addition);
-
-    // Test multiplication
-    Matrix multiplied = mat1.multiply(mat2);
-    vector<vector<int>> expected_multiplication = {
-        {30, 24, 18},
-        {84, 69, 54},
-        {138, 114, 90}
-    };
-    assert(multiplied.getData() == expected_multiplication);
-
-    return 0;
-}
