@@ -41,7 +41,7 @@ private:
             node->right = updatePoint(node->right, mid + 1, r, pos, val);
         }
 
-        node->maxVal = std::max(getMax(node->left), getMax(node->right));
+        node->maxVal = max(getMax(node->left), getMax(node->right));
 
         return node;
     }
