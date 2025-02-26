@@ -1,4 +1,4 @@
-struct Persistent_DSU {
+struct Stack_DSU {
     struct Trio {
         int x;
         int y;
@@ -9,7 +9,7 @@ struct Persistent_DSU {
     vector<int> rang;
     vector<Trio> condition;
 
-    Persistent_DSU(int n) {
+    Stack_DSU(int n) {
         head.resize(n);
         for (int i = 0; i < n; i++) {
             head[i] = i;
