@@ -15,10 +15,6 @@ public:
         private_add(word);
     }
 
-    int cnt(const string& prefix) {
-        return private_cnt(prefix);
-    }
-
     bool find(const string& word) {
         return private_find(word);
     }
@@ -34,23 +30,7 @@ private:
             }
 
             current = current->children[c];
-
-            current->count++;
         }
-    }
-
-    int private_cnt(const string& prefix) {
-        TrieNode* current = root;
-
-        for (char c : prefix) {
-            if (current->children.find(c) == current->children.end()) {
-                return 0;
-            }
-
-            current = current->children[c];
-        }
-
-        return current->count;
     }
 
     bool private_find(const string& word) {
