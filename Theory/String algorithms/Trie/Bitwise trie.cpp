@@ -23,9 +23,6 @@ public:
         private_remove(num);
     }
 
-    int query(int num) {
-        return private_query(num);
-    }
 private:
     TrieNode* root;
 
@@ -63,25 +60,5 @@ private:
 
             current = child;
         }
-    }
-
-    int private_query(int num) {
-        TrieNode* current = root;
-        int maxXOR = 0;
-
-        for (int i = 31; i >= 0; i--) {
-            bool bit = (num >> i) & 1;
-            bool oppositeBit = !bit;
-
-            if (current->children[oppositeBit] != nullptr) {
-                maxXOR |= (1 << i);
-                current = current->children[oppositeBit];
-            }
-            else {
-                current = current->children[bit];
-            }
-        }
-
-        return maxXOR;
     }
 };
