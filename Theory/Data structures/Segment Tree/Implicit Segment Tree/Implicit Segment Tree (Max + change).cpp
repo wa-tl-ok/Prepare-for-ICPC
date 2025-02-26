@@ -16,7 +16,7 @@ private:
         Node* left;
         Node* right;
 
-        Node() : maxVal(0), left(nullptr), right(nullptr) {}
+        Node() : maxVal(std::numeric_limits<int>::min()), left(nullptr), right(nullptr) {}
     };
 
     Node* root;
