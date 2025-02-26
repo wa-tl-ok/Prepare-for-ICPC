@@ -18,6 +18,7 @@ public:
     bool find(const string& word) {
         return private_find(word);
     }
+
 private:
     TrieNode* root;
 
