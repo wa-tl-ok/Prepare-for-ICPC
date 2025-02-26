@@ -53,24 +53,6 @@ public:
         last = cur;
     }
 
-    /*
-        Solving problem:
-            Given a string S [alh = {'a', 'b' ... 'z'}].
-            Find the number of different substrings of the string S.
-
-            --- O(S.size() + SuffixAutomaton.size()) ---
-    */
-
-    int Solve() {
-        int result = 0;
-        for (Node* state : states) {
-            if (state != root) {
-                result += state->len - state->link->len;
-            }
-        }
-        return result;
-    }
-
 private:
     Node* root;
     Node* last;
