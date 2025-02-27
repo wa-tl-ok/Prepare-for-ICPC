@@ -137,6 +137,7 @@ void Solve() {
     };
 
     int n, m; cin >> n >> m;
+    
     vector<Trio> edges;
 
     for (int i = 0; i < m; i++) {
