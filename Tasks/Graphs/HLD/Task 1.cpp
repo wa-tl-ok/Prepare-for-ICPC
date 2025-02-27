@@ -4,16 +4,14 @@ void Solve() {
     int n; cin >> n;
     int k; cin >> k;
 
-    HLD hld(n);
+    TREE g(n);
 
     for (int i = 0; i < n - 1; i++) {
         int u, v; cin >> u >> v;
         --u;
         --v;
-        hld.Add_edge(u, v);
+        g.Add_edge(u, v);
     }
-
-    hld.Decompose();
 
     vector<int> Upd(k);
     for (int i = 0; i < k; i++) {
@@ -21,14 +19,14 @@ void Solve() {
         Upd[i] -= 1;
     }
 
-    hld.change(Upd[0], 1);
+    g.plus(Upd[0], 1);
     for (int i = 1; i < k; i++) {
-        hld.change(Upd[0], Upd[i], 1);
+        g.plus(Upd[0], Upd[i], 1);
     }
 
     int ans = 0;
     for (int i = 0; i < n; i++) {
-        if (hld.Get_sum(i, i) > 0) {
+        if (g.Get_sum(i, i) > 0) {
             ++ans;
         }
     }
