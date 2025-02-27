@@ -36,6 +36,14 @@
     - Exotic Segment Tree
       - Bitwise Segment Tree
     - Implicit Segment Tree
+      - Implicit Segment Tree (Max + range change)
+      - Implicit Segment Tree (Max + change)
+      - Implicit Segment Tree (Max + range plus)
+      - Implicit Segment Tree (Max + plus)
+      - Implicit Segment Tree (Min + range change)
+      - Implicit Segment Tree (Min + change)
+      - Implicit Segment Tree (Min + range plus)
+      - Implicit Segment Tree (Min + plus)
       - Implicit Segment Tree (Sum + range change)
       - Implicit Segment Tree (Sum + change)
       - Implicit Segment Tree (Sum + range plus)
