@@ -148,11 +148,11 @@ public:
         hld(root);
     }
 
-    void Update(int v, int value) {
+    void plus(int v, int value) {
         Segment_Tree.plus(tin[v], tin[v], value);
     }
 
-    void Update(int u, int v, int value) {
+    void plus(int u, int v, int value) {
         while (!Check(head[u], v)) {
             Segment_Tree.plus(tin[head[u]], tin[u], value);
             u = P[head[u]];
@@ -168,6 +168,28 @@ public:
         }
 
         Segment_Tree.plus(tin[u], tin[v], value);
+    }
+
+    void change(int v, int value) {
+        Segment_Tree.change(tin[v], tin[v], value);
+    }
+
+    void change(int u, int v, int value) {
+        while (!Check(head[u], v)) {
+            Segment_Tree.change(tin[head[u]], tin[u], value);
+            u = P[head[u]];
+        }
+
+        while (!Check(head[v], u)) {
+            Segment_Tree.change(tin[head[v]], tin[v], value);
+            v = P[head[v]];
+        }
+
+        if (!Check(u, v)) {
+            swap(u, v);
+        }
+
+        Segment_Tree.change(tin[u], tin[v], value);
     }
 
     int Get_sum(int u, int v) {
