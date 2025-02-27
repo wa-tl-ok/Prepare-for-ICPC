@@ -17,14 +17,14 @@ private:
         Node* left;
         Node* right;
 
-        Node() : maxVal(std::numeric_limits<int>::min()), lazy(-1), left(nullptr), right(nullptr) {}
+        Node() : maxVal(std::numeric_limits<int>::min()), lazy(0), left(nullptr), right(nullptr) {}
     };
 
     Node* root;
     int n;
 
     void propagate(Node* node, int l, int r) {
-        if (!node || node->lazy == -1) {
+        if (!node || node->lazy == 0) {
             return;
         }
 
