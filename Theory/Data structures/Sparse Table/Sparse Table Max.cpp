@@ -28,6 +28,6 @@ public:
     }
 
     int query(int l, int r) {
-        return min(Stable[l][LOG2[r - l + 1]], Stable[r - (1 << LOG2[r - l + 1]) + 1][LOG2[r - l + 1]]);
+        return max(Stable[l][LOG2[r - l + 1]], Stable[r - (1 << LOG2[r - l + 1]) + 1][LOG2[r - l + 1]]);
     }
 };
