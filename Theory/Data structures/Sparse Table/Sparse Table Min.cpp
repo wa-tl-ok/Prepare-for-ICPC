@@ -1,11 +1,17 @@
-class Sparse_table_min {
+class Sparse_table {
 private:
     int N, K;
     vector<vector<int>> Stable;
+    vector<int> LOG2;
 public:
-    Sparse_table_min(const vector<int>& vec) {
+    Sparse_table(const vector<int>& vec) {
         this->N = (int)(vec.size());
         this->K = log2(N) + 2;
+
+        LOG2.resize(N + 1);;
+        for (int i = 0; i <= N; i++) {
+            LOG2[i] = log2(i);
+        }
 
         Stable.resize(N + 1);
 
@@ -22,18 +28,6 @@ public:
     }
 
     int query(int l, int r) {
-        int mn = 1e9;
-        int sz = r - l + 1;
-
-        for (int k = K; k >= 0; k--) {
-            if (sz >= (1 << k)) {
-                mn = min(mn, Stable[l][k]);
-                sz -= 1 << k;
-
-                l += 1 << k;
-            }
-        }
-
-        return mn;
+        return min(Stable[l][LOG2[r - l + 1]], Stable[r - (1 << LOG2[r - l + 1]) + 1][LOG2[r - l + 1]]);
     }
 };
