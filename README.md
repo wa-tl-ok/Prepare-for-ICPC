@@ -23,12 +23,12 @@
     - Heap min
   - Segment Tree
     - 2D Segment Tree
-      - Segment Tree (Max + change)
-      - Segment Tree (Max + plus)
-      - Segment Tree (Min + change)
-      - Segment Tree (Min + plus)
-      - Segment Tree (Sum + change)
-      - Segment Tree (Sum + plus)
+      - 2D Segment Tree (Max + change)
+      - 2D Segment Tree (Max + plus)
+      - 2D Segment Tree (Min + change)
+      - 2D Segment Tree (Min + plus)
+      - 2D Segment Tree (Sum + change)
+      - 2D Segment Tree (Sum + plus)
     - BIG Segment Tree
       - Segment Tree (Max + range update)
       - Segment Tree (Min + range update)
