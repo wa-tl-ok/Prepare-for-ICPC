@@ -126,9 +126,7 @@ struct DSU {
 };
 
 void Solve() {
-    int n, m;
-    cin >> n >> m;
-
+    int n, m; cin >> n >> m;
     vector<tuple<int, int, long long>> edges(m);
 
     for (int i = 0; i < m; ++i) {
