@@ -1,10 +1,10 @@
-class Sparse_table {
+class Sparse_table_min {
 private:
     int N, K;
     vector<vector<int>> Stable;
     vector<int> LOG2;
 public:
-    Sparse_table(const vector<int>& vec) {
+    Sparse_table_min(const vector<int>& vec) {
         this->N = (int)(vec.size());
         this->K = log2(N) + 2;
 
