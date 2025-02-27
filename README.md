@@ -48,9 +48,6 @@
       - Implicit Segment Tree (Sum + change)
       - Implicit Segment Tree (Sum + range plus)
       - Implicit Segment Tree (Sum + plus)
-    - Persistent Implicit Segment Tree
-      - Persistent Implicit Segment Tree (Sum + change)
-      - Persistent Implicit Segment Tree (Sum + plus)
   - Sparse Table
     - DST
     - Sparse Table Max
