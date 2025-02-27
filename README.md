@@ -65,7 +65,6 @@
     - Centroid decomposition
   - Flows
     - Dinic
-    - MCMF
   - HLD
     - HLD
   - LCA
