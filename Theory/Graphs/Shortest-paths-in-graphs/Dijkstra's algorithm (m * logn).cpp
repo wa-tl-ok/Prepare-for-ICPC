@@ -94,8 +94,7 @@ void Solve() {
     vector<long long> dist(n, (long long)1e18);
     vector<bool> vis(n, false);
 
-    int s, f;
-    cin >> s >> f;
+    int s, f; cin >> s >> f;
 
     --s;
     --f;
