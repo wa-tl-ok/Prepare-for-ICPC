@@ -141,7 +141,8 @@ void Solve() {
     vector<Trio> edges;
 
     for (int i = 0; i < m; i++) {
-        int u, v; long long w; cin >> u >> v >> w;
+        int u, v; long long w; 
+        cin >> u >> v >> w;
 
         Trio T;
         T.u = u;
