@@ -55,6 +55,37 @@
   - Treap
     - Base Treap
     - Treap
+- Graphs:
+  - Base tasks
+    - Articulation points
+    - Biconnectivity components
+    - Bridges
+    - Euler path
+  - Centroid decomposition
+    - Centroid decomposition
+  - Flows
+    - Dinic
+    - MCMF
+  - HLD
+    - HLD
+  - LCA
+    - LCA (n * logn + 1)
+    - LCA (n * logn + logn + online)
+    - LCA (n * logn + logn)
+    - LCA (n + logn)
+  - MST
+    - Boruvka's algorithm (m * logn)
+    - Kruskal's algorithm (m * logm)
+    - Prim's algorithm (m * logn)
+    - Prim's algorithm (n^2 + m)
+  - Shortest paths in graphs
+    - Find the negative weight cycle
+      - Bellman–Ford algorithm
+      - Floyd–Warshall algorithm
+    - Bellman–Ford algorithm
+    - Dijkstra's algorithm (m * logn)
+    - Dijkstra's algorithm (n^2 + m)
+    - Floyd–Warshall algorithm
 - Math:
   - Matrix
   - Sort
