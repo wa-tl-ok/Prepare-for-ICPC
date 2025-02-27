@@ -43,7 +43,7 @@ private:
             node->right->lazy = node->lazy;
         }
 
-        node->lazy = -1;
+        node->lazy = 0;
     }
 
     Node* updateRange(Node* node, int l, int r, int left, int right, int val) {
