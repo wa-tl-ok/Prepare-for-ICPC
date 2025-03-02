@@ -77,6 +77,9 @@
     - Kruskal's algorithm (m * logm)
     - Prim's algorithm (m * logn)
     - Prim's algorithm (n^2 + m)
+  - SCC and Top sort
+    - SCC
+    - Top sort
   - Shortest paths in graphs
     - Find the negative weight cycle
       - Bellman–Ford algorithm
