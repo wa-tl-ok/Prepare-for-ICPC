@@ -75,8 +75,6 @@ const double PI = 3.141592653589793;
 string alh = "abcdefghijklmnopqrstuvwxyz";
 string ALH = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
-using namespace std;
-
 class SCC_GRAPH {
 public:
     SCC_GRAPH(vector<vector<int>>& g) {
