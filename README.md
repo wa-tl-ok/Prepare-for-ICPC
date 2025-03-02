@@ -56,6 +56,8 @@
     - Base Treap
     - Treap
 - Graphs:
+  - 2SAT
+    - 2SAT
   - Base tasks
     - Articulation points
     - Biconnectivity components
