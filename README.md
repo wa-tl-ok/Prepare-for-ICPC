@@ -106,3 +106,13 @@
   - Trie
     - Alh Trie
     - Bitwise Trie
+
+
+
+What can be improved?
+  - Mo3D
+  - Suffix Tree
+  - MCMF
+  - Maximum cardinality matching
+    - Bipartite graph
+    - Ordinary graph
