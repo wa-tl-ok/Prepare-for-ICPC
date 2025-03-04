@@ -117,3 +117,5 @@ What can be improved?
     - Bipartite graph
     - Ordinary graph
   - DCP offline
+  - MST in a weighted directed graph
+  - Dominator Tree
