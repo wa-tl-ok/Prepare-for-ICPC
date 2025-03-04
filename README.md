@@ -121,3 +121,12 @@ What can be improved?
   - Link Cut Tree
   - MST in a weighted directed graph
   - Dominator Tree
+  - Persistent structures:
+    - Base persistent structures
+      - Persistent stack
+      - Persistent queue
+      - Persistent deque
+    - Persistent DSU
+    - Persistent Fenwick Tree
+    - Persistent Heap
+    - Persistent Segment Tree
