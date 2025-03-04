@@ -116,11 +116,15 @@ What can be improved?
   - Maximum cardinality matching
     - Bipartite graph
     - Ordinary graph
-  - DCP offline
-  - Splay Tree
-  - Link Cut Tree
-  - MST in a weighted directed graph
-  - Dominator Tree
+  Special chapters of algorithms:
+    - Splay Tree and Link Cut Tree
+      - Splay Tree
+      - Link Cut Tree
+    - MST in a weighted directed graph
+    - Dominator Tree
+    - DCP
+      - DCP offline
+      - DCP online
   - Persistent structures:
     - Base persistent structures
       - Persistent stack
