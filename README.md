@@ -116,7 +116,7 @@ What can be improved?
   - Maximum cardinality matching
     - Bipartite graph
     - Ordinary graph
-  Special chapters of algorithms:
+  - Special chapters of algorithms:
     - Splay Tree and Link Cut Tree
       - Splay Tree
       - Link Cut Tree
