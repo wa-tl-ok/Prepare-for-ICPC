@@ -103,6 +103,7 @@
   - namecpace MATH
 - String algorithms:
   - Linear algorithms
+    - Duval decomposition
     - Prefix Function
     - Z Function
   - Aho-Corasick
