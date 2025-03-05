@@ -14,6 +14,16 @@ public:
         states.push_back(root);
     }
 
+    SuffixAutomaton(string s) {
+        root = new Node(0);
+        last = root;
+        states.push_back(root);
+
+        for (char c : s) {
+            go(c);
+        }
+    }
+
     void go(char c) {
         Node* cur = new Node(last->len + 1);
         states.push_back(cur);
