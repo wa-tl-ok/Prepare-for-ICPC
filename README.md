@@ -113,11 +113,20 @@
 
 
 What can be improved?
-  - Suffix Tree
-  - MCMF
-  - Maximum cardinality matching
-    - Bipartite graph
-    - Ordinary graph
+  - Flows:
+    - Max flow
+      - Dinic
+      - Push-relabel
+      - Raise to top
+    - Maximum cardinality matching
+      - Bipartite graph
+      - Ordinary graph
+    - Min cut
+      - Stohr-Wagner algorithm
+      - Karger's algorithm
+    - MCMF
+      - MCMF
+    - Hungarian algorithm
   - Special chapters of algorithms:
     - Splay Tree and Link Cut Tree
       - Splay Tree
