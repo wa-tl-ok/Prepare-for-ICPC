@@ -137,7 +137,7 @@ What can be improved?
       - DCP offline
       - DCP online
     - Matroid intersection
-    - Wavelet tree
+    - Wavelet Tree
   - Persistent structures:
     - Base persistent structures
       - Persistent stack
