@@ -106,9 +106,12 @@
     - Prefix Function
     - Z Function
   - Aho-Corasick
+  - Duval decomposition
+  - Eertree
   - Hash
   - Suffix Array
   - Suffix Automaton
+  - Suffix Tree
   - Trie
     - Alh Trie
     - Bitwise Trie
@@ -136,6 +139,8 @@ What can be improved?
     - DCP
       - DCP offline
       - DCP online
+    - Matroid intersection
+    - 
   - Persistent structures:
     - Base persistent structures
       - Persistent stack
