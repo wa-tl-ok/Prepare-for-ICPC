@@ -96,6 +96,9 @@
     - Mo
     - Mo3D
   - Sort
+    - ...
+    - ...
+    - ...
   - Sqrt Decomposition (Sum + range update)
   - namecpace MATH
 - String algorithms:
@@ -110,8 +113,6 @@
     - Alh Trie
     - Bitwise Trie
 
-
-
 What can be improved?
   - Flows:
     - Max flow
@@ -125,7 +126,6 @@ What can be improved?
       - Stohr-Wagner algorithm
       - Karger's algorithm
     - MCMF
-      - MCMF
     - Hungarian algorithm
   - Special chapters of algorithms:
     - Splay Tree and Link Cut Tree
