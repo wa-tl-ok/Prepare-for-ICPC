@@ -6,13 +6,14 @@ public:
 
         bool term;
 
-        int count;
-
         TrieNode() :
             parent(nullptr),
-            term(false),
-            count(0) {}
+            term(false) {}
+
+        int num = 0;
     };
+
+    int NUM = 0;
 
     Aho_Corasick() {
         root = new TrieNode();
@@ -25,8 +26,12 @@ public:
     void add(const string& word) {
         TrieNode* current = root;
 
+        root->num = 0;
+
         for (int i = 0; i < word.size(); i++) {
             char c = word[i];
+
+            NUM += 1;
 
             if (current->children.find(c) == current->children.end()) {
                 current->children[c] = new TrieNode();
@@ -38,6 +43,8 @@ public:
             }
 
             current = current->children[c];
+
+            current->num = NUM;
         }
 
         current->term = true;
