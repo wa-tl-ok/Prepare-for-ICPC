@@ -69,6 +69,8 @@ public:
 
 
     Mo(vector<pair<int, int>> Q_, vector<int> a_) : a(a_) {
+        BLOCK_SIZE = (int)sqrt((int)a.size()) + 1;
+        
         for (int i = 0; i < (int)Q_.size(); i++) {
             Q.push_back({ Q_[i].first, Q_[i].second, i });
         } 
