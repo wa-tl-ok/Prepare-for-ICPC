@@ -1,4 +1,4 @@
-const int BLOCK_SIZE = 1000;
+int BLOCK_SIZE = 1000;
 
 class Mo {
 public:
