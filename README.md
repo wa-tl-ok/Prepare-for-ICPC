@@ -65,8 +65,6 @@
     - Euler path
   - Centroid decomposition
     - Centroid decomposition
-  - Flows
-    - Dinic
   - HLD
     - HLD
   - LCA
