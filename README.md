@@ -92,6 +92,9 @@
     - Floyd–Warshall algorithm
 - Math:
   - Matrix
+  - Mo
+    - Mo
+    - Mo3D
   - Sort
   - Sqrt Decomposition (Sum + range update)
   - namecpace MATH
@@ -110,7 +113,6 @@
 
 
 What can be improved?
-  - Mo3D
   - Suffix Tree
   - MCMF
   - Maximum cardinality matching
