@@ -107,6 +107,7 @@
     - Prefix Function
     - Z Function
   - Aho-Corasick
+  - Eertee
   - Hash
   - Suffix Array
   - Suffix Automaton
