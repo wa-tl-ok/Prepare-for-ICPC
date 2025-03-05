@@ -17,7 +17,7 @@ public:
 
     Aho_Corasick() {
         root = new TrieNode();
-        for (char c = 'a'; c <= 'b'; ++c) {
+        for (char c = 'a'; c <= 'z'; ++c) {
             alh.push_back(c);
         }
         A = (int)alh.size();
