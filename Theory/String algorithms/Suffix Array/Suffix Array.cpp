@@ -1,6 +1,6 @@
 class Suffix_Array {
 public:
-    Suffix_Array(string& s) {
+    Suffix_Array(string s) {
         vector<int> p;
         vector<int> c;
 
