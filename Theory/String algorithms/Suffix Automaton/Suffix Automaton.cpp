@@ -1,4 +1,4 @@
-class SuffixAutomaton {
+class Suffix_Automaton {
 public:
     struct Node {
         int len;
@@ -8,13 +8,13 @@ public:
         Node(int length) : len(length), link(nullptr) {}
     };
 
-    SuffixAutomaton() {
+    Suffix_Automaton() {
         root = new Node(0);
         last = root;
         states.push_back(root);
     }
 
-    SuffixAutomaton(string s) {
+    Suffix_Automaton(string s) {
         root = new Node(0);
         last = root;
         states.push_back(root);
@@ -66,5 +66,6 @@ public:
 private:
     Node* root;
     Node* last;
+
     vector<Node*> states;
 };
