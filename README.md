@@ -119,7 +119,7 @@ What can be improved?
       - Dinic
       - Push-relabel
       - Raise to top
-    - Maximum cardinality matching
+    - Maximum weighted matching
       - Bipartite graph
       - Ordinary graph
     - Min cut
