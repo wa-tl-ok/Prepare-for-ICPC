@@ -1,3 +1,5 @@
+const int BLOCK_SIZE = 1000;
+
 class Mo {
 public:
     struct QUERY {
