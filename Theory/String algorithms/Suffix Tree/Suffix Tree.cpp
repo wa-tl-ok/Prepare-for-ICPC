@@ -6,27 +6,46 @@ public:
 
         int len;
         int fpos;
+        int id;
 
-        Node(int fpos_, int len_) : 
-            link(nullptr), 
-            
-            len(len_), 
-            fpos(fpos_) {}
+        Node(int fpos_, int len_, int id_) :
+            link(nullptr),
+
+            len(len_),
+            fpos(fpos_),
+            id(id_) {}
     };
 
     Suffix_Tree(string s) {
         S = "";
         N = 0;
 
-        root = new Node(0, INF);
+        root = new Node(0, INF, 0);
         root->link = root;
+
+        NODES.push_back(root);
 
         node = root;
         pos = 0;
 
         for (int i = 0; i < s.size(); i++) {
             add_letter(s[i]);
+            PRINT();
         }
+    }
+
+    void PRINT() {
+        cout << "Tree Structure:\n";
+        for (auto node : NODES) {
+            cout << "Node " << node->id << " (fpos=" << node->fpos << ", len=" << node->len << ")\n";
+            if (node->link != nullptr) {
+                cout << "  Suffix link to Node " << node->link->id << "\n";
+            }
+            for (auto& edge : node->to) {
+                cout << "  Transition: '" << edge.first << "' -> Node " << edge.second->id << "\n";
+            }
+        }
+        cout << "End of Tree Structure\n\n";
     }
 
 private:
@@ -55,7 +74,7 @@ private:
             char edge = S[N - pos];
 
             if (!node->to.count(edge)) {
-                Node* leaf = new Node(N - pos, INF);
+                Node* leaf = new Node(N - pos, INF, NODES.size());                        NODES.push_back(leaf);
                 node->to[edge] = leaf;
 
                 if (last != root) {
@@ -63,8 +82,6 @@ private:
                 }
 
                 last = root;
-
-                NODES.push_back(leaf);
             }
             else {
                 if (node->to[edge]->fpos + pos - 1 < S.size() && S[node->to[edge]->fpos + pos - 1] == c) {
@@ -74,21 +91,20 @@ private:
                     return;
                 }
 
-                Node* split = new Node(node->to[edge]->fpos, pos - 1);
+                Node* split = new Node(node->to[edge]->fpos, pos - 1, NODES.size());      NODES.push_back(split);
 
-                split->to[c] = new Node(N - 1, INF);
+                split->to[c] = new Node(N - 1, INF, NODES.size());                        NODES.push_back(split->to[c]);
                 split->to[S[node->to[edge]->fpos + pos - 1]] = node->to[edge];
 
                 node->to[edge]->fpos += pos - 1;
                 node->to[edge]->len -= pos - 1;
 
-                last->link = split;
+                if (last != root) {
+                    last->link = split;
+                }
 
                 node->to[edge] = split;
                 last = split;
-
-                NODES.push_back(split->to[c]);
-                NODES.push_back(split);
             }
 
             if (node == root) {
