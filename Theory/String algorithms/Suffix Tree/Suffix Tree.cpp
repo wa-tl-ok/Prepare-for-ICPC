@@ -30,22 +30,7 @@ public:
 
         for (int i = 0; i < s.size(); i++) {
             add_letter(s[i]);
-            PRINT();
         }
-    }
-
-    void PRINT() {
-        cout << "Tree Structure:\n";
-        for (auto node : NODES) {
-            cout << "Node " << node->id << " (fpos=" << node->fpos << ", len=" << node->len << ")\n";
-            if (node->link != nullptr) {
-                cout << "  Suffix link to Node " << node->link->id << "\n";
-            }
-            for (auto& edge : node->to) {
-                cout << "  Transition: '" << edge.first << "' -> Node " << edge.second->id << "\n";
-            }
-        }
-        cout << "End of Tree Structure\n\n";
     }
 
 private:
@@ -91,9 +76,9 @@ private:
                     return;
                 }
 
-                Node* split = new Node(node->to[edge]->fpos, pos - 1, NODES.size());      NODES.push_back(split);
+                Node* split = new Node(node->to[edge]->fpos, pos - 1, NODES.size());      NODES.push_back(split); cout << '\n' << "Created node: " << NODES.back()->id << '\n' << '\n';
 
-                split->to[c] = new Node(N - 1, INF, NODES.size());                        NODES.push_back(split->to[c]);
+                split->to[c] = new Node(N - 1, INF, NODES.size());                        NODES.push_back(split->to[c]); cout << '\n' << "Created node: " << NODES.back()->id << '\n' << '\n';
                 split->to[S[node->to[edge]->fpos + pos - 1]] = node->to[edge];
 
                 node->to[edge]->fpos += pos - 1;
