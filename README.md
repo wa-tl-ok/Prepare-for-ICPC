@@ -109,6 +109,7 @@
   - Hash
   - Suffix Array
   - Suffix Automaton
+  - Suffix Tree
   - Trie
     - Alh Trie
     - Bitwise Trie
