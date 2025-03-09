@@ -1,1 +1,2 @@
-Task A: https://codeforces.com/problemset/problem/2043/C?locale=en ---> [Math, 1600]
+Task A: https://codeforces.com/problemset/problem/2043/C?locale=en   --->   [Math, 1600]
+Task B: https://codeforces.com/problemset/problem/607/A?locale=en    --->   [Binary search, DP, 1600]
