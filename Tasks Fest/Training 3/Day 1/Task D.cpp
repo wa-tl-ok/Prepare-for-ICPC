@@ -36,7 +36,7 @@ using namespace std;
 // #pragma GCC optimize("Ofast") 
 // #pragma GCC target("avx2,bmi,bmi2,lzcnt,popcnt")
 
-// #define int               long long 
+#define int               long long 
 #define sz(x)             ((int)(x).size()) 
 #define mp                make_pair 
 #define all(x)            (x).begin(), (x).end() 
