@@ -6,3 +6,4 @@ Task D: https://codeforces.com/problemset/problem/1381/A2?locale=en  --->  1700 
 Task E: https://codeforces.com/problemset/problem/1396/B?locale=en   --->  1800 [Games, Greedy]
 Task F: https://codeforces.com/problemset/problem/1355/C?locale=en   --->  1800 [Math, Binary search]
 Task G: https://codeforces.com/problemset/problem/61/E?locale=en     --->  1900 [Data structures]
+Task H: https://codeforces.com/problemset/problem/1328/E?locale=en   --->  1900 [Data structures, Trees]
