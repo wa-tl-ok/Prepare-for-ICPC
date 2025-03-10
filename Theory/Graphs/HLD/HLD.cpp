@@ -1,3 +1,18 @@
+/*
+TREE(n) - Построить дерево с n вершинами
+Add_edge(u, v) - Добавить ребро между вершинами u и v
+
+plus(int v, int value) - Добавить value к вершине v
+plus(int u, int v, int value) - Добавить value к каждой вершине на пути u - v
+
+change(int v, int value) - Обновить значение в вершине v
+change(int u, int v, int value) - Обновить значение в каждой вершине на пути u - v
+
+Get_max(int u, int v) - Найти максимум на пути u - v
+Get_min(int u, int v) - Найти минимум на пути u - v
+Get_sum(int u, int v) - Найти сумму на пути u - v
+*/
+
 class TREE {
 public:
     TREE(int size) : n(size), timer(0), count_edges(0), 
