@@ -1,6 +1,7 @@
 Codeforces:
-Task A: https://codeforces.com/problemset/problem/2043/C?locale=en   --->   [Math, 1600]
-Task B: https://codeforces.com/problemset/problem/607/A?locale=en    --->   [Binary search, DP, 1600]
-Task C: https://codeforces.com/problemset/problem/1538/D?locale=en   --->   [Math, 1700]
-Task D: https://codeforces.com/problemset/problem/1381/A2?locale=en  --->   [Data structures, 1700]
-Task E: https://codeforces.com/problemset/problem/1396/B?locale=en   --->   [Games, Greedy, 1800]
+Task A: https://codeforces.com/problemset/problem/2043/C?locale=en   --->  1600 [Math]
+Task B: https://codeforces.com/problemset/problem/607/A?locale=en    --->  1600 [Binary search, DP]
+Task C: https://codeforces.com/problemset/problem/1538/D?locale=en   --->  1700 [Math]
+Task D: https://codeforces.com/problemset/problem/1381/A2?locale=en  --->  1700 [Data structures]
+Task E: https://codeforces.com/problemset/problem/1396/B?locale=en   --->  1800 [Games, Greedy]
+Task F: https://codeforces.com/problemset/problem/1355/C?locale=en   --->  1800 [Math, Binary search]
