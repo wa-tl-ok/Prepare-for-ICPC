@@ -2,4 +2,5 @@ Codeforces:
 Task A: https://codeforces.com/problemset/problem/2043/C?locale=en   --->   [Math, 1600]
 Task B: https://codeforces.com/problemset/problem/607/A?locale=en    --->   [Binary search, DP, 1600]
 Task C: https://codeforces.com/problemset/problem/1538/D?locale=en   --->   [Math, 1700]
-Kask D: https://codeforces.com/problemset/problem/1381/A2?locale=en  --->   [Data structures, 1700]
+Task D: https://codeforces.com/problemset/problem/1381/A2?locale=en  --->   [Data structures, 1700]
+Task E: https://codeforces.com/problemset/problem/1396/B?locale=en   --->   [Games, Greedy, 1800]
