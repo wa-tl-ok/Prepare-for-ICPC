@@ -1,2 +1,3 @@
 Codeforces:
 Task A: https://codeforces.com/problemset/problem/1045/I?locale=en   --->  1600 [Strings]
+Task H: https://codeforces.com/problemset/problem/1658/D2?locale=en  --->  2300 [Bitmasks, Math]
