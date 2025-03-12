@@ -1,3 +1,4 @@
 Codeforces:
 Task A: https://codeforces.com/problemset/problem/1045/I?locale=en   --->  1600 [Strings]
+Task E: https://codeforces.com/problemset/problem/1830/B?locale=en   --->  2000 [Math]
 Task H: https://codeforces.com/problemset/problem/1658/D2?locale=en  --->  2300 [Bitmasks, Math]
