@@ -5,5 +5,5 @@ Task C: https://codeforces.com/problemset/problem/46/D?locale=en     --->  1800 
 Task D: https://codeforces.com/problemset/problem/607/B?locale=en    --->  1900 [DP, Math]
 Task E: https://codeforces.com/problemset/problem/1830/B?locale=en   --->  2000 [Math]
 Task F: https://codeforces.com/problemset/problem/1667/B?locale=en   --->  2100 [DP, Data structures, Math]
-Task G: https://codeforces.com/problemset/problem/1986/G1?locale=en  --->  2200 []
+Task G: https://codeforces.com/problemset/problem/1986/G1?locale=en  --->  2200 [Combinatorics, Math]
 Task H: https://codeforces.com/problemset/problem/1658/D2?locale=en  --->  2300 [Bitmasks, Math]
