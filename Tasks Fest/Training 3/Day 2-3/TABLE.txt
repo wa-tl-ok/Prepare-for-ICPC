@@ -4,5 +4,5 @@ Task B: https://codeforces.com/problemset/problem/2010/C2?locale=en  --->  1700 
 Task C: https://codeforces.com/problemset/problem/46/D?locale=en     --->  1800 [Implementation]
 Task D: https://codeforces.com/problemset/problem/607/B?locale=en    --->  1900 [DP, Math]
 Task E: https://codeforces.com/problemset/problem/1830/B?locale=en   --->  2000 [Math]
-Task F: https://codeforces.com/problemset/problem/1667/B?locale=en   --->  2100 [DP, Math]
+Task F: https://codeforces.com/problemset/problem/1667/B?locale=en   --->  2100 [DP, Data structures, Math]
 Task H: https://codeforces.com/problemset/problem/1658/D2?locale=en  --->  2300 [Bitmasks, Math]
