@@ -1,0 +1,9 @@
+Codeforces:
+Task A: https://codeforces.com/problemset/problem/993/A?locale=en    --->  1600 [Geometry]
+Task B: 
+Task C: https://codeforces.com/problemset/problem/1131/F?locale=en   --->  1700 [Data structures]
+Task D: 
+Task E: https://codeforces.com/problemset/problem/1324/F?locale=en   --->  1800 [DP, Trees]
+Task F: 
+Task G: https://codeforces.com/problemset/problem/1739/D?locale=en   --->  1900 [DP, Binary search, Trees]
+Task H: 
