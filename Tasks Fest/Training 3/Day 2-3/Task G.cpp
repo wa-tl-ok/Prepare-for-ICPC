@@ -75,10 +75,6 @@ const double PI = 3.141592653589793;
 string alh = "abcdefghijklmnopqrstuvwxyz";
 string ALH = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
-const int MAXN = 1e5 + 5;
-
-vector<int> DIVS[MAXN];
-
 int gcd(int a, int b) {
     while (b != 0) {
         int temp = b; b = a % b; a = temp;
@@ -106,13 +102,28 @@ void Solve() {
         ind[i] = ind[i] / g;
     }
 
+    vector<bool> F(n + 1, true);
+    for (int i = 0; i < n; i++) {
+        F[ind[i]] = true;
+    }
+
     vector<unordered_map<int, int>> CNT(n + 1);
 
     int ans = 0;
 
     for (int i = 0; i < n; i++) {
         int a = p[i]; int b = ind[i];
-        for (auto q : DIVS[a]) {
+        vector<int> divs;
+        for (int d = 1; d * d <= a; d++) {
+            if (a % d == 0) {
+                divs.push_back(d);
+                divs.push_back(a / d);
+            }
+        }
+        if (divs.size() > 1 && divs[divs.size() - 1] == divs[divs.size() - 2]) {
+            divs.pop_back();
+        }
+        for (auto q : divs) {
             if (q <= n) {
                 ans += CNT[b][q];
             }
@@ -120,8 +131,8 @@ void Solve() {
                 break;
             }
         }
-        for (auto q : DIVS[a]) {
-            if (q <= n) {
+        for (auto q : divs) {
+            if (q <= n && F[q] == true) {
                 ++CNT[q][b];
             }
             else {
@@ -137,12 +148,6 @@ signed main() {
     ios_base::sync_with_stdio(false);
     cin.tie(0);
     cout.tie(0);
-
-    for (int i = 1; i < MAXN; i++) {
-        for (int j = i; j < MAXN; j += i) {
-            DIVS[j].push_back(i);
-        }
-    }
 
     /*
                       ________________
