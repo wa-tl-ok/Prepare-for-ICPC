@@ -78,21 +78,21 @@ string ALH = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 class SCC_GRAPH {
 public:
     SCC_GRAPH(vector<vector<int>>& g) {
-        int n = (int)g.size() / 4;
+        int n = (int)g.size() / 2;
 
-        vector<vector<int>> r_g(4 * n);
-        for (int u = 0; u < 4 * n; u++) {
+        vector<vector<int>> r_g(2 * n);
+        for (int u = 0; u < 2 * n; u++) {
             for (auto v : g[u]) {
                 r_g[v].push_back(u);
             }
         }
 
-        vector<int> vis(4 * n);
-        for (int i = 0; i < 4 * n; i++) {
+        vector<int> vis(2 * n);
+        for (int i = 0; i < 2 * n; i++) {
             vis[i] = false;
         }
 
-        for (int u = 0; u < 4 * n; u++) {
+        for (int u = 0; u < 2 * n; u++) {
             if (vis[u] == false) {
                 dfs(u, g, vis);
             }
@@ -100,31 +100,31 @@ public:
 
         reverse(top_sort.begin(), top_sort.end());
 
-        scc.resize(4 * n);
-        for (int i = 0; i < 4 * n; i++) {
+        scc.resize(2 * n);
+        for (int i = 0; i < 2 * n; i++) {
             scc[i] = -1;
         }
 
-        for (int i = 0; i < 2 * n; i++) {
+        for (int i = 0; i < n; i++) {
             if (scc[top_sort[i]] == -1) {
                 ++color;
                 Go(top_sort[i], r_g);
                 ++color;
-                Go(top_sort[i + 2 * n], r_g);
+                Go(top_sort[i + n], r_g);
             }
         }
 
         N = color + 1;
 
-        for (int u = 0; u < 2 * n; u++) {
-            if (scc[u] == scc[u + 2 * n]) {
+        for (int u = 0; u < n; u++) {
+            if (scc[u] == scc[u + n]) {
                 Flag = false;
                 return;
             }
         }
 
         vector<set<int>> GG(N);
-        for (int u = 0; u < 4 * n; u++) {
+        for (int u = 0; u < 2 * n; u++) {
             for (int v : g[u]) {
                 if (scc[u] != scc[v]) {
                     GG[scc[u]].insert(scc[v]);
@@ -190,7 +190,7 @@ private:
 
 void Solve() {
     int n, m; cin >> n >> m;
-    vector<vector<int>> g(4 * n);
+    vector<vector<int>> g(2 * n);
 
     function<void(int, int)> add = [&](int u, int v) {
         g[u].push_back(v);
@@ -198,23 +198,24 @@ void Solve() {
 
     /*
         add(u) if +
-        add(u + 2 * n) if -
+        add(u + n) if -
     */
 
-    for (int i = 0; i < n; i++) {
+    int q; cin >> q;
+    for (int i = 0; i < q; i++) {
         int u, v; cin >> u >> v;
         --u; --v;
-        add(u + 2 * n, v);
-        add(u, v + 2 * n);
-        add(v + 2 * n, u);
-        add(v, u + 2 * n);
+        add(u + n, v);
+        add(u, v + n);
+        add(v + n, u);
+        add(v, u + n);
     }
 
     for (int i = 0; i < m; i++) {
         int u, v; cin >> u >> v;
         --u; --v;
-        add(u, v + 2 * n);
-        add(v, u + 2 * n);
+        add(u, v + n);
+        add(v, u + n);
     }
 
     SCC_GRAPH Graph(g);
@@ -230,7 +231,7 @@ void Solve() {
     vector<int> top_sort = Graph.Get_top_sort();
 
     map<int, vector<int>> Nodes_in_Comp;
-    for (int i = 0; i < 4 * n; i++) {
+    for (int i = 0; i < 2 * n; i++) {
         Nodes_in_Comp[scc[i]].push_back(i);
     }
 
@@ -273,7 +274,7 @@ void Solve() {
         else {
             VIS[u] = true;
             for (auto w : Nodes_in_Comp[u]) {
-                if (w < 2 * n) {
+                if (w < n) {
                     cout << w + 1 << ' ';
                 }
             }
