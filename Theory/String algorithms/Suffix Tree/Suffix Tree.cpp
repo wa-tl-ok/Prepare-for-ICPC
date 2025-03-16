@@ -76,9 +76,9 @@ private:
                     return;
                 }
 
-                Node* split = new Node(node->to[edge]->fpos, pos - 1, NODES.size());      NODES.push_back(split); cout << '\n' << "Created node: " << NODES.back()->id << '\n' << '\n';
+                Node* split = new Node(node->to[edge]->fpos, pos - 1, NODES.size());      NODES.push_back(split);
 
-                split->to[c] = new Node(N - 1, INF, NODES.size());                        NODES.push_back(split->to[c]); cout << '\n' << "Created node: " << NODES.back()->id << '\n' << '\n';
+                split->to[c] = new Node(N - 1, INF, NODES.size());                        NODES.push_back(split->to[c]);
                 split->to[S[node->to[edge]->fpos + pos - 1]] = node->to[edge];
 
                 node->to[edge]->fpos += pos - 1;
