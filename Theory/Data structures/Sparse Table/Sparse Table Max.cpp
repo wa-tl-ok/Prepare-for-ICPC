@@ -8,7 +8,7 @@ public:
         this->N = (int)(vec.size());
         this->K = log2(N) + 2;
 
-        LOG2.resize(N + 1);;
+        LOG2.resize(N + 1);
         for (int i = 0; i <= N; i++) {
             LOG2[i] = log2(i);
         }
