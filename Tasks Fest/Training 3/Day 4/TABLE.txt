@@ -6,4 +6,4 @@ Task D: https://codeforces.com/problemset/problem/1770/C?locale=en   --->  1700 
 Task E: https://codeforces.com/problemset/problem/1324/F?locale=en   --->  1800 [DP, Trees]
 Task F: https://codeforces.com/problemset/problem/2025/D?locale=en   --->  1800 [DP, Data structures]
 Task G: https://codeforces.com/problemset/problem/1739/D?locale=en   --->  1900 [DP, Binary search, Trees]
-Task H: 
+Task H: https://codeforces.com/problemset/problem/691/E?locale=en    --->  1900 [Matrices]
