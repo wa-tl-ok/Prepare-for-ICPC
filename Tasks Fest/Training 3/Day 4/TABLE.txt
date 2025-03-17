@@ -4,6 +4,6 @@ Task B: https://codeforces.com/problemset/problem/1920/C?locale=en   --->  1600 
 Task C: https://codeforces.com/problemset/problem/1131/F?locale=en   --->  1700 [Data structures]
 Task D: https://codeforces.com/problemset/problem/1770/C?locale=en   --->  1700 [Math]
 Task E: https://codeforces.com/problemset/problem/1324/F?locale=en   --->  1800 [DP, Trees]
-Task F: https://codeforces.com/problemset/problem/2025/D?locale=en   --->  1800 [DP]
+Task F: https://codeforces.com/problemset/problem/2025/D?locale=en   --->  1800 [DP, Data structures]
 Task G: https://codeforces.com/problemset/problem/1739/D?locale=en   --->  1900 [DP, Binary search, Trees]
 Task H: 
