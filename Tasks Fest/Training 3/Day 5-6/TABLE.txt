@@ -1,7 +1,7 @@
 Codeforces:
 Task A: https://codeforces.com/problemset/problem/1607/E?locale=en   --->  1600 []
 Task B: https://codeforces.com/problemset/problem/1999/G2?locale=en  --->  1700 [Interactive]
-Task C: https://codeforces.com/problemset/problem/1131/F?locale=en   --->  1700 [Data structures]
+Task C: https://codeforces.com/problemset/problem/1848/C?locale=en   --->  1800 [Math]
 Task D: https://codeforces.com/problemset/problem/1770/C?locale=en   --->  1700 [Math]
 Task E: https://codeforces.com/problemset/problem/1324/F?locale=en   --->  1800 [DP, Trees]
 Task F: https://codeforces.com/problemset/problem/2025/D?locale=en   --->  1800 [DP, Data structures]
