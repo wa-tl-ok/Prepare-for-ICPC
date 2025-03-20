@@ -4,6 +4,6 @@ Task B: https://codeforces.com/problemset/problem/1999/G2?locale=en  --->  1700 
 Task C: https://codeforces.com/problemset/problem/1848/C?locale=en   --->  1800 [Math]
 Task D: https://codeforces.com/problemset/problem/1974/F?locale=en   --->  1900 [Binary search]
 Task E: https://codeforces.com/problemset/problem/1923/E?locale=en   --->  2000 [DP, Trees, Transfusion]
-Task F: https://codeforces.com/problemset/problem/2025/D?locale=en   --->  1800 [DP, Data structures]
+Task F: https://codeforces.com/problemset/problem/1906/F?locale=en   --->  2100 [Data structures]
 Task G: https://codeforces.com/problemset/problem/1739/D?locale=en   --->  1900 [DP, Binary search, Trees]
 Task H: https://codeforces.com/problemset/problem/691/E?locale=en    --->  1900 [Matrices]
