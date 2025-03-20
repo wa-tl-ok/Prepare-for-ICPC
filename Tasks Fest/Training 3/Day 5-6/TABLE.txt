@@ -5,5 +5,5 @@ Task C: https://codeforces.com/problemset/problem/1848/C?locale=en   --->  1800 
 Task D: https://codeforces.com/problemset/problem/1974/F?locale=en   --->  1900 [Binary search]
 Task E: https://codeforces.com/problemset/problem/1923/E?locale=en   --->  2000 [DP, Trees, Transfusion]
 Task F: https://codeforces.com/problemset/problem/1906/F?locale=en   --->  2100 [Data structures]
-Task G: https://codeforces.com/problemset/problem/1854/B?locale=en   --->  2200 [Bitmasks]
+Task G: https://codeforces.com/problemset/problem/1854/B?locale=en   --->  2200 [Bitmasks, DP]
 Task H: https://codeforces.com/problemset/problem/1675/G?locale=en   --->  2300 [DP]
