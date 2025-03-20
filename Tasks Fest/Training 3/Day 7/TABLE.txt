@@ -5,5 +5,5 @@ Task C: https://codeforces.com/problemset/problem/1889/B?locale=en   --->  1700 
 Task D: 
 Task E: 
 Task F: 
-Task G: 
+Task G: https://codeforces.com/problemset/problem/1928/D?locale=en   --->  1900 [Ternary search]
 Task H: 
