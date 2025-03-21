@@ -2,7 +2,7 @@ Codeforces:
 Task A: https://codeforces.com/problemset/problem/1609/D?locale=en   --->  1600 [DSU]
 Task B: https://codeforces.com/problemset/problem/1928/C?locale=en   --->  1600 [Math]
 Task C: https://codeforces.com/problemset/problem/1889/B?locale=en   --->  1700 [Math]
-Task D: https://codeforces.com/problemset/problem/1995/B2?locale=en  --->  1700 [Binary search]
+Task D: https://codeforces.com/problemset/problem/1995/B2?locale=en  --->  1700 [Math]
 Task E: 
 Task F: 
 Task G: https://codeforces.com/problemset/problem/1928/D?locale=en   --->  1900 [Ternary search]
