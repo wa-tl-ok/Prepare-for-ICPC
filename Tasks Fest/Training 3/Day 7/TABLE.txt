@@ -6,4 +6,4 @@ Task D: https://codeforces.com/problemset/problem/1995/B2?locale=en  --->  1700 
 Task E: 
 Task F: 
 Task G: https://codeforces.com/problemset/problem/1928/D?locale=en   --->  1900 [Ternary search]
-Task H: https://codeforces.com/problemset/problem/1895/D?locale=en   --->  1900 [Bitmasks]
+Task H: https://codeforces.com/problemset/problem/1895/D?locale=en   --->  1900 [Bitmasks, Data structures]
