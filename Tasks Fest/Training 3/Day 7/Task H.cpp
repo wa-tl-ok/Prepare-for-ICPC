@@ -152,9 +152,20 @@ void Solve() {
 
     for (int b0 = 0; b0 <= n - 1; b0++) {
         if (T.query(b0) < n) {
+            vector<int> ans;
             for (int i = 0; i < n; i++) {
-                cout << (b0 ^ c[i]) << ' ';
+                ans.push_back(b0 ^ c[i]);
             }
+
+            set<int> s;
+            for (int i = 0; i < n; i++) {
+                s.insert(b0 ^ c[i]);
+            }
+
+            if (s.size() == n) {
+                PRINT(ans);
+            }
+
             return;
         }
     }
