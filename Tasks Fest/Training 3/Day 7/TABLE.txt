@@ -4,6 +4,6 @@ Task B: https://codeforces.com/problemset/problem/1928/C?locale=en   --->  1600 
 Task C: https://codeforces.com/problemset/problem/1889/B?locale=en   --->  1700 [Math]
 Task D: https://codeforces.com/problemset/problem/1995/B2?locale=en  --->  1700 [Math]
 Task E: https://codeforces.com/problemset/problem/1042/D?locale=en   --->  1800 [Data structures]
-Task F: 
+Task F: https://codeforces.com/problemset/problem/1648/B?locale=en   --->  1800 [Data structures]
 Task G: https://codeforces.com/problemset/problem/1928/D?locale=en   --->  1900 [Ternary search]
 Task H: https://codeforces.com/problemset/problem/1895/D?locale=en   --->  1900 [Bitmasks, Data structures]
