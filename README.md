@@ -132,6 +132,7 @@ What can be improved?
     - Splay Tree and Link Cut Tree
       - Splay Tree
       - Link Cut Tree
+      - Link-Eval
     - MST in a weighted directed graph
     - Dominator Tree
     - DCP
