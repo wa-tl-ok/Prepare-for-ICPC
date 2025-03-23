@@ -146,7 +146,7 @@ private:
     int L, R;
 };
 
-vector<int> Solve(int n, vector<int> a, int q, vector<pair<int, int>> Q) {
+void Solve(int n, vector<int> a, int q, vector<pair<int, int>> Q) {
     for (int i = 0; i < q; i++) {
         --Q[i].first;
         --Q[i].second;
