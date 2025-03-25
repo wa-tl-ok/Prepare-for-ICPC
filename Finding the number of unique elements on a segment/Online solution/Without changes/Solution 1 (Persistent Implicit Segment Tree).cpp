@@ -181,7 +181,7 @@ void Solve() {
         else {
             ST.change(i, 1);
             ST.change(last[a[i]], -1);
-            ST.change(last[a[i]], 0);
+            ST.change(last_last[a[i]], 0);
 
             last_last[a[i]] = last[a[i]];
             last[a[i]] = i;
