@@ -1,0 +1,304 @@
+
+<spoiler summary="Problem 1:">
+Given an array $a$ of $n$ < $10^5$ elements from $1$ to $10^9$. You need to be able to find the number of unique elements from $l$ to $r$ ($0$ \<= $l$ \<= $r$ \<= $n$ &mdash; $1$) online.
+</spoiler>
+
+<spoiler summary="Problem 2:">
+Given an array $a$ of $n$ < $10^5$ elements from $1$ to $10^9$. You need to be able to find the number of unique elements from $l$ to $r$ ($0$ \<= $l$ \<= $r$ \<= $n$ &mdash; $1$) and modify $a$: $a_i$ = $x$ online.
+</spoiler>
+
+Of course, offline, both tasks can be solved using [Mo](https://ideone.com/o9LL2q) algorithm and [3DMo](https://ideone.com/K0ne3K) (there are many ways like scanline, etc.), but there are some problems where we need to answer queries online. The [solution](https://ideone.com/1jsy5o) with a persistent segment tree, i heard from [user:Andrew-13,2025-03-26], is good, but it does not support update queries. So, let's get started and learn how to solve both problems.
+
+######Problem 1: $O(log(n)^2)$ on query using 2D Implicit Segment Tree
+
+What is a "unique" element in a subarray? &mdash; an element in a subarray $a[ l, r ]$ is considered unique if it appears exactly once in that range => it's previous occurrence (if any) is before $l$ and it's next occurrence (if any) is after $r$.
+
+Let's introduce the definition: link of $a_i$ is a reference that points to an equal element that is located closer to the left/right than others. If there are no such links, the left link leads to $-1$, and the right link leads to $n$.
+
+Now we need to find the number of elements on $[ l, r ]$ such that their left links point to elements at positions < $l$, and the right links to elements at positions > $r$. So, let's build $future$ and $last$ &mdash; arrays containing links to the closest equal elements:
+
+1. $future_i$ contains the index of the closest element equal to $a_i$ on the right (or $n$ if there are no such elements).
+2. $last_i$ contains the index of the closest element equal to $a_i$ on the left (or $-1$ if there are no such elements).
+
+We will consider current query: $[ l, r ]$. Let's just count elements with $future_i$ > $r$ and $last_i$ < $l$ => &mdash; $last_i$ > &mdash; $l$ => $1000000$ &mdash; $last_i$ > $1000000$ &mdash; $l$. Now all coordinates are positive, because $l$, $last_i$ < $n$ < $10^5$.
+
+So, we need to count the number of points ($x_i$, $y_i$) = ($1000000$ &mdash; $last_i$, $future_i$) which lie in the upper right part of [plane](https://ibb.co/qSbgxj0) relative to ($minX$, $minY$) = ($1000000$ &mdash; $l$, $r$). 2D Implicit Segment Tree can easily solve this problem in $O(log(n)^2)$.
+
+This would be a solution if there were no points:
+
+1. lies before the left border and the right link crosses the right border.
+2. lies after the right border and the left link crosses the left border.
+
+So, we get the number of unnecessary points and subtract it from the total answer. This can be realized with simple Segment Tree with Treaps in nodes, because we actually need to be able to answer to 2 queries:
+
+1. count the number of elements on [ $0$, $l$ &mdash; $1$ ] that have right links > $r$.
+2. count the number of elements on [ $r$ + $1$, $n$ &mdash; $1$ ] that have left links < $l$.
+
+Finally: Precalc ~ $O(n * log(n)^2)$; Answer to query ~ $O(log(n)^2)$.
+
+<spoiler summary="Code">
+```
+void Solve() {
+    int n; cin >> n;
+
+    vector<int> a(n);
+    for (int i = 0; i < n; i++) {
+        cin >> a[i];
+    }
+
+    vector<int> base(n);
+    for (int i = 0; i < n; i++) {
+        base[i] = 0;
+    }
+
+    SegmentTree LAST(base);
+
+    map<int, int> last_id;
+    for (int i = 0; i < n; i++) {
+        last_id[a[i]] = -1;
+    }
+
+    vector<int> last(n);
+    for (int i = 0; i < n; i++) {
+        LAST.update(i, 0, last_id[a[i]]);
+
+        last[i] = 1'000'000 - last_id[a[i]];
+        last_id[a[i]] = i;
+    }
+
+    SegmentTree FUTURE(base);
+
+    map<int, int> future_id;
+    for (int i = 0; i < n; i++) {
+        future_id[a[i]] = n;
+    }
+
+    vector<int> future(n);
+    for (int i = n - 1; i >= 0; i--) {
+        FUTURE.update(i, 0, future_id[a[i]]);
+
+        future[i] = future_id[a[i]];
+        future_id[a[i]] = i;
+    }
+
+    vector<int> X;
+    for (int i = 0; i < n; i++) {
+        X.push_back(last[i]);
+    }
+
+    vector<int> Y;
+    for (int i = 0; i < n; i++) {
+        Y.push_back(future[i]);
+    }
+
+    vector<pair<int, int>> points;
+    for (int i = 0; i < n; i++) {
+        points.push_back({ X[i], Y[i] });
+    }
+
+    SegmentTree2D ST;
+    for (auto p : points) {
+        ST.update(p.first, p.second, 1);
+    }
+
+    int q; cin >> q;
+    for (int i = 0; i < q; i++) {
+        int l, r; cin >> l >> r;
+
+        --l;
+        --r;
+
+        int min_X = 1'000'000 - l;
+        int min_Y = r;
+
+        cout << ST.query(min_X + 1, min_Y + 1, inf, inf) - LAST.query_L(r + 1, n - 1, l - 1) - FUTURE.query_R(0, l - 1, r + 1) << endl;
+    }
+}
+```
+</spoiler>
+
+######Problem 2: $O(log(n)^2)$ on query using 2D Implicit Segment Tree
+
+What about update queries? Note that we can also easily answer them in $O(log(n)^2)$. Let's call $L$ &mdash; the maximum position in $a$ that < $i$ and $a_L$ = $X$; $F$ &mdash; the minimum position in $a$ that > $i$ and $a_F$ = $X$, where $X$ is the element in the update query. If there are no such elements, just put: $L$ = $-1$; $F$ = $n$.
+
+When updating an element $a_i$, the links only change:
+
+1. $a[i]$ links.
+2. $a[last_i]$ links.
+3. $a[future_i]$ links.
+4. $a[L]$ links.
+4. $a[F]$ links.
+
+It remains to remember to update Segment Tree of Treaps and the points on the 2D Segment Tree plane.
+
+Finally: Precalc ~ $O(n * log(n)^2)$; Answer to query ~ $O(log(n)^2)$.
+
+<spoiler summary="Code">
+```
+void Solve() {
+    int n; cin >> n;
+
+    vector<int> a(n);
+    for (int i = 0; i < n; i++) {
+        cin >> a[i];
+    }
+
+    vector<int> base(n);
+    for (int i = 0; i < n; i++) {
+        base[i] = 0;
+    }
+
+    SegmentTree LAST(base);
+
+    map<int, int> last_id;
+    for (int i = 0; i < n; i++) {
+        last_id[a[i]] = -1;
+    }
+
+    vector<int> last(n);
+    for (int i = 0; i < n; i++) {
+        LAST.update(i, 0, last_id[a[i]]);
+
+        last[i] = 1'000'000 - last_id[a[i]];
+        last_id[a[i]] = i;
+    }
+
+    SegmentTree FUTURE(base);
+
+    map<int, int> future_id;
+    for (int i = 0; i < n; i++) {
+        future_id[a[i]] = n;
+    }
+
+    vector<int> future(n);
+    for (int i = n - 1; i >= 0; i--) {
+        FUTURE.update(i, 0, future_id[a[i]]);
+
+        future[i] = future_id[a[i]];
+        future_id[a[i]] = i;
+    }
+
+    vector<int> X;
+    for (int i = 0; i < n; i++) {
+        X.push_back(last[i]);
+    }
+
+    vector<int> Y;
+    for (int i = 0; i < n; i++) {
+        Y.push_back(future[i]);
+    }
+
+    vector<pair<int, int>> points;
+    for (int i = 0; i < n; i++) {
+        points.push_back({ X[i], Y[i] });
+    }
+
+    SegmentTree2D ST;
+    for (auto p : points) {
+        ST.update(p.first, p.second, 1);
+    }
+
+    map<int, set<int>> POSITIONS;
+    for (int i = 0; i < n; i++) {
+        POSITIONS[a[i]].insert(i);
+    }
+    for (int i = 0; i < n; i++) {
+        if (POSITIONS[a[i]].find(-1) == POSITIONS[a[i]].end()) {
+            POSITIONS[a[i]].insert(-1);
+        }
+        if (POSITIONS[a[i]].find(n) == POSITIONS[a[i]].end()) {
+            POSITIONS[a[i]].insert(n);
+        }
+    }
+
+    int q; cin >> q;
+    for (int i = 0; i < q; i++) {
+        string Type; cin >> Type;
+
+        if (Type == "!") {
+            int pos, val; cin >> pos >> val;
+
+            --pos;
+
+            if (a[pos] == val) {
+                continue;
+            }
+
+            if (future[pos] != n) {
+                LAST.update(future[pos], pos, 1'000'000 - last[pos]);
+                ST.update(last[future[pos]], future[future[pos]], -1);
+            }
+            if (1'000'000 - last[pos] != -1) {
+                FUTURE.update(1'000'000 - last[pos], pos, future[pos]);
+                ST.update(last[1'000'000 - last[pos]], future[1'000'000 - last[pos]], -1);
+            }
+
+            if (future[pos] != n) {
+                last[future[pos]] = last[pos];
+                ST.update(last[future[pos]], future[future[pos]], 1);
+            }
+            if (1'000'000 - last[pos] != -1) {
+                future[1'000'000 - last[pos]] = future[pos];
+                ST.update(last[1'000'000 - last[pos]], future[1'000'000 - last[pos]], 1);
+            }
+
+            ST.update(last[pos], future[pos], -1);
+
+            POSITIONS[a[pos]].erase(pos);
+            POSITIONS[val].insert(pos);
+
+            if (POSITIONS[val].find(-1) == POSITIONS[val].end()) {
+                POSITIONS[val].insert(-1);
+            }
+            if (POSITIONS[val].find(n) == POSITIONS[val].end()) {
+                POSITIONS[val].insert(n);
+            }
+
+            int Last_for_val = *(--POSITIONS[val].lower_bound(pos));
+            int Future_for_val = *POSITIONS[val].upper_bound(pos);
+
+            LAST.update(pos, 1'000'000 - last[pos], Last_for_val);
+            FUTURE.update(pos, future[pos], Future_for_val);
+
+            last[pos] = 1'000'000 - Last_for_val;
+            future[pos] = Future_for_val;
+
+            a[pos] = val;
+
+            ST.update(last[pos], future[pos], 1);
+
+            if (Future_for_val != n) {
+                LAST.update(Future_for_val, Last_for_val, pos);
+                ST.update(last[Future_for_val], future[Future_for_val], -1);
+            }
+            if (Last_for_val != -1) {
+                FUTURE.update(Last_for_val, Future_for_val, pos);
+                ST.update(last[Last_for_val], future[Last_for_val], -1);
+            }
+
+            if (Future_for_val != n) {
+                last[Future_for_val] = 1'000'000 - pos;
+                ST.update(last[Future_for_val], future[Future_for_val], 1);
+            }
+            if (Last_for_val != -1) {
+                future[Last_for_val] = pos;
+                ST.update(last[Last_for_val], future[Last_for_val], 1);
+            }
+        }
+        else {
+            int l, r; cin >> l >> r;
+
+            --l;
+            --r;
+
+            int min_X = 1'000'000 - l;
+            int min_Y = r;
+
+            cout << ST.query(min_X + 1, min_Y + 1, inf, inf) - LAST.query_L(r + 1, n - 1, l - 1) - FUTURE.query_R(0, l - 1, r + 1) << endl;
+        }
+    }
+}
+```
+</spoiler>
+
+You can find my solution [here](https://ideone.com/F82AmK).
