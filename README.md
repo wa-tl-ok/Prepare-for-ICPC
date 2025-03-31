@@ -89,6 +89,7 @@
     - Dijkstra's algorithm (n^2 + m)
     - Floyd–Warshall algorithm
 - Math:
+  - Int
   - Matrix
   - Mo
     - Mo
