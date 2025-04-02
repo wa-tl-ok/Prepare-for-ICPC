@@ -75,48 +75,7 @@ const double PI = 3.141592653589793;
 string alh = "abcdefghijklmnopqrstuvwxyz";
 string ALH = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
-int get(vector<int>& ps, int l, int r) {
-    if (l == 0) {
-        return ps[r];
-    }
-    return ps[r] - ps[l - 1];
-}
-
-pair<int, int> F(vector<int>& a, vector<int>& ps, int cl, int cr) {
-    int S = get(ps, cl, cr);
-
-    int l1 = cl;
-    int r1 = cr;
-
-    while (l1 + 1 != r1) {
-        int m = (l1 + r1) / 2;
-
-        if (get(ps, cl, m) < S / 2) {
-            l1 = m;
-        }
-        else {
-            r1 = m;
-        }
-    }
-
-    int l2 = cl;
-    int r2 = cr;
-
-    while (l2 + 1 != r2) {
-        int m = (l2 + r2) / 2;
-
-        if (get(ps, cl, m) > S / 2) {
-            r2 = m;
-        }
-        else {
-            l2 = m;
-        }
-    }
-
-    return { l1, r2 };
-}
-
-int BS1(vector<int>& a, int cl, int cr) {
+int find_L(vector<int>& a, int cl, int cr) {
     if (a[a.size() - 1] < cl) {
         return inf;
     }
@@ -138,7 +97,7 @@ int BS1(vector<int>& a, int cl, int cr) {
     return a[r];
 }
 
-int BS2(vector<int>& a, int cl, int cr) {
+int find_R(vector<int>& a, int cl, int cr) {
     if (a[0] > cr) {
         return -inf;
     }
@@ -161,7 +120,7 @@ int BS2(vector<int>& a, int cl, int cr) {
 }
 
 int get_L(map<int, vector<int>>& pos, vector<int>& px, int l, int r) {
-    return BS1(pos[px[r]], l, r);
+    return find_L(pos[px[r]], l, r);
 }
 
 int get_R(map<int, vector<int>>& pos, vector<int>& px, int l, int r) {
@@ -177,7 +136,7 @@ int get_R(map<int, vector<int>>& pos, vector<int>& px, int l, int r) {
     int R = -1;
 
     if (pos[0].size() > 0) {
-        R = BS2(pos[v], l, r);
+        R = find_R(pos[v], l, r);
     }
     else {
         R = -inf;
@@ -189,98 +148,31 @@ int get_R(map<int, vector<int>>& pos, vector<int>& px, int l, int r) {
 void Solve() {
     int n, q; cin >> n >> q;
 
-    vector<int> a(n);
-    for (int i = 0; i < n; i++) {
+    vector<int> a(n + 1);
+    for (int i = 1; i <= n; i++) {
         cin >> a[i];
     }
 
-    vector<vector<int>> A(32);
-    for (int i = 0; i < 32; i++) {
-        A[i].resize(n);
-    }
-
-    for (int i = 0; i < 32; i++) {
-        for (int j = 0; j < n; j++) {
-            if (a[j] & (1 << i)) {
-                A[i][j] = 1;
-            }
-        }
-    }
-
-    vector<vector<int>> PS(32);
-    for (int i = 0; i < 32; i++) {
-        PS[i].resize(n);
-    }
-
-    for (int i = 0; i < 32; i++) {
-        int s = 0;
-        for (int j = 0; j < n; j++) {
-            s += A[i][j];
-            PS[i][j] = s;
-        }
-    }
-
-    vector<int> px(n);
+    vector<int> px(n + 1);
     int x = 0;
-    for (int i = 0; i < n; i++) {
+    for (int i = 1; i <= n; i++) {
         x = x ^ a[i];
         px[i] = x;
     }
 
     map<int, vector<int>> pos;
-    for (int i = 0; i < n; i++) {
+    for (int i = 0; i <= n; i++) {
         pos[px[i]].push_back(i);
     }
 
     for (int qq = 0; qq < q; qq++) {
         int l, r; cin >> l >> r;
 
-        --l;
-        --r;
-
-        vector<pair<int, int>> G;
-        bool Flag = true;
-
-        for (int i = 0; i < 32; i++) {
-            int S = get(PS[i], l, r);
-
-            if (S % 2 == 1) {
-                if (S == 1) {
-                    G.push_back({ inf, -inf });
-                }
-                else {
-                    Flag = false;
-                    break;
-                }
-            }
-            else {
-                if (S == 0) {
-                    G.push_back({ -inf, inf });
-                }
-                else {
-                    G.push_back(F(A[i], PS[i], l, r));
-                }
-            }
-        }
-
-        int mxl = -inf;
-        int mnr = inf;
-
-        for (auto [L, R] : G) {
-            mxl = max(mxl, L);
-            mnr = min(mnr, R);
-        }
-
-        if (Flag == true) {
-            if (mxl < mnr) {
-                cout << "YES\n";
-            }
-            else {
-                cout << "NO\n";
-            }
+        if (get_L(pos, px, l, r) < get_R(pos, px, l, r)) {
+            cout << "YES\n";
         }
         else {
-            if (get_L(pos, px, l, r) <= get_R(pos, px, l, r)) {
+            if (px[l - 1] == px[r]) {
                 cout << "YES\n";
             }
             else {
