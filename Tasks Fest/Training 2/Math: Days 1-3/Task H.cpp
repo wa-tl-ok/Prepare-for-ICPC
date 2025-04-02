@@ -222,8 +222,6 @@ void Solve() {
 
     ANS.push_back(ans);
 
-    //cout << "new ans ---> " << ans << '\n';
-
     for (int qq = 1; qq <= q; qq++) {
         int o; cin >> o;
         int x; cin >> x;
@@ -234,20 +232,12 @@ void Solve() {
             ai[i].first += 1;
 
             if (i == n - 1) {
-                //cout << "new ans ---> " << ans << " / " << min(ai[i].first - 1, bj[i].first) << " * " << min(ai[i].first, bj[i].first);
-
                 ans /= min(ai[i].first - 1, bj[i].first);
                 ans *= min(ai[i].first, bj[i].first);
-
-                //cout << " = " << ans << '\n';
             }
             else if (ai[i].first <= ai[i + 1].first) {
-                //cout << "new ans ---> " << ans << " / " << min(ai[i].first - 1, bj[i].first) << " * " << min(ai[i].first, bj[i].first);
-
                 ans /= min(ai[i].first - 1, bj[i].first);
                 ans *= min(ai[i].first, bj[i].first);
-
-                //cout << " = " << ans << '\n';
             }
             else {
                 ai[i].first -= 1;
@@ -266,32 +256,16 @@ void Solve() {
                     r = id_swap - 1;
                 }
 
-                //cout << "new ans ---> " << ans;
-
                 ans /= min(ai[l].first - 1, bj[l].first);
-
-                //cout << " / " << min(ai[l].first - 1, bj[l].first);
-
                 ans /= min(ai[r].first, bj[r].first);
-
-                //cout << " / " << min(ai[r].first, bj[r].first);
 
                 swap(ai[l], ai[r]);
 
                 ans *= min(ai[l].first, bj[l].first);
-
-                //cout << " * " << min(ai[l].first, bj[l].first);
-
                 ans *= min(ai[r].first, bj[r].first);
-
-                //cout << " * " << min(ai[r].first, bj[r].first);
 
                 id_a[ai[l].second] = l;
                 id_a[ai[r].second] = r;
-
-                //cout << " = " << ans;
-
-                //cout << '\n';
             }
         }
         else {
@@ -299,20 +273,12 @@ void Solve() {
             bj[j].first += 1;
 
             if (j == n - 1) {
-                //cout << "new ans ---> " << ans << " / " << min(ai[j].first, bj[j].first - 1) << " * " << min(ai[j].first, bj[j].first);
-
                 ans /= min(ai[j].first, bj[j].first - 1);
                 ans *= min(ai[j].first, bj[j].first);
-
-                //cout << " = " << ans << '\n';
             }
             else if (bj[j].first <= bj[j + 1].first) {
-                //cout << "new ans ---> " << ans << " / " << min(ai[j].first, bj[j].first - 1) << " * " << min(ai[j].first, bj[j].first);
-
                 ans /= min(ai[j].first, bj[j].first - 1);
                 ans *= min(ai[j].first, bj[j].first);
-
-                //cout << " = " << ans << '\n';
             }
             else {
                 bj[j].first -= 1;
@@ -331,53 +297,21 @@ void Solve() {
                     r = id_swap - 1;
                 }
 
-                //cout << "new ans ---> " << ans;
-
                 ans /= min(ai[l].first, bj[l].first - 1);
-
-                //cout << " / " << min(ai[l].first, bj[l].first - 1);
-
                 ans /= min(ai[r].first, bj[r].first);
 
-                //cout << " / " << min(ai[r].first, bj[r].first);
-                     
                 swap(bj[l], bj[r]);
 
                 ans *= min(ai[l].first, bj[l].first);
-
-                //cout << " * " << min(ai[l].first, bj[l].first);
-
                 ans *= min(ai[r].first, bj[r].first);
-
-                //cout << " * " << min(ai[r].first, bj[r].first);
 
                 id_b[bj[l].second] = l;
                 id_b[bj[r].second] = r;
-
-                //cout << " = " << ans;
-
-                //cout << '\n';
             }
         }
 
-        /*cout << "new ai, bj:\n";
-
-        cout << "ai: ";
-        for (int i = 0; i < n; i++) {
-            cout << ai[i].first << ' ';
-        } 
-        cout << '\n';
-
-        cout << "bj: ";
-        for (int j = 0; j < n; j++) {
-            cout << bj[j].first << ' ';
-        } 
-        cout << '\n';*/
-
         ANS.push_back(ans);
     }
-
-    //cout << "TASK ANSWER ------------------------------> ";
 
     PRINT(ANS);
 }
