@@ -395,6 +395,208 @@ private:
     }
 };
 
+class Treap_to_Find {
+public:
+    struct Node {
+        int x, y;
+
+        int count;
+        int size;
+
+        Node* left;
+        Node* right;
+
+        Node(int x, int y) :
+            x(x), y(y), count(1), size(1),
+            left(nullptr), right(nullptr) {
+        }
+    };
+
+    Treap_to_Find() : root(nullptr) {}
+
+    void Add(int x) {
+        root = insert(root, x, rand());
+    }
+
+    void Del(int x) {
+        root = delete_key(root, x);
+    }
+
+    bool Find(int x) {
+        return exists(root, x);
+    }
+
+    int Find_ll(int x) {
+        ans_ll = -1;
+        find_ll(root, x);
+        return ans_ll;
+    }
+
+    int Find_lr(int x) {
+        ans_lr = -1;
+        find_lr(root, x);
+        return ans_lr;
+    }
+
+    int Find_rl(int x) {
+        ans_rl = -1;
+        find_rl(root, x);
+        return ans_rl;
+    }
+
+    int Find_rr(int x) {
+        ans_rr = -1;
+        find_rr(root, x);
+        return ans_rr;
+    }
+
+private:
+    Node* root;
+    int ans_ll, ans_lr, ans_rl, ans_rr;
+
+    int get_size(Node* a) {
+        return a ? a->size : 0;
+    }
+
+    void update_size(Node* a) {
+        if (a) {
+            a->size = get_size(a->left) + get_size(a->right) + a->count;
+        }
+    }
+
+    pair<Node*, Node*> split(Node* a, int k) {
+        if (!a) {
+            return { nullptr, nullptr };
+        }
+        if (a->x < k) {
+            pair<Node*, Node*> lr = split(a->right, k);
+            a->right = lr.first;
+            update_size(a);
+            return { a, lr.second };
+        }
+        else {
+            pair<Node*, Node*> lr = split(a->left, k);
+            a->left = lr.second;
+            update_size(a);
+            return { lr.first, a };
+        }
+    }
+
+    Node* merge(Node* a, Node* b) {
+        if (!a) return b;
+        if (!b) return a;
+        if (a->y > b->y) {
+            a->right = merge(a->right, b);
+            update_size(a);
+            return a;
+        }
+        else {
+            b->left = merge(a, b->left);
+            update_size(b);
+            return b;
+        }
+    }
+
+    Node* insert(Node* a, int x, int y) {
+        pair<Node*, Node*> lr = split(a, x);
+        Node* l = lr.first;
+        Node* r = lr.second;
+
+        if (l && l->x == x) {
+            l->count++;
+            update_size(l);
+            return merge(l, r);
+        }
+
+        Node* new_node = new Node(x, y);
+        return merge(merge(l, new_node), r);
+    }
+
+    Node* delete_key(Node* a, int x) {
+        if (!a) return nullptr;
+
+        if (a->x == x) {
+            if (a->count > 1) {
+                a->count--;
+                update_size(a);
+                return a;
+            }
+            else {
+                return merge(a->left, a->right);
+            }
+        }
+
+        if (x < a->x) {
+            a->left = delete_key(a->left, x);
+        }
+        else {
+            a->right = delete_key(a->right, x);
+        }
+
+        update_size(a);
+        return a;
+    }
+
+    bool exists(Node* a, int x) {
+        if (!a) {
+            return false;
+        }
+        if (a->x == x) {
+            return true;
+        }
+        if (x < a->x) {
+            return exists(a->left, x);
+        }
+        else {
+            return exists(a->right, x);
+        }
+    }
+
+    void find_ll(Node* a, int x) {
+        if (!a) return;
+        if (a->x < x) {
+            ans_ll = a->x;
+            find_ll(a->right, x);
+        }
+        else {
+            find_ll(a->left, x);
+        }
+    }
+
+    void find_lr(Node* a, int x) {
+        if (!a) return;
+        if (a->x <= x) {
+            ans_lr = a->x;
+            find_lr(a->right, x);
+        }
+        else {
+            find_lr(a->left, x);
+        }
+    }
+
+    void find_rl(Node* a, int x) {
+        if (!a) return;
+        if (a->x >= x) {
+            ans_rl = a->x;
+            find_rl(a->left, x);
+        }
+        else {
+            find_rl(a->right, x);
+        }
+    }
+
+    void find_rr(Node* a, int x) {
+        if (!a) return;
+        if (a->x > x) {
+            ans_rr = a->x;
+            find_rr(a->left, x);
+        }
+        else {
+            find_rr(a->right, x);
+        }
+    }
+};
+
 void Solve() {
     int n; cin >> n;
 
@@ -458,16 +660,16 @@ void Solve() {
         ST.update(p.first, p.second, 1);
     }
 
-    map<int, set<int>> POSITIONS;
+    map<int, Treap_to_Find> POSITIONS;
     for (int i = 0; i < n; i++) {
-        POSITIONS[a[i]].insert(i);
+        POSITIONS[a[i]].Add(i);
     }
     for (int i = 0; i < n; i++) {
-        if (POSITIONS[a[i]].find(-1) == POSITIONS[a[i]].end()) {
-            POSITIONS[a[i]].insert(-1);
+        if (POSITIONS[a[i]].Find(-1) == false) {
+            POSITIONS[a[i]].Add(-1);
         }
-        if (POSITIONS[a[i]].find(n) == POSITIONS[a[i]].end()) {
-            POSITIONS[a[i]].insert(n);
+        if (POSITIONS[a[i]].Find(n) == false) {
+            POSITIONS[a[i]].Add(n);
         }
     }
 
@@ -504,24 +706,24 @@ void Solve() {
 
             ST.update(last[pos], future[pos], -1);
 
-            POSITIONS[a[pos]].erase(pos);
-            POSITIONS[val].insert(pos);
+            POSITIONS[a[pos]].Del(pos);
+            POSITIONS[val].Add(pos);
 
-            if (POSITIONS[val].find(-1) == POSITIONS[val].end()) {
-                POSITIONS[val].insert(-1);
+            if (POSITIONS[val].Find(-1) == false) {
+                POSITIONS[val].Add(-1);
             }
-            if (POSITIONS[val].find(n) == POSITIONS[val].end()) {
-                POSITIONS[val].insert(n);
+            if (POSITIONS[val].Find(n) == false) {
+                POSITIONS[val].Add(n);
             }
 
-            int Last_for_val = *(--POSITIONS[val].lower_bound(pos));
-            int Future_for_val = *POSITIONS[val].upper_bound(pos);
+            int Last_for_val = POSITIONS[val].Find_ll(pos);
+            int Future_for_val = POSITIONS[val].Find_rr(pos);
 
             LAST.update(pos, 1'000'000 - last[pos], Last_for_val);
             FUTURE.update(pos, future[pos], Future_for_val);
 
-            last[pos] = 1'000'000 - Last_for_val;
-            future[pos] = Future_for_val;
+            last[pos] = 1'000'000 - POSITIONS[val].Find_ll(pos);
+            future[pos] = POSITIONS[val].Find_rr(pos);
 
             a[pos] = val;
 
