@@ -1,12 +1,15 @@
 namespace MATH {
     int randomabint(int a, int b) {
-        return a + rand() % (b - a + 1);
+        static std::random_device rd;
+        static std::mt19937 gen(rd());
+        std::uniform_int_distribution<> distrib(a, b);
+        return distrib(gen);
     }
 
     int gcd(int a, int b) {
         while (b != 0) {
             int temp = b; b = a % b; a = temp;
-        } 
+        }
         return a;
     }
 
@@ -21,7 +24,7 @@ namespace MATH {
             if (result == 1) {
                 break;
             }
-        } 
+        }
         return result;
     }
 
@@ -112,7 +115,7 @@ namespace MATH {
         if (n == 2 || n == 3) {
             return true;
         }
-        for (int test = 0; test < 5; ++test) {
+        for (int test = 0; test < 10; ++test) {
             int a = randomabint(2, n - 2);
             int s = 0;
             int d = n - 1;
