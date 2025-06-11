@@ -96,6 +96,7 @@ def Solve(x):
             
     while len(ans) > 0 and len(ans[-1]) == 0:
         ans.pop()
+
     for i in range(len(ans)):
         for j in range(len(ans[i])):
             if ans[i][j] == 'g':
