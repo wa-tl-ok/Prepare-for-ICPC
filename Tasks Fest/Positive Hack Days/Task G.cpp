@@ -89,8 +89,6 @@ string ALH = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 vector<vector<int>> wr, rd;
 vector<bool> buf(1000007);
 
-const int THRES = 100000;
-
 bool blocks(int i, int j) {
     for (auto u : wr[i]) {
         buf[u] = true;
@@ -122,16 +120,11 @@ bool cmp1(int i, int j) {
     int wj = wr[j].size();
     int rj = rd[j].size();
 
-    int score1 = wi; 
+    int score1 = wi;
     int score2 = wj;
 
-    if (wi + rj < THRES) {
-        b1 = blocks(i, j);
-    }
-
-    if (wj + ri < THRES) {
-        b2 = blocks(j, i);
-    }
+    b1 = blocks(i, j);
+    b2 = blocks(j, i);
 
     if (b1 == false && b2 == false) {
         return score1 < score2;
@@ -164,13 +157,42 @@ bool cmp2(int i, int j) {
     int score1 = wi * rj;
     int score2 = wj * ri;
 
-    if (wi + rj < THRES) {
-        b1 = blocks(i, j);
+    b1 = blocks(i, j);
+    b2 = blocks(j, i);
+
+    if (b1 == false && b2 == false) {
+        return score1 < score2;
     }
 
-    if (wj + ri < THRES) {
-        b2 = blocks(j, i);
+    if (b1 == false) {
+        return true;
     }
+
+    if (b2 == false) {
+        return false;
+    }
+
+    if (score1 == score2) {
+        return wi < wj;
+    }
+
+    return score1 < score2;
+}
+
+bool cmp3(int i, int j) {
+    bool b1 = true;
+    bool b2 = true;
+
+    int wi = wr[i].size();
+    int ri = rd[i].size();
+    int wj = wr[j].size();
+    int rj = rd[j].size();
+
+    int score1 = wi + rj;
+    int score2 = wj + ri;
+
+    b1 = blocks(i, j);
+    b2 = blocks(j, i);
 
     if (b1 == false && b2 == false) {
         return score1 < score2;
@@ -251,6 +273,9 @@ void Solve() {
     relax_answ(answ, ind);
 
     sort(ind.begin(), ind.end(), cmp2);
+    relax_answ(answ, ind);
+
+    sort(ind.begin(), ind.end(), cmp3);
     relax_answ(answ, ind);
 
     cout << answ.size() << '\n';
