@@ -217,8 +217,6 @@ void relax_answ(vector<int>& answ, vector<int>& ind) {
     if (ans.size() > answ.size()) {
         swap(ans, answ);
     }
-
-    used.clear();
 }
 
 void Solve() {
