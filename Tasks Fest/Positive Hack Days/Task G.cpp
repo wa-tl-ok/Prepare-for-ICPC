@@ -97,7 +97,7 @@ bool blocks(int i, int j) {
     }
 
     for (auto u : rd[j]) {
-        if (buf[u] == 1) {
+        if (buf[u] == true) {
             for (auto k : wr[i]) {
                 buf[k] = false;
             }
@@ -260,7 +260,6 @@ void Solve() {
         cout << u + 1 << ' ';
     }
 }
-
 
 signed main() {
     ios_base::sync_with_stdio(false);
