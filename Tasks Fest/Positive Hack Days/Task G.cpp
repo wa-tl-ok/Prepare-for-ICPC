@@ -479,34 +479,6 @@ bool cmp7(int i, int j) {
     return ri < rj;
 }
 
-void relax_answ(vector<int>& answ, vector<int>& ind) {
-    vector<int> ans;
-    set<int> used;
-
-    for (auto u : ind) {
-        bool can = true;
-
-        for (auto k : rd[u]) {
-            if (used.find(k) != used.end()) {
-                can = 0;
-                break;
-            }
-        }
-
-        if (can == true) {
-            for (auto k : wr[u]) {
-                used.insert(k);
-            }
-
-            ans.push_back(u);
-        }
-    }
-
-    if (ans.size() > answ.size()) {
-        swap(ans, answ);
-    }
-}
-
 bool cmp8(int i, int j) {
     bool b1 = true;
     bool b2 = true;
@@ -607,6 +579,34 @@ bool cmp10(int i, int j) {
     }
 
     return score1 < score2;
+}
+
+void relax_answ(vector<int>& answ, vector<int>& ind) {
+    vector<int> ans;
+    set<int> used;
+
+    for (auto u : ind) {
+        bool can = true;
+
+        for (auto k : rd[u]) {
+            if (used.find(k) != used.end()) {
+                can = 0;
+                break;
+            }
+        }
+
+        if (can == true) {
+            for (auto k : wr[u]) {
+                used.insert(k);
+            }
+
+            ans.push_back(u);
+        }
+    }
+
+    if (ans.size() > answ.size()) {
+        swap(ans, answ);
+    }
 }
 
 void Solve() {
