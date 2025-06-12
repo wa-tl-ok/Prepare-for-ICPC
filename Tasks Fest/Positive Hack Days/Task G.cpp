@@ -425,7 +425,7 @@ void relax_answ(vector<int>& answ, vector<int>& ind) {
     }
 }
 
-void go(vector<int>& answ, vector<int>& ind) {
+void go_(vector<int>& answ, vector<int>& ind) {
     sort(ind.begin(), ind.end(), cmp0_);
     relax_answ(answ, ind);
 
@@ -433,6 +433,20 @@ void go(vector<int>& answ, vector<int>& ind) {
     relax_answ(answ, ind);
 
     sort(ind.begin(), ind.end(), cmp2_);
+    relax_answ(answ, ind);
+}
+
+void go(vector<int>& answ, vector<int>& ind) {
+    sort(ind.begin(), ind.end(), cmp0);
+    relax_answ(answ, ind);
+
+    sort(ind.begin(), ind.end(), cmp1);
+    relax_answ(answ, ind);
+
+    sort(ind.begin(), ind.end(), cmp2);
+    relax_answ(answ, ind);
+
+    sort(ind.begin(), ind.end(), cmp3);
     relax_answ(answ, ind);
 }
 
@@ -464,21 +478,9 @@ void Solve() {
         }
     }
 
+    go_(answ, ind);
     go(answ, ind);
-
-    sort(ind.begin(), ind.end(), cmp0);
-    relax_answ(answ, ind);
-
-    sort(ind.begin(), ind.end(), cmp1);
-    relax_answ(answ, ind);
-
-    sort(ind.begin(), ind.end(), cmp2);
-    relax_answ(answ, ind);
-
-    sort(ind.begin(), ind.end(), cmp3);
-    relax_answ(answ, ind);
-
-    go(answ, ind);
+    go_(answ, ind);
 
     cout << answ.size() << '\n';
     for (auto u : answ) {
