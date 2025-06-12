@@ -111,7 +111,403 @@ bool blocks(int i, int j) {
     return false;
 }
 
+bool cmp0(int i, int j) {
+    bool b1 = true;
+    bool b2 = true;
+
+    int wi = wr[i].size();
+    int ri = rd[i].size();
+    int wj = wr[j].size();
+    int rj = rd[j].size();
+
+    int score1 = wi;
+    int score2 = wj;
+
+    b1 = blocks(i, j);
+    b2 = blocks(j, i);
+
+    if (b1 == false && b2 == false) {
+        if (score1 != score2) {
+            return score1 < score2;
+        }
+
+        if (wi != wj) {
+            return wi < wj;
+        }
+
+        return ri < rj;
+    }
+
+    if (b1 == false) {
+        return true;
+    }
+
+    if (b2 == false) {
+        return false;
+    }
+
+    if (score1 != score2) {
+        return score1 < score2;
+    }
+
+    if (wi != wj) {
+        return wi < wj;
+    }
+
+    return ri < rj;
+}
+
 bool cmp1(int i, int j) {
+    bool b1 = true;
+    bool b2 = true;
+
+    int wi = wr[i].size();
+    int ri = rd[i].size();
+    int wj = wr[j].size();
+    int rj = rd[j].size();
+
+    int score1 = wi * rj;
+    int score2 = wj * ri;
+
+    b1 = blocks(i, j);
+    b2 = blocks(j, i);
+
+    if (b1 == false && b2 == false) {
+        if (score1 != score2) {
+            return score1 < score2;
+        }
+
+        if (wi != wj) {
+            return wi < wj;
+        }
+
+        return ri < rj;
+    }
+
+    if (b1 == false) {
+        return true;
+    }
+
+    if (b2 == false) {
+        return false;
+    }
+
+    if (score1 != score2) {
+        return score1 < score2;
+    }
+
+    if (wi != wj) {
+        return wi < wj;
+    }
+
+    return ri < rj;
+}
+
+bool cmp2(int i, int j) {
+    bool b1 = true;
+    bool b2 = true;
+
+    int wi = wr[i].size();
+    int ri = rd[i].size();
+    int wj = wr[j].size();
+    int rj = rd[j].size();
+
+    int score1 = wi + rj;
+    int score2 = wj + ri;
+
+    b1 = blocks(i, j);
+    b2 = blocks(j, i);
+
+    if (b1 == false && b2 == false) {
+        if (score1 != score2) {
+            return score1 < score2;
+        }
+
+        if (wi != wj) {
+            return wi < wj;
+        }
+
+        return ri < rj;
+    }
+
+    if (b1 == false) {
+        return true;
+    }
+
+    if (b2 == false) {
+        return false;
+    }
+
+    if (score1 != score2) {
+        return score1 < score2;
+    }
+
+    if (wi != wj) {
+        return wi < wj;
+    }
+
+    return ri < rj;
+}
+
+bool cmp3(int i, int j) {
+    bool b1 = true;
+    bool b2 = true;
+
+    int wi = wr[i].size();
+    int ri = rd[i].size();
+    int wj = wr[j].size();
+    int rj = rd[j].size();
+
+    int score1 = wi - ri;
+    int score2 = wj - rj;
+
+    b1 = blocks(i, j);
+    b2 = blocks(j, i);
+
+    if (b1 == false && b2 == false) {
+        if (score1 != score2) {
+            return score1 < score2;
+        }
+
+        if (wi != wj) {
+            return wi < wj;
+        }
+
+        return ri < rj;
+    }
+
+    if (b1 == false) {
+        return true;
+    }
+
+    if (b2 == false) {
+        return false;
+    }
+
+    if (score1 != score2) {
+        return score1 < score2;
+    }
+
+    if (wi != wj) {
+        return wi < wj;
+    }
+
+    return ri < rj;
+}
+
+bool cmp4(int i, int j) {
+    bool b1 = true;
+    bool b2 = true;
+
+    int wi = wr[i].size();
+    int ri = rd[i].size();
+    int wj = wr[j].size();
+    int rj = rd[j].size();
+
+    int score1 = wi * (rj + 1);
+    int score2 = wj * (ri + 1);
+
+    b1 = blocks(i, j);
+    b2 = blocks(j, i);
+
+    if (b1 == false && b2 == false) {
+        if (score1 != score2) {
+            return score1 < score2;
+        }
+
+        if (wi != wj) {
+            return wi < wj;
+        }
+
+        return ri < rj;
+    }
+
+    if (b1 == false) {
+        return true;
+    }
+
+    if (b2 == false) {
+        return false;
+    }
+
+    if (score1 != score2) {
+        return score1 < score2;
+    }
+
+    if (wi != wj) {
+        return wi < wj;
+    }
+
+    return ri < rj;
+}
+
+bool cmp5(int i, int j) {
+    bool b1 = true;
+    bool b2 = true;
+
+    int wi = wr[i].size();
+    int ri = rd[i].size();
+    int wj = wr[j].size();
+    int rj = rd[j].size();
+
+    int score1 = ri;
+    int score2 = rj;
+
+    b1 = blocks(i, j);
+    b2 = blocks(j, i);
+
+    if (b1 == false && b2 == false) {
+        if (score1 != score2) {
+            return score1 < score2;
+        }
+
+        if (wi != wj) {
+            return wi < wj;
+        }
+
+        return ri < rj;
+    }
+
+    if (b1 == false) {
+        return true;
+    }
+
+    if (b2 == false) {
+        return false;
+    }
+
+    if (score1 != score2) {
+        return score1 < score2;
+    }
+
+    if (wi != wj) {
+        return wi < wj;
+    }
+
+    return ri < rj;
+}
+
+bool cmp6(int i, int j) {
+    bool b1 = true;
+    bool b2 = true;
+
+    int wi = wr[i].size();
+    int ri = rd[i].size();
+    int wj = wr[j].size();
+    int rj = rd[j].size();
+
+    int score1 = wi;
+    int score2 = wj;
+
+    b1 = blocks(i, j);
+    b2 = blocks(j, i);
+
+    if (b1 == false && b2 == false) {
+        if (score1 != score2) {
+            return score1 < score2;
+        }
+
+        if (wi != wj) {
+            return wi < wj;
+        }
+
+        return ri < rj;
+    }
+
+    if (b1 == false) {
+        return true;
+    }
+
+    if (b2 == false) {
+        return false;
+    }
+
+    if (score1 != score2) {
+        return score1 < score2;
+    }
+
+    if (wi != wj) {
+        return wi < wj;
+    }
+
+    return ri < rj;
+}
+
+bool cmp7(int i, int j) {
+    bool b1 = true;
+    bool b2 = true;
+
+    int wi = wr[i].size();
+    int ri = rd[i].size();
+    int wj = wr[j].size();
+    int rj = rd[j].size();
+
+    int score1 = wi * wi * rj;
+    int score2 = wj * wj * ri;
+
+    b1 = blocks(i, j);
+    b2 = blocks(j, i);
+
+    if (b1 == false && b2 == false) {
+        if (score1 != score2) {
+            return score1 < score2;
+        }
+
+        if (wi != wj) {
+            return wi < wj;
+        }
+
+        return ri < rj;
+    }
+
+    if (b1 == false) {
+        return true;
+    }
+
+    if (b2 == false) {
+        return false;
+    }
+
+    if (score1 != score2) {
+        return score1 < score2;
+    }
+
+    if (wi != wj) {
+        return wi < wj;
+    }
+
+    return ri < rj;
+}
+
+void relax_answ(vector<int>& answ, vector<int>& ind) {
+    vector<int> ans;
+    set<int> used;
+
+    for (auto u : ind) {
+        bool can = true;
+
+        for (auto k : rd[u]) {
+            if (used.find(k) != used.end()) {
+                can = 0;
+                break;
+            }
+        }
+
+        if (can == true) {
+            for (auto k : wr[u]) {
+                used.insert(k);
+            }
+
+            ans.push_back(u);
+        }
+    }
+
+    if (ans.size() > answ.size()) {
+        swap(ans, answ);
+    }
+}
+
+bool cmp8(int i, int j) {
     bool b1 = true;
     bool b2 = true;
 
@@ -145,7 +541,7 @@ bool cmp1(int i, int j) {
     return wi < wj;
 }
 
-bool cmp2(int i, int j) {
+bool cmp9(int i, int j) {
     bool b1 = true;
     bool b2 = true;
 
@@ -179,7 +575,7 @@ bool cmp2(int i, int j) {
     return score1 < score2;
 }
 
-bool cmp3(int i, int j) {
+bool cmp10(int i, int j) {
     bool b1 = true;
     bool b2 = true;
 
@@ -213,34 +609,6 @@ bool cmp3(int i, int j) {
     return score1 < score2;
 }
 
-void relax_answ(vector<int>& answ, vector<int>& ind) {
-    vector<int> ans;
-    set<int> used;
-
-    for (auto u : ind) {
-        bool can = true;
-
-        for (auto k : rd[u]) {
-            if (used.find(k) != used.end()) {
-                can = 0;
-                break;
-            }
-        }
-
-        if (can == true) {
-            for (auto k : wr[u]) {
-                used.insert(k);
-            }
-
-            ans.push_back(u);
-        }
-    }
-
-    if (ans.size() > answ.size()) {
-        swap(ans, answ);
-    }
-}
-
 void Solve() {
     int n, m; cin >> n >> m;
 
@@ -269,6 +637,9 @@ void Solve() {
         }
     }
 
+    sort(ind.begin(), ind.end(), cmp0);
+    relax_answ(answ, ind);
+
     sort(ind.begin(), ind.end(), cmp1);
     relax_answ(answ, ind);
 
@@ -276,6 +647,27 @@ void Solve() {
     relax_answ(answ, ind);
 
     sort(ind.begin(), ind.end(), cmp3);
+    relax_answ(answ, ind);
+
+    sort(ind.begin(), ind.end(), cmp4);
+    relax_answ(answ, ind);
+
+    sort(ind.begin(), ind.end(), cmp5);
+    relax_answ(answ, ind);
+
+    sort(ind.begin(), ind.end(), cmp6);
+    relax_answ(answ, ind);
+
+    sort(ind.begin(), ind.end(), cmp7);
+    relax_answ(answ, ind);
+
+    sort(ind.begin(), ind.end(), cmp8);
+    relax_answ(answ, ind);
+
+    sort(ind.begin(), ind.end(), cmp9);
+    relax_answ(answ, ind);
+
+    sort(ind.begin(), ind.end(), cmp10);
     relax_answ(answ, ind);
 
     cout << answ.size() << '\n';
