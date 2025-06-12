@@ -87,7 +87,7 @@ string alh = "abcdefghijklmnopqrstuvwxyz";
 string ALH = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
 vector<vector<int>> wr, rd;
-vector<bool> buf(1000007);
+vector<bool> buf(1000005);
 
 bool blocks(int i, int j) {
     for (auto u : wr[i]) {
@@ -258,52 +258,6 @@ bool cmp3(int i, int j) {
     int wj = wr[j].size();
     int rj = rd[j].size();
 
-    int score1 = wi - ri;
-    int score2 = wj - rj;
-
-    b1 = blocks(i, j);
-    b2 = blocks(j, i);
-
-    if (b1 == false && b2 == false) {
-        if (score1 != score2) {
-            return score1 < score2;
-        }
-
-        if (wi != wj) {
-            return wi < wj;
-        }
-
-        return ri < rj;
-    }
-
-    if (b1 == false) {
-        return true;
-    }
-
-    if (b2 == false) {
-        return false;
-    }
-
-    if (score1 != score2) {
-        return score1 < score2;
-    }
-
-    if (wi != wj) {
-        return wi < wj;
-    }
-
-    return ri < rj;
-}
-
-bool cmp4(int i, int j) {
-    bool b1 = true;
-    bool b2 = true;
-
-    int wi = wr[i].size();
-    int ri = rd[i].size();
-    int wj = wr[j].size();
-    int rj = rd[j].size();
-
     int score1 = wi * (rj + 1);
     int score2 = wj * (ri + 1);
 
@@ -341,145 +295,7 @@ bool cmp4(int i, int j) {
     return ri < rj;
 }
 
-bool cmp5(int i, int j) {
-    bool b1 = true;
-    bool b2 = true;
-
-    int wi = wr[i].size();
-    int ri = rd[i].size();
-    int wj = wr[j].size();
-    int rj = rd[j].size();
-
-    int score1 = ri;
-    int score2 = rj;
-
-    b1 = blocks(i, j);
-    b2 = blocks(j, i);
-
-    if (b1 == false && b2 == false) {
-        if (score1 != score2) {
-            return score1 < score2;
-        }
-
-        if (wi != wj) {
-            return wi < wj;
-        }
-
-        return ri < rj;
-    }
-
-    if (b1 == false) {
-        return true;
-    }
-
-    if (b2 == false) {
-        return false;
-    }
-
-    if (score1 != score2) {
-        return score1 < score2;
-    }
-
-    if (wi != wj) {
-        return wi < wj;
-    }
-
-    return ri < rj;
-}
-
-bool cmp6(int i, int j) {
-    bool b1 = true;
-    bool b2 = true;
-
-    int wi = wr[i].size();
-    int ri = rd[i].size();
-    int wj = wr[j].size();
-    int rj = rd[j].size();
-
-    int score1 = wi;
-    int score2 = wj;
-
-    b1 = blocks(i, j);
-    b2 = blocks(j, i);
-
-    if (b1 == false && b2 == false) {
-        if (score1 != score2) {
-            return score1 < score2;
-        }
-
-        if (wi != wj) {
-            return wi < wj;
-        }
-
-        return ri < rj;
-    }
-
-    if (b1 == false) {
-        return true;
-    }
-
-    if (b2 == false) {
-        return false;
-    }
-
-    if (score1 != score2) {
-        return score1 < score2;
-    }
-
-    if (wi != wj) {
-        return wi < wj;
-    }
-
-    return ri < rj;
-}
-
-bool cmp7(int i, int j) {
-    bool b1 = true;
-    bool b2 = true;
-
-    int wi = wr[i].size();
-    int ri = rd[i].size();
-    int wj = wr[j].size();
-    int rj = rd[j].size();
-
-    int score1 = wi * wi * rj;
-    int score2 = wj * wj * ri;
-
-    b1 = blocks(i, j);
-    b2 = blocks(j, i);
-
-    if (b1 == false && b2 == false) {
-        if (score1 != score2) {
-            return score1 < score2;
-        }
-
-        if (wi != wj) {
-            return wi < wj;
-        }
-
-        return ri < rj;
-    }
-
-    if (b1 == false) {
-        return true;
-    }
-
-    if (b2 == false) {
-        return false;
-    }
-
-    if (score1 != score2) {
-        return score1 < score2;
-    }
-
-    if (wi != wj) {
-        return wi < wj;
-    }
-
-    return ri < rj;
-}
-
-bool cmp8(int i, int j) {
+bool cmp0_(int i, int j) {
     bool b1 = true;
     bool b2 = true;
 
@@ -513,7 +329,7 @@ bool cmp8(int i, int j) {
     return wi < wj;
 }
 
-bool cmp9(int i, int j) {
+bool cmp1_(int i, int j) {
     bool b1 = true;
     bool b2 = true;
 
@@ -547,7 +363,7 @@ bool cmp9(int i, int j) {
     return score1 < score2;
 }
 
-bool cmp10(int i, int j) {
+bool cmp2_(int i, int j) {
     bool b1 = true;
     bool b2 = true;
 
@@ -609,6 +425,17 @@ void relax_answ(vector<int>& answ, vector<int>& ind) {
     }
 }
 
+void go(vector<int>& answ, vector<int>& ind) {
+    sort(ind.begin(), ind.end(), cmp0_);
+    relax_answ(answ, ind);
+
+    sort(ind.begin(), ind.end(), cmp1_);
+    relax_answ(answ, ind);
+
+    sort(ind.begin(), ind.end(), cmp2_);
+    relax_answ(answ, ind);
+}
+
 void Solve() {
     int n, m; cin >> n >> m;
 
@@ -637,6 +464,8 @@ void Solve() {
         }
     }
 
+    go(answ, ind);
+
     sort(ind.begin(), ind.end(), cmp0);
     relax_answ(answ, ind);
 
@@ -649,26 +478,7 @@ void Solve() {
     sort(ind.begin(), ind.end(), cmp3);
     relax_answ(answ, ind);
 
-    sort(ind.begin(), ind.end(), cmp4);
-    relax_answ(answ, ind);
-
-    sort(ind.begin(), ind.end(), cmp5);
-    relax_answ(answ, ind);
-
-    sort(ind.begin(), ind.end(), cmp6);
-    relax_answ(answ, ind);
-
-    sort(ind.begin(), ind.end(), cmp7);
-    relax_answ(answ, ind);
-
-    sort(ind.begin(), ind.end(), cmp8);
-    relax_answ(answ, ind);
-
-    sort(ind.begin(), ind.end(), cmp9);
-    relax_answ(answ, ind);
-
-    sort(ind.begin(), ind.end(), cmp10);
-    relax_answ(answ, ind);
+    go(answ, ind);
 
     cout << answ.size() << '\n';
     for (auto u : answ) {
