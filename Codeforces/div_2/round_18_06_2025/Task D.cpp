@@ -78,7 +78,7 @@ void print_double(double ans, int num) {
     cout << fixed << setprecision(num) << ans << '\n';
 }
 
-const int inf = 1e16;
+const int inf = 1e18;
 const double eps = 1e-9;
 const double PI = 3.141592653589793;
 
