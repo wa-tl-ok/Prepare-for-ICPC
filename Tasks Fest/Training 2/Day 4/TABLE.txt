@@ -2,7 +2,7 @@ Codeforces:
 Task A: https://codeforces.com/contest/1795/problem/D    --->  1600 [Math, Combinatorics]
 Task B: https://codeforces.com/contest/1954/problem/D    --->  1800 [Math, DP]
 Task C: https://codeforces.com/contest/2061/problem/C    --->  1600 [Math, DP]
-Task D: https://codeforces.com/contest/1829/problem/H    --->  1700 [Math, Combinatorics]
+Task D: https://codeforces.com/contest/1829/problem/H    --->  1700 [Math, DP]
 Task E: https://codeforces.com/contest/2085/problem/D    --->  2000 [Data Structures]
 Task F: https://codeforces.com/contest/1989/problem/D    --->  1900 [DP]
 Task G: https://codeforces.com/contest/2121/problem/G    --->  1900 [Math]
