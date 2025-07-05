@@ -1,9 +1,9 @@
 Codeforces:
 Task A: https://codeforces.com/contest/2031/problem/D    --->  1700 [Data structures]
-Task B: https://codeforces.com/contest/1968/problem/F    --->  1800 [Math, Binary search]
+Task B: https://codeforces.com/contest/1968/problem/F    --->  1800 [Binary search]
 Task C: https://codeforces.com/contest/2044/problem/F    --->  1900 [Math]
 Task D: https://codeforces.com/contest/2018/problem/B    --->  1900 [Math]
-Task E: https://codeforces.com/contest/2004/problem/D    --->  1600 [Math, Binary search]
-Task F: https://codeforces.com/contest/2048/problem/D    --->  1600 [Math, Data structures]
+Task E: https://codeforces.com/contest/2004/problem/D    --->  1600 [Binary search]
+Task F: https://codeforces.com/contest/2048/problem/D    --->  1600 [Data structures, Binary search]
 Task G: https://codeforces.com/contest/2069/problem/D    --->  1800 [Math, Binary search]
 Task H: https://codeforces.com/contest/1957/problem/D    --->  1900 [Math]
