@@ -1,0 +1,9 @@
+Codeforces:
+Task A: https://codeforces.com/contest/1398/problem/D    --->  1800 [DP]
+Task B:     --->  1700 [Math]
+Task C:     --->  1700 [Bitset]
+Task D:     --->  1800 [Greedy]
+Task E:     --->  1800 [Math]
+Task F:     --->  1900 [Math]
+Task G:     --->  1600 [Math, Binary search]
+Task H:     --->  1700 [Math, Binary search]
