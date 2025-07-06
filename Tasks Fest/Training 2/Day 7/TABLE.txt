@@ -1,0 +1,9 @@
+Codeforces:
+Task A: https://codeforces.com/contest/1779/problem/D    --->  1700 [Data structures]
+Task B: https://codeforces.com/contest/2005/problem/C    --->  1800 [DP]
+Task C: https://codeforces.com/contest/2000/problem/F    --->  1900 [DP]
+Task D: https://codeforces.com/contest/1875/problem/D    --->  1600 [DP]
+Task E: https://codeforces.com/contest/1799/problem/D1   --->  1900 [DP]
+Task F: https://codeforces.com/contest/1829/problem/G    --->  1600 [Math]
+Task G: https://codeforces.com/contest/1741/problem/E    --->  1600 [DP]
+Task H: https://codeforces.com/contest/1625/problem/C    --->  1700 [DP]
