@@ -114,7 +114,7 @@ namespace GEOMETRY {
     vector<r<T>> get_env(vector<r<T>> points, bool F) {
         sort(points.begin(), points.end(), [](const r<T>& a, const r<T>& b) {
             return a.x < b.x || (a.x == b.x && a.y < b.y);
-        });
+            });
 
         if (F == true) {
             // pass
@@ -157,7 +157,7 @@ namespace GEOMETRY {
             r<T> v1 = hull[i] - P;
             r<T> v2 = hull[(i + 1) % n] - P;
             return (v1 ^ v2) > 0;
-        };
+            };
 
         int left_tangent = -1;
         {
@@ -178,7 +178,7 @@ namespace GEOMETRY {
             r<T> v1 = hull[i] - P;
             r<T> v2 = hull[(i + 1) % n] - P;
             return (v1 ^ v2) >= 0;
-        };
+            };
 
         int right_tangent = -1;
         {
@@ -204,7 +204,7 @@ namespace GEOMETRY {
 
         auto sq_dist = [](const r<T>& a, const r<T>& b) {
             return (a - b).len();
-        };
+            };
 
         T ans = 0;
         int r = 0;
@@ -242,7 +242,7 @@ namespace GEOMETRY {
 
         auto get_val = [&](int index) {
             return A * hull[index % n].x + B * hull[index % n].y;
-        };
+            };
 
         int l = 0;
         int r = n - 1;
@@ -271,4 +271,203 @@ namespace GEOMETRY {
 
         return hull[best_index];
     }
+
+    template<typename T>
+    struct l {
+        T k;
+        T b;
+
+        l() {}
+        l(T k_, T b_) : k(k_), b(b_) {}
+
+        l operator+(const l& line) const {
+            return { line.k + k, line.b + b };
+        }
+
+        l& operator+=(const l& line) {
+            k += line.k; b += line.b;
+            return *this;
+        }
+
+        l operator-(const l& line) const {
+            return { k - line.k, b - line.b };
+        }
+
+        l& operator-=(const l& line) {
+            k -= line.k; b -= line.b;
+            return *this;
+        }
+
+        template<typename G>
+        l operator*(G q) const {
+            return { k * q, b * q };
+        }
+
+        template<typename G>
+        l operator/(G q) const {
+            return { k / q, b / q };
+        }
+
+        template<typename G>
+        l& operator*=(G q) {
+            k *= q; b *= q;
+            return *this;
+        }
+
+        template<typename G>
+        l& operator/=(G q) {
+            k /= q; b /= q;
+            return *this;
+        }
+
+        bool operator<(const l& line) const {
+            return k < line.k;
+        }
+
+        T operator[](T x) const {
+            return k * x + b;
+        }
+    };
+
+    template<typename T>
+    struct CHT_max {
+        vector<l<T>> hull;
+        vector<long double> crosses;
+
+        long double intersect(const l<T>& a, const l<T>& b) const {
+            if (a.k == b.k) {
+                return a.b > b.b ? -1e18 : 1e18;
+            }
+            return (long double)(a.b - b.b) / (b.k - a.k);
+        }
+
+        void add_line(l<T> line) {
+            while (hull.size() > 0 && hull.back().k == line.k) {
+                if (hull.back().b >= line.b) {
+                    return;
+                }
+                hull.pop_back();
+                if (crosses.size() > 0) {
+                    crosses.pop_back();
+                }
+            }
+
+            while (hull.size() > 0) {
+                if (hull.size() == 1) {
+                    crosses.push_back(intersect(hull.back(), line));
+                    break;
+                }
+
+                if (intersect(hull.back(), line) > crosses.back()) {
+                    crosses.push_back(intersect(hull.back(), line));
+                    break;
+                }
+                else {
+                    crosses.pop_back();
+                    hull.pop_back();
+                }
+            }
+
+            hull.push_back(line);
+        }
+
+        T query_max(T x) const {
+            if (hull.size() == 0) {
+                return -inf;
+            }
+
+            if (crosses.size() == 0) {
+                return hull[0][x];
+            }
+
+            int lo = 0;
+            int hi = crosses.size() - 1;
+
+            int i = crosses.size();
+            while (lo <= hi) {
+                int mid = (lo + hi) / 2;
+
+                if (x <= crosses[mid]) {
+                    i = mid;
+                    hi = mid - 1;
+                }
+                else {
+                    lo = mid + 1;
+                }
+            }
+
+            return hull[i][x];
+        }
+    };
+
+    template<typename T>
+    struct CHT_min {
+        vector<l<T>> hull;
+        vector<long double> crosses;
+
+        long double intersect(const l<T>& a, const l<T>& b) const {
+            if (a.k == b.k) {
+                return a.b < b.b ? -1e18 : 1e18;
+            }
+            return (long double)(a.b - b.b) / (b.k - a.k);
+        }
+
+        void add_line(l<T> line) {
+            while (hull.size() > 0 && hull.back().k == line.k) {
+                if (hull.back().b >= line.b) {
+                    return;
+                }
+                hull.pop_back();
+                if (crosses.size() > 0) {
+                    crosses.pop_back();
+                }
+            }
+
+            while (hull.size() > 0) {
+                if (hull.size() == 1) {
+                    crosses.push_back(intersect(hull.back(), line));
+                    break;
+                }
+
+                if (intersect(hull.back(), line) < crosses.back()) {
+                    crosses.push_back(intersect(hull.back(), line));
+                    break;
+                }
+                else {
+                    crosses.pop_back();
+                    hull.pop_back();
+                }
+            }
+
+            hull.push_back(line);
+        }
+
+        T query_min(T x) const {
+            if (hull.size() == 0) {
+                return inf;
+            }
+
+            if (crosses.size() == 0) {
+                return hull[0][x];
+            }
+
+            int lo = 0;
+            int hi = crosses.size() - 1;
+
+            int i = crosses.size();
+            while (lo <= hi) {
+                int mid = (lo + hi) / 2;
+
+                if (x <= crosses[mid]) {
+                    i = mid;
+                    hi = mid - 1;
+                }
+                else {
+                    lo = mid + 1;
+                }
+            }
+
+            return hull[i][x];
+        }
+    };
 }
