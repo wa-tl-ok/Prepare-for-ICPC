@@ -99,8 +99,8 @@
     - ...
     - ...
   - Sqrt Decomposition (Sum + range update)
-  - namecpace GEOMETRY
-  - namecpace MATH
+  - namespace GEOMETRY
+  - namespace MATH
 - String algorithms:
   - Linear algorithms
     - Duval decomposition
