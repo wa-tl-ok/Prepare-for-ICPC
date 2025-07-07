@@ -219,18 +219,19 @@ namespace GEOMETRY {
         return ans;
     }
 
-    r<int> max_hull_point(const vector<r<int>>& hull, int A, int B) {
+    template<typename T>
+    r<T> max_hull_point(const vector<r<T>>& hull, T A, T B) {
         int n = hull.size();
 
         if (n == 0) {
-            return r<int>(0, 0);
+            return r<T>(0, 0);
         }
 
         if (n <= 30) {
             int best_index = 0;
-            int best_val = A * hull[0].x + B * hull[0].y;
+            T best_val = A * hull[0].x + B * hull[0].y;
             for (int i = 1; i < n; i++) {
-                int val = A * hull[i].x + B * hull[i].y;
+                T val = A * hull[i].x + B * hull[i].y;
                 if (val > best_val) {
                     best_val = val;
                     best_index = i;
@@ -259,9 +260,9 @@ namespace GEOMETRY {
         }
 
         int best_index = l;
-        int best_val = get_val(best_index);
+        T best_val = get_val(best_index);
         for (int i = l; i <= r; i++) {
-            int val = get_val(i);
+            T val = get_val(i);
             if (val > best_val) {
                 best_val = val;
                 best_index = i;
