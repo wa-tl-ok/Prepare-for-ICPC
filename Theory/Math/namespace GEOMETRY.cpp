@@ -414,7 +414,7 @@ namespace GEOMETRY {
 
         void add_line(l<T> line) {
             while (hull.size() > 0 && hull.back().k == line.k) {
-                if (hull.back().b >= line.b) {
+                if (hull.back().b <= line.b) {
                     return;
                 }
                 hull.pop_back();
@@ -429,7 +429,7 @@ namespace GEOMETRY {
                     break;
                 }
 
-                if (intersect(hull.back(), line) < crosses.back()) {
+                if (intersect(hull.back(), line) > crosses.back()) {
                     crosses.push_back(intersect(hull.back(), line));
                     break;
                 }
