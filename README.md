@@ -99,6 +99,7 @@
     - ...
     - ...
   - Sqrt Decomposition (Sum + range update)
+  - namecpace GEOMETRY
   - namecpace MATH
 - String algorithms:
   - Linear algorithms
