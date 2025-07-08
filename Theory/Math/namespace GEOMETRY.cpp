@@ -329,7 +329,7 @@ namespace GEOMETRY {
         }
     };
 
-    template<typename T, bool IsMin = true>
+    template<typename T, bool IsMin>
     class CHT {
     private:
         std::vector<l<T>> hull;
