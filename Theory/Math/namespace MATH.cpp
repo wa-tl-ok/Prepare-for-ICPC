@@ -251,4 +251,274 @@ namespace MATH {
 
         return primes;
     }
+
+    struct Int {
+        int value;
+        static const int mod = 998244353;
+
+        Int() : value(0) {}
+
+        Int(int value) : value(normalize(value)) {}
+
+        Int(const Int& other) : value(other.value) {}
+
+        static int normalize(int x) {
+            if (x < 0) {
+                x += mod;
+            }
+            return x % mod;
+        }
+
+        Int operator+(const Int& other) const {
+            return Int(value + other.value);
+        }
+
+        Int operator-(const Int& other) const {
+            return Int(value - other.value);
+        }
+
+        Int operator*(const Int& other) const {
+            return Int(static_cast<int>(1LL * value * other.value % mod));
+        }
+
+        Int operator/(const Int& other) const {
+            return *this * other.inv();
+        }
+
+        Int pow(int exp) const {
+            Int result(1);
+            Int base(*this);
+            while (exp > 0) {
+                if (exp % 2 == 1) {
+                    result *= base;
+                }
+                base *= base;
+                exp /= 2;
+            }
+            return result;
+        }
+
+        Int inv() const {
+            return pow(mod - 2);
+        }
+
+        Int& operator=(int newValue) {
+            value = normalize(newValue);
+            return *this;
+        }
+
+        Int& operator+=(const Int& other) {
+            value = normalize(value + other.value);
+            return *this;
+        }
+
+        Int& operator-=(const Int& other) {
+            value = normalize(value - other.value);
+            return *this;
+        }
+
+        Int& operator*=(const Int& other) {
+            value = normalize(static_cast<int>(1LL * value * other.value % mod));
+            return *this;
+        }
+
+        Int& operator/=(const Int& other) {
+            return *this *= other.inv();
+        }
+
+        friend std::ostream& operator<<(std::ostream& os, const Int& obj) {
+            os << obj.value;
+            return os;
+        }
+    };
+
+    struct Comb {
+        static std::vector<Int> fact;
+        static std::vector<Int> inv_fact;
+        static int max_n;
+
+        static void ensure(int n) {
+            if (max_n >= n) {
+                return;
+            }
+
+            if (max_n == -1) {
+                fact = { Int(1) };
+                inv_fact = { Int(1) };
+                max_n = 0;
+                if (n == 0) {
+                    return;
+                }
+            }
+
+            fact.resize(n + 1);
+            for (int i = max_n + 1; i <= n; i++) {
+                fact[i] = fact[i - 1] * Int(i);
+            }
+
+            inv_fact.resize(n + 1);
+            inv_fact[n] = fact[n].inv();
+            for (int i = n - 1; i > max_n; i--) {
+                inv_fact[i] = inv_fact[i + 1] * Int(i + 1);
+            }
+
+            max_n = n;
+        }
+
+        static Int factorial(int n) {
+            if (n < 0) {
+                return Int(0);
+            }
+            ensure(n);
+            return fact[n];
+        }
+
+        static Int inv_factorial(int n) {
+            if (n < 0) {
+                return Int(0);
+            }
+            ensure(n);
+            return inv_fact[n];
+        }
+
+        // C(n, k)
+        static Int comb(int n, int k) {
+            if (k < 0 || k > n) {
+                return Int(0);
+            }
+            ensure(n);
+            return fact[n] * inv_fact[k] * inv_fact[n - k];
+        }
+
+        // P(n, k) = n! / (n-k)!
+        static Int perm(int n, int k) {
+            if (k < 0 || k > n) {
+                return Int(0);
+            }
+            ensure(n);
+            return fact[n] * inv_fact[n - k];
+        }
+    };
+
+    std::vector<Int> Comb::fact = {};
+    std::vector<Int> Comb::inv_fact = {};
+    int Comb::max_n = -1;
+
+    class Matrix {
+    public:
+        Matrix(const vector<vector<int>>& matrix) : data(matrix) {}
+
+        vector<vector<int>> getData() const {
+            return data;
+        }
+
+        Matrix rotateclockwise() const {
+            vector<vector<int>> rotated_matrix(data[0].size(), vector<int>(data.size(), 0));
+            for (size_t i = 0; i < data.size(); ++i) {
+                for (size_t j = 0; j < data[0].size(); ++j) {
+                    rotated_matrix[j][data.size() - 1 - i] = data[i][j];
+                }
+            }
+            return Matrix(rotated_matrix);
+        }
+
+        Matrix operator+(const Matrix& other) const {
+            if (data.size() != other.data.size() || data[0].size() != other.data[0].size()) {
+                throw invalid_argument("Matrices dimensions do not match for addition.");
+            }
+
+            vector<vector<int>> result_matrix(data.size(), vector<int>(data[0].size(), 0));
+            for (size_t i = 0; i < data.size(); ++i) {
+                for (size_t j = 0; j < data[0].size(); ++j) {
+                    result_matrix[i][j] = data[i][j] + other.data[i][j];
+                }
+            }
+
+            return Matrix(result_matrix);
+        }
+
+        Matrix operator-(const Matrix& other) const {
+            if (data.size() != other.data.size() || data[0].size() != other.data[0].size()) {
+                throw invalid_argument("Matrices dimensions do not match for subtraction.");
+            }
+
+            vector<vector<int>> result_matrix(data.size(), vector<int>(data[0].size(), 0));
+            for (size_t i = 0; i < data.size(); ++i) {
+                for (size_t j = 0; j < data[0].size(); ++j) {
+                    result_matrix[i][j] = data[i][j] - other.data[i][j];
+                }
+            }
+
+            return Matrix(result_matrix);
+        }
+
+        Matrix operator*(const Matrix& other) const {
+            size_t rows1 = data.size();
+            size_t columns1 = data[0].size();
+            size_t rows2 = other.data.size();
+            size_t columns2 = other.data[0].size();
+
+            if (columns1 != rows2) {
+                throw invalid_argument("Matrices dimensions do not match for multiplication.");
+            }
+
+            vector<vector<int>> result_matrix(rows1, vector<int>(columns2, 0));
+            for (size_t i = 0; i < rows1; ++i) {
+                for (size_t j = 0; j < columns2; ++j) {
+                    for (size_t k = 0; k < columns1; ++k) {
+                        result_matrix[i][j] += data[i][k] * other.data[k][j];
+                    }
+                }
+            }
+
+            return Matrix(result_matrix);
+        }
+
+        bool operator==(const Matrix& other) const {
+            return data == other.data;
+        }
+
+        bool operator!=(const Matrix& other) const {
+            return !(*this == other);
+        }
+
+        Matrix pow(int n) const {
+            if (data.size() != data[0].size()) {
+                throw invalid_argument("Matrix must be square for exponentiation.");
+            }
+
+            Matrix result = identity(data.size());
+            Matrix base = *this;
+
+            while (n > 0) {
+                if (n % 2 == 1) {
+                    result = result * base;
+                }
+                base = base * base;
+                n /= 2;
+            }
+
+            return result;
+        }
+
+        void print() const {
+            for (const auto& row : data) {
+                for (const auto& elem : row) {
+                    cout << elem << " ";
+                }
+                cout << endl;
+            }
+        }
+
+    private:
+        vector<vector<int>> data;
+
+        static Matrix identity(size_t size) {
+            vector<vector<int>> identity_matrix(size, vector<int>(size, 0));
+            for (size_t i = 0; i < size; ++i) {
+                identity_matrix[i][i] = 1;
+            }
+            return Matrix(identity_matrix);
+        }
+    };
 }
