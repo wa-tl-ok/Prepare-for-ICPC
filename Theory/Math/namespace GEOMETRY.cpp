@@ -329,37 +329,63 @@ namespace GEOMETRY {
         }
     };
 
-    template<typename T>
-    struct CHT_max {
-        vector<l<T>> hull;
-        vector<long double> crosses;
+    template<typename T, bool IsMin = true>
+    class CHT {
+    private:
+        std::vector<l<T>> hull;
+        std::vector<long double> crosses;
+        T neutral;
+
+        using Comp = std::conditional_t<IsMin, std::less<T>, std::greater<T>>;
+        Comp comp;
 
         long double intersect(const l<T>& a, const l<T>& b) const {
             if (a.k == b.k) {
-                return a.b > b.b ? -1e18 : 1e18;
+                if constexpr (IsMin) {
+                    return a.b < b.b ? -1e18 : 1e18;
+                }
+                else {
+                    return a.b > b.b ? -1e18 : 1e18;
+                }
             }
-            return (long double)(a.b - b.b) / (b.k - a.k);
+            return static_cast<long double>(b.b - a.b) / (a.k - b.k);
+        }
+
+    public:
+        explicit CHT(T neutral_ = std::numeric_limits<T>::max())
+            : neutral(neutral_), comp(Comp()) {
         }
 
         void add_line(l<T> line) {
             while (hull.size() > 0 && hull.back().k == line.k) {
-                if (hull.back().b >= line.b) {
-                    return;
+                if constexpr (IsMin) {
+                    if (hull.back().b <= line.b) {
+                        return;
+                    }
                 }
+                else {
+                    if (hull.back().b >= line.b) {
+                        return;
+                    }
+                }
+
                 hull.pop_back();
+
                 if (crosses.size() > 0) {
                     crosses.pop_back();
                 }
             }
-
+            
             while (hull.size() > 0) {
                 if (hull.size() == 1) {
                     crosses.push_back(intersect(hull.back(), line));
                     break;
                 }
 
-                if (intersect(hull.back(), line) > crosses.back()) {
-                    crosses.push_back(intersect(hull.back(), line));
+                long double nx = intersect(hull.back(), line);
+
+                if (nx > crosses.back()) {
+                    crosses.push_back(nx);
                     break;
                 }
                 else {
@@ -371,23 +397,24 @@ namespace GEOMETRY {
             hull.push_back(line);
         }
 
-        T query_max(T x) const {
-            if (hull.size() == 0) {
-                return -inf;
+        T query(T x) const {
+            if (hull.empty()) {
+                return neutral;
             }
 
-            if (crosses.size() == 0) {
+            if (crosses.empty()) {
                 return hull[0][x];
             }
+
+            int i = crosses.size();
 
             int lo = 0;
             int hi = crosses.size() - 1;
 
-            int i = crosses.size();
             while (lo <= hi) {
                 int mid = (lo + hi) / 2;
 
-                if (x <= crosses[mid]) {
+                if (x < crosses[mid]) {
                     i = mid;
                     hi = mid - 1;
                 }
@@ -401,73 +428,91 @@ namespace GEOMETRY {
     };
 
     template<typename T>
-    struct CHT_min {
-        vector<l<T>> hull;
-        vector<long double> crosses;
+    using CHT_min = CHT<T, true>;
 
-        long double intersect(const l<T>& a, const l<T>& b) const {
-            if (a.k == b.k) {
-                return a.b < b.b ? -1e18 : 1e18;
-            }
-            return (long double)(a.b - b.b) / (b.k - a.k);
+    template<typename T>
+    using CHT_max = CHT<T, false>;
+
+    template <typename T, typename Compare>
+    class li_chao_tree {
+    public:
+        li_chao_tree(T low, T high, T neutral, Compare comp = Compare())
+            : low_range(low), high_range(high), neutral(neutral), comp(comp), root(nullptr) {
         }
 
-        void add_line(l<T> line) {
-            while (hull.size() > 0 && hull.back().k == line.k) {
-                if (hull.back().b <= line.b) {
-                    return;
-                }
-                hull.pop_back();
-                if (crosses.size() > 0) {
-                    crosses.pop_back();
-                }
-            }
-
-            while (hull.size() > 0) {
-                if (hull.size() == 1) {
-                    crosses.push_back(intersect(hull.back(), line));
-                    break;
-                }
-
-                if (intersect(hull.back(), line) > crosses.back()) {
-                    crosses.push_back(intersect(hull.back(), line));
-                    break;
-                }
-                else {
-                    crosses.pop_back();
-                    hull.pop_back();
-                }
-            }
-
-            hull.push_back(line);
+        void add_line(T k, T b) {
+            l<T> l{ k, b };
+            add_line(root, low_range, high_range, l);
         }
 
-        T query_min(T x) const {
-            if (hull.size() == 0) {
-                return inf;
+        T query(T x) {
+            return query(root, low_range, high_range, x);
+        }
+    private:
+        struct node {
+            l<T> f;
+            node* left = nullptr;
+            node* right = nullptr;
+            node(const l<T>& f_) : f(f_) {}
+        };
+
+        T low_range;
+        T high_range;
+        T neutral;
+        Compare comp;
+        node* root;
+
+        void add_line(node*& v, T lo, T hi, l<T> f) {
+            if (!v) {
+                v = new node(f);
+                return;
             }
 
-            if (crosses.size() == 0) {
-                return hull[0][x];
+            T mid = lo + (hi - lo) / 2;
+
+            if (comp(f[mid], v->f[mid])) {
+                std::swap(f, v->f);
             }
 
-            int lo = 0;
-            int hi = crosses.size() - 1;
-
-            int i = crosses.size();
-            while (lo <= hi) {
-                int mid = (lo + hi) / 2;
-
-                if (x <= crosses[mid]) {
-                    i = mid;
-                    hi = mid - 1;
-                }
-                else {
-                    lo = mid + 1;
-                }
+            if (lo == hi) {
+                return;
             }
 
-            return hull[i][x];
+            if (comp(f[lo], v->f[lo])) {
+                add_line(v->left, lo, mid, f);
+            }
+            else {
+                add_line(v->right, mid + 1, hi, f);
+            }
+        }
+
+        T query(node* v, T lo, T hi, T x) {
+            if (!v) {
+                return neutral;
+            }
+
+            T res = v->f[x];
+
+            if (lo == hi) {
+                return res;
+            }
+
+            T mid = lo + (hi - lo) / 2;
+
+            if (x <= mid) {
+                T candidate = query(v->left, lo, mid, x);
+                return comp(res, candidate) ? res : candidate;
+            }
+            else {
+                T candidate = query(v->right, mid + 1, hi, x);
+                return comp(res, candidate) ? res : candidate;
+            }
         }
     };
+
+    template <typename T>
+    using li_chao_tree_min = li_chao_tree<T, std::less<T>>;
+
+    template <typename T>
+    using li_chao_tree_max = li_chao_tree<T, std::greater<T>>;
 }
