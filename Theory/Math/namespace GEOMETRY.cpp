@@ -12,7 +12,11 @@ namespace GEOMETRY {
         }
 
         long double sqrt_len() const {
-            return sqrt(x * x + y * y);
+            return sqrtl(x * x + y * y);
+        }
+
+        r rot() const {
+            return r(-y, x);
         }
 
         r operator+(const r& a) const {
@@ -91,6 +95,11 @@ namespace GEOMETRY {
     template<typename T>
     bool ccw(const r<T>& a, const r<T>& b, const r<T>& c) {
         return ((b - a) ^ (c - a)) > 0;
+    }
+
+    template<typename T>
+    bool collinear(const r<T>& a, const r<T>& b) {
+        return abs(a ^ b) < eps;
     }
 
     template<typename T>
@@ -329,6 +338,11 @@ namespace GEOMETRY {
         }
     };
 
+    template<typename T>
+    r<T> intersection(const r<T>& a, const r<T>& b, const r<T>& c, const r<T>& d) {
+        return r(a + (b - a) * (((c - a) ^ (d - c)) / ((b - a) ^ (d - c))));
+    }
+
     template<typename T, bool IsMin>
     class CHT {
     private:
@@ -375,7 +389,7 @@ namespace GEOMETRY {
                     crosses.pop_back();
                 }
             }
-            
+
             while (hull.size() > 0) {
                 if (hull.size() == 1) {
                     crosses.push_back(intersect(hull.back(), line));
@@ -515,4 +529,199 @@ namespace GEOMETRY {
 
     template <typename T>
     using li_chao_tree_max = li_chao_tree<T, std::greater<T>>;
+
+    template<typename T>
+    struct FORTUNE {
+        long double sweepx;
+
+        const long double EPS = 1e-12;
+        const long double INF = 1e18;
+
+        struct ARC {
+            const FORTUNE& outer;
+
+            mutable r<T> p;
+            mutable r<T> q;
+
+            mutable int id = 0;
+            mutable int i;
+
+            ARC(const FORTUNE& outer, r<T> p, r<T> q, int i)
+                : outer(outer), p(p), q(q), i(i) {
+            }
+
+            long double gety(long double x) const {
+                if (q.y == outer.INF) {
+                    return outer.INF;
+                }
+
+                x += outer.EPS;
+                r<T> med = (p + q) * 0.5;
+                r<T> dir = (p - med).rot();
+
+                long double D = (x - p.x) * (x - q.x);
+                if (D < 0) {
+                    D = 0;
+                }
+
+                return med.y + ((med.x - x) * dir.x + sqrtl(D) * dir.sqrt_len()) / dir.y;
+            }
+
+            bool operator<(const long double& y) const {
+                return gety(outer.sweepx) < y;
+            }
+
+            bool operator<(const ARC& o) const {
+                return gety(outer.sweepx) < o.gety(outer.sweepx);
+            }
+        };
+
+        using beach = std::multiset<ARC, std::less<>>;
+        using beach_iterator = typename beach::iterator;
+
+        struct EVENT {
+            long double x;
+            int id;
+            beach_iterator it;
+
+            EVENT(long double x, int id, beach_iterator it)
+                : x(x), id(id), it(it) {
+            }
+
+            bool operator<(const EVENT& e) const {
+                return x > e.x;
+            }
+        };
+
+        beach line;
+        vector<pair<r<T>, int>> sites;
+        priority_queue<EVENT> Q;
+        vector<pii> edges;
+        vector<bool> valid;
+        int n;
+        int ti;
+
+        FORTUNE(vector<r<T>> p) {
+            n = p.size();
+            sites.resize(n);
+            for (int i = 0; i < n; i++) {
+                sites[i] = { p[i], i };
+            }
+            sort(sites.begin(), sites.end());
+        }
+
+        void add_edge(int i, int j) {
+            if (i != -1 && j != -1) {
+                edges.push_back({ i, j });
+            }
+        }
+
+        void upd(beach_iterator it) {
+            if (it == line.end() || it == line.begin()) {
+                return;
+            }
+
+            if (it->i != -1) {
+                if (it->id != 0) {
+                    valid[-it->id] = false;
+                }
+
+                if (collinear(it->q - it->p, prev(it)->p - it->p)) {
+                    return;
+                }
+
+                it->id = --ti;
+                valid.push_back(true);
+
+                auto circumcenter = [](r<T> a, r<T> b, r<T> c) {
+                    b = (a + b) * 0.5;
+                    c = (a + c) * 0.5;
+                    return intersection(b, b + (b - a).rot(), c, c + (c - a).rot());
+                    };
+
+                r<T> c = circumcenter(it->p, it->q, prev(it)->p);
+                long double x = c.x + (c - it->p).sqrt_len();
+
+                if (x > sweepx - EPS && prev(it)->gety(x) + EPS > it->gety(x)) {
+                    Q.push(EVENT(x, it->id, it));
+                }
+            }
+        }
+
+        void add(int i) {
+            r<T> p = sites[i].first;
+
+            auto c = line.lower_bound(p.y);
+            if (c == line.end()) {
+                return;
+            }
+
+            auto b = line.insert(c, ARC(*this, p, c->p, i));
+            auto a = line.insert(b, ARC(*this, c->p, p, c->i));
+
+            add_edge(i, c->i);
+
+            if (a != line.begin()) {
+                upd(a);
+            }
+
+            upd(b);
+
+            if (next(c) != line.end()) {
+                upd(next(c));
+            }
+
+            upd(c);
+        }
+
+        void remove(beach_iterator it) {
+            if (it == line.end()) {
+                return;
+            }
+
+            auto a = prev(it);
+            auto b = next(it);
+
+            line.erase(it);
+
+            if (a != line.end() && b != line.end()) {
+                a->q = b->p;
+                add_edge(a->i, b->i);
+
+                if (a != line.begin()) {
+                    upd(a);
+                }
+                upd(b);
+            }
+        }
+
+        void solve(long double X = 1e18) {
+            line.insert(ARC(*this, r<T>(-X, -X), r<T>(-X, X), -1));
+            line.insert(ARC(*this, r<T>(-X, X), r<T>(INF, INF), -1));
+
+            for (int i = 0; i < n; i++) {
+                Q.push(EVENT(sites[i].first.x, i, line.end()));
+            }
+
+            ti = 0;
+            valid.assign(1, false);
+
+            while (!Q.empty()) {
+                EVENT e = Q.top();
+                Q.pop();
+
+                sweepx = e.x;
+
+                if (e.id >= 0) {
+                    add(e.id);
+                }
+                else {
+                    int e_id = -e.id;
+                    if (e_id < (int)valid.size() && valid[e_id]) {
+                        remove(e.it);
+                    }
+                }
+            }
+        }
+    };
 }
