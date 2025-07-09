@@ -1,5 +1,5 @@
 namespace GEOMETRY {
-    long double GEOMETRY_EPS = 1e-9;
+    const long double geometry_eps = 1e-9;
 
     template<typename T>
     struct r {
@@ -101,12 +101,12 @@ namespace GEOMETRY {
 
     template<typename T>
     bool collinear(const r<T>& a, const r<T>& b) {
-        return abs(a ^ b) < GEOMETRY_EPS;
+        return abs(a ^ b) < geometry_eps;
     }
 
     template<typename T>
     bool collinear(const r<T>& a, const r<T>& b, const r<T>& c) {
-        return abs((b - a) ^ (c - a)) < GEOMETRY_EPS;
+        return abs((b - a) ^ (c - a)) < geometry_eps;
     }
 
     template<typename T>
