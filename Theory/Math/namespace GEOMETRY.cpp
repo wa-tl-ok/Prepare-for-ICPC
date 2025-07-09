@@ -1,4 +1,6 @@
 namespace GEOMETRY {
+    long double GEOMETRY_EPS = 1e-9;
+
     template<typename T>
     struct r {
         T x;
@@ -99,12 +101,12 @@ namespace GEOMETRY {
 
     template<typename T>
     bool collinear(const r<T>& a, const r<T>& b) {
-        return abs(a ^ b) < eps;
+        return abs(a ^ b) < GEOMETRY_EPS;
     }
 
     template<typename T>
     bool collinear(const r<T>& a, const r<T>& b, const r<T>& c) {
-        return abs((b - a) ^ (c - a)) < eps;
+        return abs((b - a) ^ (c - a)) < GEOMETRY_EPS;
     }
 
     template<typename T>
@@ -596,7 +598,7 @@ namespace GEOMETRY {
         beach line;
         vector<pair<r<T>, int>> sites;
         priority_queue<EVENT> Q;
-        vector<pii> edges;
+        vector<pair<int, int>> edges;
         vector<bool> valid;
         int n;
         int ti;
