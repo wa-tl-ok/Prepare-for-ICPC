@@ -197,8 +197,8 @@ private:
     }
 };
 
-vector<tuple<long double, int, int>> Get_KD(vector<Point_KD>& a) {
-    vector<tuple<long double, int, int>> EDGES;
+vector<tuple<double, int, int>> Get_KD(vector<Point_KD>& a) {
+    vector<tuple<double, int, int>> EDGES;
   
     for (double ang : { 0.0, 60.0, 120.0, 180.0, 240.0, 300.0 }) {
         vector<Point_KD> b;
