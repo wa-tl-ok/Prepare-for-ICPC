@@ -1,10 +1,8 @@
 class Trie {
 public:
     struct TrieNode {
-        int count;
         map<char, TrieNode*> children;
-
-        TrieNode() : count(0) {}
+        TrieNode() : {}
     };
 
     Trie() {
