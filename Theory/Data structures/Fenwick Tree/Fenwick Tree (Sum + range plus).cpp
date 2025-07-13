@@ -1,8 +1,8 @@
 class FenwickTree {
 public:
     FenwickTree(int n) : size(n) {
-        tree1.resize(n + 2, 0);
-        tree2.resize(n + 2, 0);
+        tree1.resize(n + 1, 0);
+        tree2.resize(n + 1, 0);
     }
 
     void plus(int l, int r, int x) {
